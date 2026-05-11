@@ -1144,16 +1144,17 @@
             const product = products.find(p => p.id === productId);
             
             if (product) {
-                document.getElementById('editTitle').value = product.title;
-                document.getElementById('editPrice').value = product.price;
-                document.getElementById('editDesc').value = product.description;
+                document.getElementById('editTitle').value = product.title || '';
+                document.getElementById('editPrice').value = product.price || '';
+                document.getElementById('editDesc').value = product.description || '';
                 document.getElementById('editCategory').value = product.category || '';
-                editPreviewImage.src = product.image;
+                editPreviewImage.src = product.image || '';
                 editPreviewImage.style.display = 'block';
                 editImageBase64 = null;
                 editFileInput.value = '';
                 
                 document.getElementById('editModal').classList.add('active');
+                console.log('Открыто редактирование товара:', productId);
             }
         }
 
@@ -1165,15 +1166,29 @@
 
         // SAVE EDIT
         document.getElementById('saveEditBtn').addEventListener('click', async () => {
-            if (!editingProductId) return;
+            console.log('Попытка сохранить товар ID:', editingProductId);
+            
+            if (!editingProductId) {
+                console.error('editingProductId не установлен');
+                showMessage('❌ Ошибка: товар не выбран', 'error');
+                return;
+            }
 
             const title = document.getElementById('editTitle').value.trim();
-            const price = parseInt(document.getElementById('editPrice').value);
+            const priceStr = document.getElementById('editPrice').value;
             const description = document.getElementById('editDesc').value.trim();
             const category = document.getElementById('editCategory').value.trim();
 
-            if (!title || !price || !description || !category) {
+            console.log('Данные для сохранения:', { title, price: priceStr, description, category });
+
+            if (!title || !priceStr || !description || !category) {
                 showMessage('❌ Заполните все обязательные поля!', 'error');
+                return;
+            }
+
+            const price = parseInt(priceStr);
+            if (isNaN(price)) {
+                showMessage('❌ Цена должна быть числом!', 'error');
                 return;
             }
 
@@ -1183,30 +1198,37 @@
 
             try {
                 const updateData = {
-                    title,
-                    price,
-                    description,
-                    category
+                    title: title,
+                    price: price,
+                    description: description,
+                    category: category
                 };
 
-                // Только обновляем изображение, если пользователь выбрал новое
+                // Добавляем изображение если оно выбрано
                 if (editImageBase64) {
                     updateData.image = editImageBase64;
                 }
 
-                const { error } = await supabase
+                console.log('Отправляю на Supabase:', updateData);
+
+                const { data, error } = await supabase
                     .from('products')
                     .update(updateData)
-                    .eq('id', editingProductId);
+                    .eq('id', editingProductId)
+                    .select();
 
-                if (error) throw error;
+                if (error) {
+                    console.error('Ошибка Supabase:', error);
+                    throw error;
+                }
 
+                console.log('Товар успешно обновлен:', data);
                 showMessage('✅ Блюдо успешно обновлено!', 'success');
                 closeEditModal();
                 await loadProducts();
             } catch (error) {
-                console.error('Ошибка:', error);
-                showMessage('❌ Ошибка сохранения: ' + error.message, 'error');
+                console.error('Ошибка при сохранении:', error);
+                showMessage('❌ Ошибка: ' + (error.message || 'Неизвестная ошибка'), 'error');
             } finally {
                 saveBtn.disabled = false;
                 saveBtn.textContent = 'Сохранить';
