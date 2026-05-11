@@ -1025,17 +1025,21 @@
         // LOAD PRODUCTS
         async function loadProducts() {
             try {
+                console.log('Загружаю товары...');
                 const { data, error } = await supabase
                     .from('products')
                     .select('*')
                     .order('created_at', { ascending: false });
 
                 if (error) throw error;
+                
                 products = data || [];
+                console.log('Загруженные товары:', products);
                 renderProducts();
+                console.log('Товары отрендерены на странице');
             } catch (error) {
-                console.error('Ошибка:', error);
-                showMessage('Ошибка загрузки блюд', 'error');
+                console.error('Ошибка загрузки:', error);
+                showMessage('Ошибка загрузки блюд: ' + error.message, 'error');
             }
         }
 
@@ -1224,8 +1228,17 @@
 
                 console.log('Товар успешно обновлен:', data);
                 showMessage('✅ Блюдо успешно обновлено!', 'success');
-                closeEditModal();
-                await loadProducts();
+                
+                // Очищаем кэш и перезагружаем товары
+                editingProductId = null;
+                editImageBase64 = null;
+                
+                document.getElementById('editModal').classList.remove('active');
+                
+                // Маленькая задержка перед загрузкой
+                setTimeout(() => {
+                    loadProducts();
+                }, 300);
             } catch (error) {
                 console.error('Ошибка при сохранении:', error);
                 showMessage('❌ Ошибка: ' + (error.message || 'Неизвестная ошибка'), 'error');
