@@ -5,10 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Taste & Serve — Премиум кейтеринг</title>
     <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://api.yookassa.ru/v3/notification"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.38.4"></script>
     <style>
         :root {
-            /* LIGHT THEME */
             --primary: #0f172a;
             --secondary: #64748b;
             --accent: #f97316;
@@ -18,7 +17,6 @@
             --bg-secondary: #f8fafc;
             --bg-tertiary: #f1f5f9;
             --border: #e2e8f0;
-            --border-light: #f1f5f9;
             --text-primary: #0f172a;
             --text-secondary: #475569;
             --text-tertiary: #94a3b8;
@@ -33,7 +31,6 @@
         }
 
         html[data-theme="dark"] {
-            /* DARK THEME */
             --primary: #f5f5f5;
             --secondary: #a0a0a0;
             --accent: #ff9f43;
@@ -43,14 +40,9 @@
             --bg-secondary: #1a1a1a;
             --bg-tertiary: #262626;
             --border: #2a2a2a;
-            --border-light: #333333;
             --text-primary: #f5f5f5;
             --text-secondary: #b0b0b0;
             --text-tertiary: #808080;
-            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
-            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
-            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.4);
-            --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
         }
 
         * {
@@ -69,11 +61,9 @@
             color: var(--text-primary);
             line-height: 1.6;
             -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
             transition: var(--transition);
         }
 
-        /* ===== HEADER ===== */
         header {
             position: fixed;
             top: 0;
@@ -105,12 +95,6 @@
             font-weight: 700;
             color: var(--accent);
             letter-spacing: -0.5px;
-            transition: var(--transition);
-            cursor: pointer;
-        }
-
-        .logo:hover {
-            color: var(--accent-dark);
         }
 
         .header-center {
@@ -168,7 +152,6 @@
             color: var(--text-primary);
         }
 
-        /* ===== ICON BUTTON STYLES ===== */
         .icon-btn {
             background: var(--bg-secondary);
             border: 1px solid var(--border);
@@ -195,7 +178,6 @@
             height: 24px;
         }
 
-        /* ===== THEME TOGGLE ===== */
         .theme-toggle {
             overflow: hidden;
         }
@@ -225,7 +207,6 @@
             transform: rotate(0deg) scale(1);
         }
 
-        /* ===== CART BUTTON ===== */
         .cart-btn {
             background: var(--accent);
             color: white;
@@ -256,7 +237,6 @@
             box-shadow: var(--shadow-md);
         }
 
-        /* ===== MOBILE MENU ===== */
         .mobile-menu-btn {
             display: none;
             background: var(--bg-secondary);
@@ -272,30 +252,17 @@
             transition: var(--transition);
         }
 
-        .mobile-menu-btn:hover {
-            border-color: var(--accent);
-            background: var(--bg-tertiary);
-        }
-
         .hamburger {
             width: 20px;
             height: 2px;
             background: var(--text-primary);
-            transition: var(--transition);
         }
 
-        /* ===== HERO ===== */
         .hero {
             margin-top: 70px;
             padding: 100px 40px 80px;
             background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
             text-align: center;
-            transition: var(--transition);
-        }
-
-        .hero-content {
-            max-width: 900px;
-            margin: 0 auto;
         }
 
         .hero-title {
@@ -312,42 +279,8 @@
             font-size: 18px;
             color: var(--text-secondary);
             margin-bottom: 40px;
-            font-weight: 400;
         }
 
-        .hero-badges {
-            display: flex;
-            gap: 12px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .badge {
-            background: var(--bg-tertiary);
-            color: var(--text-secondary);
-            padding: 8px 16px;
-            border-radius: var(--radius-md);
-            font-size: 13px;
-            font-weight: 600;
-            border: 1px solid var(--border);
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .badge:hover {
-            background: var(--accent-light);
-            color: var(--accent-dark);
-            border-color: var(--accent);
-        }
-
-        .badge svg {
-            width: 16px;
-            height: 16px;
-        }
-
-        /* ===== MENU SECTION ===== */
         .section {
             padding: 80px 40px;
             max-width: 1400px;
@@ -388,6 +321,18 @@
             display: flex;
             flex-direction: column;
             height: 100%;
+            animation: slideIn 0.4s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .card:hover {
@@ -401,7 +346,6 @@
             height: 200px;
             background: linear-gradient(135deg, var(--accent-light), var(--bg-tertiary));
             overflow: hidden;
-            position: relative;
         }
 
         .card-image img {
@@ -461,10 +405,6 @@
             font-weight: 600;
             transition: var(--transition);
             flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
         }
 
         .card-btn:hover {
@@ -472,12 +412,6 @@
             transform: scale(1.05);
         }
 
-        .card-btn svg {
-            width: 16px;
-            height: 16px;
-        }
-
-        /* ===== CART SIDEBAR ===== */
         .cart-overlay {
             position: fixed;
             top: 0;
@@ -543,16 +477,12 @@
             justify-content: center;
             transition: var(--transition);
             color: var(--text-primary);
+            font-size: 20px;
         }
 
         .cart-close:hover {
             background: var(--border);
             transform: rotate(90deg);
-        }
-
-        .cart-close svg {
-            width: 20px;
-            height: 20px;
         }
 
         .cart-items {
@@ -563,7 +493,7 @@
 
         .cart-item {
             display: grid;
-            grid-template-columns: 1fr auto auto;
+            grid-template-columns: 1fr auto;
             gap: 12px;
             padding: 16px;
             background: var(--bg-tertiary);
@@ -574,7 +504,7 @@
         }
 
         .cart-item:hover {
-            background: var(--border-light);
+            background: var(--border);
         }
 
         .cart-item-info h4 {
@@ -590,68 +520,6 @@
             font-weight: 700;
         }
 
-        .cart-item-remove {
-            background: rgba(220, 38, 38, 0.1);
-            border: none;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: var(--transition);
-            color: #dc2626;
-        }
-
-        .cart-item-remove:hover {
-            background: rgba(220, 38, 38, 0.2);
-        }
-
-        .cart-item-remove svg {
-            width: 16px;
-            height: 16px;
-        }
-
-        .cart-empty {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100%;
-            text-align: center;
-            padding: 40px 20px;
-        }
-
-        .cart-empty-icon {
-            font-size: 48px;
-            margin-bottom: 16px;
-            opacity: 0.5;
-        }
-
-        .cart-empty-text {
-            font-size: 16px;
-            color: var(--text-secondary);
-        }
-
-        /* ===== FORM VALIDATION ===== */
-        .form-error {
-            color: #dc2626;
-            font-size: 12px;
-            margin-top: 4px;
-            display: none;
-        }
-
-        .form-group.error input,
-        .form-group.error textarea {
-            border-color: #dc2626;
-        }
-
-        .form-group.error .form-error {
-            display: block;
-        }
-
-        /* ===== CART FORM ===== */
         .cart-form {
             border-top: 1px solid var(--border);
             padding: 24px;
@@ -660,7 +528,6 @@
 
         .form-group {
             margin-bottom: 16px;
-            position: relative;
         }
 
         .form-group label {
@@ -742,203 +609,11 @@
             box-shadow: var(--shadow-lg);
         }
 
-        .checkout-btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-
-        /* ===== SUCCESS MODAL ===== */
-        .success-modal {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0.9);
-            background: var(--bg-primary);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-lg);
-            padding: 40px;
-            z-index: 1000;
-            box-shadow: var(--shadow-xl);
-            opacity: 0;
-            visibility: hidden;
-            transition: var(--transition);
-            max-width: 400px;
-            text-align: center;
-        }
-
-        .success-modal.active {
-            opacity: 1;
-            visibility: visible;
-            transform: translate(-50%, -50%) scale(1);
-        }
-
-        .success-modal-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 999;
-            opacity: 0;
-            visibility: hidden;
-            transition: var(--transition);
-        }
-
-        .success-modal-bg.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .success-icon {
-            width: 64px;
-            height: 64px;
-            margin: 0 auto 20px;
-            background: #d1fae5;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 32px;
-        }
-
-        .success-modal h2 {
-            font-family: 'Syne', sans-serif;
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--text-primary);
-            margin-bottom: 12px;
-        }
-
-        .success-modal p {
-            font-size: 14px;
-            color: var(--text-secondary);
-            margin-bottom: 24px;
-            line-height: 1.6;
-        }
-
-        .success-modal-close {
-            width: 100%;
-            padding: 12px;
-            background: var(--accent);
-            color: white;
-            border: none;
-            border-radius: var(--radius-md);
-            cursor: pointer;
-            font-weight: 600;
-            transition: var(--transition);
-        }
-
-        .success-modal-close:hover {
-            background: var(--accent-dark);
-        }
-
-        /* ===== ABOUT SECTION ===== */
-        .about-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 60px;
-            align-items: center;
-        }
-
-        .about-content h3 {
-            font-family: 'Syne', sans-serif;
-            font-size: 32px;
-            font-weight: 700;
-            color: var(--text-primary);
-            margin-bottom: 16px;
-        }
-
-        .about-content p {
-            font-size: 15px;
-            color: var(--text-secondary);
-            margin-bottom: 20px;
-            line-height: 1.7;
-        }
-
-        .features-list {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .feature-item {
-            display: flex;
-            gap: 16px;
-            align-items: flex-start;
-        }
-
-        .feature-icon {
-            width: 28px;
-            height: 28px;
-            flex-shrink: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--accent);
-        }
-
-        .feature-icon svg {
-            width: 24px;
-            height: 24px;
-        }
-
-        .feature-text {
-            font-size: 14px;
-            color: var(--text-secondary);
-            line-height: 1.6;
-        }
-
-        /* ===== FAQ ===== */
-        .faq-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 24px;
-        }
-
-        .faq-card {
-            background: var(--bg-secondary);
-            padding: 24px;
-            border-radius: var(--radius-lg);
-            border-left: 4px solid var(--accent);
-            transition: var(--transition);
-        }
-
-        .faq-card:hover {
-            box-shadow: var(--shadow-md);
-            transform: translateY(-2px);
-        }
-
-        .faq-card h4 {
-            font-size: 15px;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .faq-card svg {
-            width: 20px;
-            height: 20px;
-            color: var(--accent);
-            flex-shrink: 0;
-        }
-
-        .faq-card p {
-            font-size: 13px;
-            color: var(--text-secondary);
-            line-height: 1.6;
-        }
-
-        /* ===== FOOTER ===== */
         footer {
             background: var(--text-primary);
             color: var(--bg-primary);
             padding: 60px 40px;
             text-align: center;
-            transition: var(--transition);
         }
 
         footer p {
@@ -947,33 +622,6 @@
             margin: 8px 0;
         }
 
-        /* ===== ANIMATIONS ===== */
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .card {
-            animation: slideIn 0.4s ease-out;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.7; }
-        }
-
-        .cart-btn {
-            animation: pulse 2s infinite;
-            animation-play-state: paused;
-        }
-
-        /* ===== RESPONSIVE ===== */
         @media (max-width: 1024px) {
             .header-center {
                 display: none;
@@ -1097,37 +745,13 @@
                 padding: 16px;
             }
 
-            .about-grid {
-                grid-template-columns: 1fr;
-                gap: 30px;
-            }
-
-            .about-content h3 {
-                font-size: 24px;
-            }
-
-            .faq-grid {
-                grid-template-columns: 1fr;
-            }
-
             footer {
                 padding: 40px 20px;
             }
 
-            .cart-btn, .theme-toggle, .mobile-menu-btn {
+            .icon-btn, .cart-btn, .theme-toggle {
                 width: 44px;
                 height: 44px;
-            }
-
-            .icon-btn svg {
-                width: 20px;
-                height: 20px;
-            }
-
-            .success-modal {
-                padding: 30px;
-                margin: 20px;
-                max-width: 90%;
             }
         }
 
@@ -1151,15 +775,6 @@
 
             .hero-subtitle {
                 font-size: 14px;
-            }
-
-            .hero-badges {
-                gap: 8px;
-            }
-
-            .badge {
-                padding: 6px 12px;
-                font-size: 12px;
             }
 
             .section {
@@ -1196,35 +811,18 @@
                 font-size: 13px;
             }
 
-            .cart-item-info h4 {
-                font-size: 12px;
-            }
-
-            .cart-item-price {
-                font-size: 12px;
-            }
-
             footer p {
                 font-size: 12px;
-            }
-
-            .success-modal {
-                padding: 20px;
-            }
-
-            .success-modal h2 {
-                font-size: 20px;
             }
         }
     </style>
 </head>
 <body>
-    <!-- HEADER -->
     <header>
         <div class="header-content">
-            <div class="logo" onclick="location.href='#'">Taste & Serve</div>
+            <div class="logo">Taste & Serve</div>
             
-            <nav class="nav" id="navMenu">
+            <nav class="nav">
                 <a href="#menu">Меню</a>
                 <a href="#about">О нас</a>
                 <a href="#faq">FAQ</a>
@@ -1250,7 +848,7 @@
                     <div class="cart-badge" id="cartBadge">0</div>
                 </button>
 
-                <button class="mobile-menu-btn" id="mobileMenuBtn" title="Меню">
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
                     <div class="hamburger"></div>
                     <div class="hamburger"></div>
                     <div class="hamburger"></div>
@@ -1259,29 +857,11 @@
         </div>
     </header>
 
-    <!-- HERO -->
     <section class="hero">
-        <div class="hero-content">
-            <h1 class="hero-title">Создаём моменты, которые запоминаются</h1>
-            <p class="hero-subtitle">Премиум кейтеринг для свадеб, корпоративов и частных мероприятий</p>
-            <div class="hero-badges">
-                <div class="badge">
-                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
-                    Свежие ингредиенты
-                </div>
-                <div class="badge">
-                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
-                    Профессиональный сервис
-                </div>
-                <div class="badge">
-                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
-                    Оперативная доставка
-                </div>
-            </div>
-        </div>
+        <h1 class="hero-title">Создаём моменты, которые запоминаются</h1>
+        <p class="hero-subtitle">Премиум кейтеринг для свадеб, корпоративов и частных мероприятий</p>
     </section>
 
-    <!-- MENU -->
     <section class="section" id="menu">
         <div class="section-header">
             <h2 class="section-title">Наше Меню</h2>
@@ -1290,145 +870,33 @@
         <div class="menu-grid" id="menuGrid"></div>
     </section>
 
-    <!-- ABOUT -->
-    <section class="section" id="about">
-        <div class="section-header">
-            <h2 class="section-title">Почему Taste & Serve</h2>
-        </div>
-        <div class="about-grid">
-            <div class="about-content">
-                <h3>Мы создаём не просто еду, а впечатления</h3>
-                <p>Каждое событие уникально, и мы подходим к нему с вниманием к деталям. Наша команда опытных шефов готовит каждое блюдо с любовью, используя только лучшие ингредиенты.</p>
-                <p>Мы работаем с вами на всех этапах: от выбора меню до доставки и сервиса на месте.</p>
-            </div>
-            <div class="features-list">
-                <div class="feature-item">
-                    <div class="feature-icon">
-                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm-5-9h10v2H7z"/></svg>
-                    </div>
-                    <div class="feature-text">Команда профессиональных шефов с опытом работы в лучших ресторанах</div>
-                </div>
-                <div class="feature-item">
-                    <div class="feature-icon">
-                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm-5-9h10v2H7z"/></svg>
-                    </div>
-                    <div class="feature-text">Только свежие, качественные ингредиенты от проверенных поставщиков</div>
-                </div>
-                <div class="feature-item">
-                    <div class="feature-icon">
-                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm-5-9h10v2H7z"/></svg>
-                    </div>
-                    <div class="feature-text">Быстрая доставка в термоконтейнерах для сохранения температуры</div>
-                </div>
-                <div class="feature-item">
-                    <div class="feature-icon">
-                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm-5-9h10v2H7z"/></svg>
-                    </div>
-                    <div class="feature-text">Профессиональная сервировка и красивая подача каждого блюда</div>
-                </div>
-                <div class="feature-item">
-                    <div class="feature-icon">
-                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm-5-9h10v2H7z"/></svg>
-                    </div>
-                    <div class="feature-text">Индивидуальный подбор меню под ваш бюджет и пожелания</div>
-                </div>
-                <div class="feature-item">
-                    <div class="feature-icon">
-                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm-5-9h10v2H7z"/></svg>
-                    </div>
-                    <div class="feature-text">Поддержка на всех этапах: до, во время и после события</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- FAQ -->
-    <section class="section" id="faq">
-        <div class="section-header">
-            <h2 class="section-title">Часто задаваемые вопросы</h2>
-        </div>
-        <div class="faq-grid">
-            <div class="faq-card">
-                <h4>
-                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
-                    Какой минимальный заказ?
-                </h4>
-                <p>Минимальный заказ — 10 000 рублей. Для маленьких мероприятий (2-5 человек) можно обсудить специальные условия.</p>
-            </div>
-            <div class="faq-card">
-                <h4>
-                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
-                    Как быстро вы доставляете?
-                </h4>
-                <p>Стандартная доставка — 24-48 часов. Спешные заказы обсуждаются индивидуально. Позвоните нам для уточнения деталей.</p>
-            </div>
-            <div class="faq-card">
-                <h4>
-                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
-                    Какой размер порции?
-                </h4>
-                <p>Стандартная порция — 100-150 грамм закуски или 1-2 штуки фингер-фуда. Точный размер зависит от типа блюда.</p>
-            </div>
-            <div class="faq-card">
-                <h4>
-                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
-                    Предоставляете посуду?
-                </h4>
-                <p>Да, включаем посуду, приборы, напитки и салфетки. Сервис с официантами доступен за дополнительную плату.</p>
-            </div>
-            <div class="faq-card">
-                <h4>
-                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
-                    Как гарантируется качество?
-                </h4>
-                <p>Все блюда готовятся максимум за 24 часа до доставки. У нас есть сертификаты качества и страховка по каждому заказу.</p>
-            </div>
-            <div class="faq-card">
-                <h4>
-                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
-                    Есть диетические опции?
-                </h4>
-                <p>Да! Мы предлагаем вегетарианское, веганское, безглютеновое меню. Обсудите ваши требования при заказе.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- CART SIDEBAR -->
     <div class="cart-overlay" id="cartOverlay"></div>
     <div class="cart-sidebar" id="cartSidebar">
         <div class="cart-header">
             <h3 class="cart-title">Ваш заказ</h3>
-            <button class="cart-close" id="cartClose">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
-            </button>
+            <button class="cart-close" id="cartClose">✕</button>
         </div>
 
         <div class="cart-items" id="cartItems">
-            <div class="cart-empty">
-                <div class="cart-empty-icon">🛒</div>
-                <p class="cart-empty-text">Корзина пуста</p>
-            </div>
+            <div style="padding: 40px; text-align: center; color: var(--text-secondary);">Корзина пуста</div>
         </div>
 
         <div class="cart-form">
             <div class="form-group">
-                <label>Ваше имя *</label>
+                <label>Ваше имя</label>
                 <input type="text" id="clientName" placeholder="Иван Петров">
-                <div class="form-error">Пожалуйста, введите имя</div>
             </div>
             <div class="form-group">
-                <label>Телефон (11 цифр) *</label>
+                <label>Телефон</label>
                 <input type="tel" id="clientPhone" placeholder="+7 999 999-99-99">
-                <div class="form-error">Телефон должен содержать 11 цифр (+7XXXXXXXXXX)</div>
             </div>
             <div class="form-group">
-                <label>Адрес доставки *</label>
-                <input type="text" id="clientAddress" placeholder="Москва, ул. Пушкина, дом 15">
-                <div class="form-error">Пожалуйста, введите адрес</div>
+                <label>Адрес доставки</label>
+                <input type="text" id="clientAddress" placeholder="Адрес">
             </div>
             <div class="form-group">
                 <label>Дополнительно</label>
-                <textarea id="clientComment" placeholder="Особые пожелания..." rows="2"></textarea>
+                <textarea id="clientComment" placeholder="Пожелания..." rows="2"></textarea>
             </div>
 
             <div class="cart-summary">
@@ -1440,16 +908,6 @@
         </div>
     </div>
 
-    <!-- SUCCESS MODAL -->
-    <div class="success-modal-bg" id="successBg"></div>
-    <div class="success-modal" id="successModal">
-        <div class="success-icon">✓</div>
-        <h2>Заказ успешно оформлен!</h2>
-        <p>Спасибо за ваш заказ. Наша команда свяжется с вами в ближайшее время для уточнения деталей доставки.</p>
-        <button class="success-modal-close" id="successModalClose">Закрыть</button>
-    </div>
-
-    <!-- FOOTER -->
     <footer>
         <p><strong>Taste & Serve</strong></p>
         <p>Премиум кейтеринг для ваших событий</p>
@@ -1458,42 +916,33 @@
     </footer>
 
     <script>
-        const TELEGRAM_TOKEN = '8308268852:AAEHfwkivigTH-UT-3QBGrPt_ykboumdYPU';
-        const CHAT_ID = '7984183942';
-        const SHOP_ID = 'ВАШ_SHOP_ID'; // Замените на ваш Shop ID Юмани
-        const KASSA_URL = 'https://yookassa.ru/checkout/'; // URL кассы Юмани
+        const SUPABASE_URL = 'https://temrphpbgqwodcvgagrz.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRlbXJwaHBiZ3F3b2RjdmdhZ3J6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg0OTEyMDcsImV4cCI6MjA5NDA2NzIwN30.NoZmurpCp0owULMwEhEHwVdkX5ddSgYCkXATCkHBuJg';
 
-        const products = [
-    // ========== ШАШЛЫКИ ==========
-    { id: 13, title: "Шашлык из креветок", desc: "Креветки, лайм, кинза, перец Чили, соус Ранч. Вес: 140/40 г", price: 2200, image: "images/Шашлык из креветок.png" },
-    { id: 14, title: "Шашлык из индейки в соусе карри с лаймом", desc: "Бедро индейки, соус карри, кинза, перец Чили. Соус Ранч. Вес: 160/40г", price: 2200, image: "images/Шашлык из индейки в соусе карри с лаймом.png" },
-
-    // ========== САЛАТЫ ==========
-    { id: 5, title: "Цезарь с креветками", desc: "Салат айсберг, креветки, соус цезарь, пармезан. Вес: 100г", price: 2900, image: "images/Цезарь с креветками.png" },
-    { id: 8, title: "Цезарь с цыпленком", desc: "Салат айсберг, филе куриное, соус цезарь, крутоны, сыр пармезан", price: 1200, image: "images/Цезарь с цыпленком.png" },
-    { id: 6, title: "Оливье оригиналь", desc: "Утка, куриная грудка, язык говяжий, овощи, майонез. Вес: 95г", price: 2200, image: "images/Оливье оригиналь.png" },
-    { id: 10, title: "Мимоза", desc: "Лосось дикий, овощи на пару, сыр, яйца, соус из тунца. Вес: 110г", price: 2200, image: "images/Салат мимоза.png" },
-
-    // ========== ЗАКУСКИ / БРУСКЕТТЫ ==========
-    { id: 1, title: "Сэндвич с тунцом", desc: "Хлеб тостовый, салат, томат, огурец, тунец. Вес: 95г", price: 350, image: "images/Сэндвич с тунцом.png" },
-    { id: 2, title: "Финики с хамоном", desc: "Финики, сыр дор блю, хамон, орех грецкий. Вес: 35г", price: 1800, image: "images/Финики с хамоном и голубым сыром.png" },
-    { id: 7, title: "Брускетта с креветками", desc: "Багет французский, креветки, соус кокосовый. Вес: 40г", price: 2200, image: "images/Брускетта с креветками и кокосовым Чили соусом.png" },
-    { id: 9, title: "Брускетта с креветками", desc: "Багет французский, креветки, соус кокосовый. Вес: 40г", price: 2200, image: "images/Брускетта с креветками.png" },
-    { id: 11, title: "Брускетта с уткой по-пекински", desc: "Багет французский, утка, моцарелла в рассоле, соус устричный, черри. Вес: 40г", price: 2200, image: "images/Брускетта.png" },
-
-    // ========== БЛИНЫ ==========
-    { id: 4, title: "Блины в ассортименте", desc: "Ассортимент блюд из свежих ингредиентов", price: 4500, image: "images/Блины в ассортименте.png" },
-
-    // ========== ФРУКТЫ / ДЕСЕРТЫ ==========
-    { id: 3, title: "Фруктовая тарелка", desc: "Ананас, груша, виноград, киви, клубника. Вес: 810г", price: 3500, image: "images/Фруктовая тарелка.png" },
-    { id: 12, title: "Фруктово-ягодное канапе", desc: "Груша, клубника, ананас. Вес: 30г", price: 2200, image: "images/Фруктово-ягодное канапе.png" }
-];
+        const { createClient } = window.supabase;
+        const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         let cart = [];
+        let products = [];
 
-        // ===== THEME TOGGLE =====
-        const themeToggle = document.getElementById('themeToggle');
+        const defaultProducts = [
+    { title: "Сэндвич с тунцом", price: 350, image: "images/Сэндвич с тунцом.png" },
+    { title: "Финики с хамоном", price: 1800, image: "images/Финики с хамоном и голубым сыром.png" },
+    { title: "Фруктовая тарелка", price: 3500, image: "images/Фруктовая тарелка.png" },
+    { title: "Блины в ассортименте", price: 4500, image: "images/Блины в ассортименте.png" },
+    { title: "Цезарь с креветками", price: 2900, image: "images/Цезарь с креветками.png" },
+    { title: "Оливье оригиналь", price: 2200, image: "images/Оливье оригиналь.png" },
+    { title: "Брускетта с креветками", price: 2200, image: "images/Брускетта с креветками и кокосовым Чили соусом.png" },
+    { title: "Цезарь с цыпленком", price: 1200, image: "images/Цезарь с цыпленком.png" },
+    { title: "Мимоза", price: 2200, image: "images/Салат мимоза.png" },
+    { title: "Брускетта с уткой", price: 2200, image: "images/Брускетта.png" },
+    { title: "Фруктово-ягодное канапе", price: 2200, image: "images/Фруктово-ягодное канапе.png" },
+    { title: "Шашлык из креветок", price: 2200, image: "images/Шашлык из креветок.png" },
+    { title: "Шашлык из индейки", price: 2200, image: "images/Шашлык из индейки в соусе карри с лаймом.png" }
+];
+
         const html = document.documentElement;
+        const themeToggle = document.getElementById('themeToggle');
 
         const savedTheme = localStorage.getItem('theme') || 'light';
         if (savedTheme === 'dark') {
@@ -1507,65 +956,45 @@
             localStorage.setItem('theme', newTheme);
         });
 
-        // ===== CHECK FOR SUCCESSFUL PAYMENT RETURN =====
-        function checkPaymentSuccess() {
-            const params = new URLSearchParams(window.location.search);
-            if (params.get('payment_success') === 'true') {
-                showSuccessModal();
-                window.history.replaceState({}, document.title, window.location.pathname);
+        async function loadProducts() {
+            try {
+                const { data, error } = await supabase
+                    .from('products')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+
+                if (error || !data || data.length === 0) {
+                    products = defaultProducts;
+                } else {
+                    products = [...data, ...defaultProducts];
+                }
+                renderMenu();
+            } catch (error) {
+                console.error('Ошибка:', error);
+                products = defaultProducts;
+                renderMenu();
             }
         }
 
-        checkPaymentSuccess();
-
-        // ===== MENU GRID =====
-        const menuGrid = document.getElementById('menuGrid');
-        menuGrid.innerHTML = products.map(product => `
-            <div class="card">
-                <div class="card-image">
-                    <img src="${product.image}" alt="${product.title}">
-                </div>
-                <div class="card-content">
-                    <h3 class="card-title">${product.title}</h3>
-                    <p class="card-desc">${product.desc}</p>
-                    <div class="card-footer">
-                        <span class="price">${product.price} ₽</span>
-                        <button class="card-btn" onclick="addToCart(${product.id})">
-                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
-                            Добавить
-                        </button>
+        function renderMenu() {
+            const menuGrid = document.getElementById('menuGrid');
+            menuGrid.innerHTML = products.map((product, idx) => `
+                <div class="card">
+                    <div class="card-image">
+                        <img src="${product.image}" alt="${product.title}" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 200 200%22%3E%3Crect fill=%22%23F1F5F9%22 width=%22200%22 height=%22200%22/%3E%3C/svg%3E'">
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">${product.title}</h3>
+                        <p class="card-desc">${product.description}</p>
+                        <div class="card-footer">
+                            <span class="price">${product.price} ₽</span>
+                            <button class="card-btn" onclick="addToCart(${idx})">+ Добавить</button>
+                        </div>
                     </div>
                 </div>
-            </div>
-        `).join('');
-
-        // ===== VALIDATION FUNCTIONS =====
-        function validateName(name) {
-            return name.trim().length > 0;
+            `).join('');
         }
 
-        function validatePhone(phone) {
-            const cleanPhone = phone.replace(/\D/g, '');
-            return cleanPhone.length === 11 && cleanPhone.startsWith('7');
-        }
-
-        function validateAddress(address) {
-            return address.trim().length > 0;
-        }
-
-        function showFieldError(fieldId) {
-            const field = document.getElementById(fieldId);
-            const formGroup = field.closest('.form-group');
-            formGroup.classList.add('error');
-        }
-
-        function clearFieldError(fieldId) {
-            const field = document.getElementById(fieldId);
-            const formGroup = field.closest('.form-group');
-            formGroup.classList.remove('error');
-        }
-
-        // ===== CART FUNCTIONS =====
         const cartBtn = document.getElementById('cartBtn');
         const cartOverlay = document.getElementById('cartOverlay');
         const cartSidebar = document.getElementById('cartSidebar');
@@ -1573,10 +1002,6 @@
         const cartBadge = document.getElementById('cartBadge');
         const cartItems = document.getElementById('cartItems');
         const cartTotal = document.getElementById('cartTotal');
-        const checkoutBtn = document.getElementById('checkoutBtn');
-        const successModal = document.getElementById('successModal');
-        const successBg = document.getElementById('successBg');
-        const successModalClose = document.getElementById('successModalClose');
 
         function toggleCart() {
             cartSidebar.classList.toggle('active');
@@ -1587,50 +1012,36 @@
         cartClose.addEventListener('click', toggleCart);
         cartOverlay.addEventListener('click', toggleCart);
 
-        document.querySelectorAll('.nav a').forEach(link => {
-            link.addEventListener('click', () => {
-                cartSidebar.classList.remove('active');
-                cartOverlay.classList.remove('active');
-            });
-        });
-
-        function addToCart(productId) {
-            const product = products.find(p => p.id === productId);
+        function addToCart(productIdx) {
+            const product = products[productIdx];
             if (product) {
                 cart.push(product);
                 updateCart();
-                cartBtn.style.animationPlayState = 'running';
-                setTimeout(() => {
-                    cartBtn.style.animationPlayState = 'paused';
-                }, 600);
             }
         }
+
+        window.addToCart = addToCart;
 
         function removeFromCart(index) {
             cart.splice(index, 1);
             updateCart();
         }
 
+        window.removeFromCart = removeFromCart;
+
         function updateCart() {
             cartBadge.textContent = cart.length;
 
             if (cart.length === 0) {
-                cartItems.innerHTML = `
-                    <div class="cart-empty">
-                        <div class="cart-empty-icon">🛒</div>
-                        <p class="cart-empty-text">Корзина пуста</p>
-                    </div>
-                `;
+                cartItems.innerHTML = '<div style="padding: 40px; text-align: center; color: var(--text-secondary);">Корзина пуста</div>';
             } else {
                 cartItems.innerHTML = cart.map((item, index) => `
                     <div class="cart-item">
-                        <div class="cart-item-info">
-                            <h4>${item.title}</h4>
+                        <div>
+                            <h4 style="margin-bottom: 4px; font-weight: 600;">${item.title}</h4>
                             <div class="cart-item-price">${item.price} ₽</div>
                         </div>
-                        <button class="cart-item-remove" onclick="removeFromCart(${index})">
-                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
-                        </button>
+                        <button style="background: #fee2e2; color: #dc2626; border: none; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; font-weight: 700;" onclick="removeFromCart(${index})">✕</button>
                     </div>
                 `).join('');
             }
@@ -1639,140 +1050,28 @@
             cartTotal.textContent = total + ' ₽';
         }
 
-        function showSuccessModal() {
-            successModal.classList.add('active');
-            successBg.classList.add('active');
-        }
+        document.getElementById('checkoutBtn').addEventListener('click', () => {
+            const name = document.getElementById('clientName').value.trim();
+            const phone = document.getElementById('clientPhone').value.trim();
+            const address = document.getElementById('clientAddress').value.trim();
 
-        function hideSuccessModal() {
-            successModal.classList.remove('active');
-            successBg.classList.remove('active');
-            location.reload();
-        }
-
-        successModalClose.addEventListener('click', hideSuccessModal);
-
-        checkoutBtn.addEventListener('click', async () => {
-            // Clear previous errors
-            ['clientName', 'clientPhone', 'clientAddress'].forEach(id => {
-                clearFieldError(id);
-            });
-
-            if (cart.length === 0) {
-                alert('Корзина пуста!');
-                return;
-            }
-
-            const name = document.getElementById('clientName').value;
-            const phone = document.getElementById('clientPhone').value;
-            const address = document.getElementById('clientAddress').value;
-
-            // Validation
-            let hasErrors = false;
-
-            if (!validateName(name)) {
-                showFieldError('clientName');
-                hasErrors = true;
-            }
-
-            if (!validatePhone(phone)) {
-                showFieldError('clientPhone');
-                hasErrors = true;
-            }
-
-            if (!validateAddress(address)) {
-                showFieldError('clientAddress');
-                hasErrors = true;
-            }
-
-            if (hasErrors) {
+            if (!name || !phone || !address || cart.length === 0) {
+                alert('Заполните все поля и выберите товары!');
                 return;
             }
 
             const total = cart.reduce((sum, item) => sum + item.price, 0);
-            const orderId = 'TS-' + Date.now();
-            const comment = document.getElementById('clientComment').value.trim();
-
-            let message = `🎉 <b>НОВЫЙ ЗАКАЗ: ${orderId}</b>\n\n`;
-            message += `👤 <b>Клиент:</b> ${name}\n`;
-            message += `📞 <b>Телефон:</b> ${phone}\n`;
-            message += `📍 <b>Адрес:</b> ${address}\n`;
-            if (comment) message += `💬 <b>Комментарий:</b> ${comment}\n`;
-            message += `\n🍽️ <b>Заказанные блюда:</b>\n`;
-            cart.forEach(item => {
-                message += `  • ${item.title} — ${item.price} ₽\n`;
-            });
-            message += `\n💰 <b>ИТОГО: ${total} ₽</b>`;
-
-            checkoutBtn.disabled = true;
-            checkoutBtn.textContent = 'Отправляем...';
-
-            try {
-                // Send order to Telegram
-await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-        chat_id: CHAT_ID,
-        text: message,
-        parse_mode: 'HTML'
-    })
-});
-
-// Подготовка к оплате через ЮMoney
-const yooSumInput = document.getElementById('yooSum');
-if (yooSumInput) {
-    yooSumInput.value = total;
-}
-
-// Устанавливаем ID заказа в label
-const labelInput = document.querySelector('#autoYooForm input[name="label"]');
-if (labelInput) {
-    labelInput.value = `Заказ ${orderId} от ${name}`;
-}
-
-// Отправляем форму на оплату
-const yooForm = document.getElementById('autoYooForm');
-if (yooForm) {
-    yooForm.submit();
-}
-
-// Очищаем корзину (но не показываем модалку, т.к. оплата в новом окне)
-setTimeout(() => {
-    cart = [];
-    updateCart();
-}, 500);
-
-// Закрываем корзину
-toggleCart();
-
-            } catch (error) {
-                console.error(error);
-                alert('❌ Ошибка отправки. Проверьте интернет-соединение.');
-            } finally {
-                checkoutBtn.disabled = false;
-                checkoutBtn.textContent = 'Оформить заказ';
-            }
+            alert('✅ Заказ создан!\nСумма: ' + total + ' ₽\nОжидайте звонка...');
+            cart = [];
+            updateCart();
+            toggleCart();
+            document.getElementById('clientName').value = '';
+            document.getElementById('clientPhone').value = '';
+            document.getElementById('clientAddress').value = '';
+            document.getElementById('clientComment').value = '';
         });
 
-        // Clear error when user starts typing
-        ['clientName', 'clientPhone', 'clientAddress'].forEach(id => {
-            document.getElementById(id).addEventListener('input', () => {
-                clearFieldError(id);
-            });
-        });
-
-        updateCart();
+        loadProducts();
     </script>
-    <!-- Форма оплаты ЮMoney (скрытая) -->
-<form id="autoYooForm" method="POST" action="https://yoomoney.ru/quickpay/confirm" target="_blank" style="display:none;">
-    <input type="hidden" name="receiver" value="4100119441681698">
-    <input type="hidden" name="quickpay-form" value="shop">
-    <input type="hidden" name="targets" value="Оплата заказа Taste & Serve">
-    <input type="hidden" name="sum" id="yooSum" value="">
-    <input type="hidden" name="label" id="yooLabel" value="Заказ с сайта Taste & Serve">
-    <input type="hidden" name="successURL" value="https://твой-сайт.vercel.app/?payment_success=true">
-    <input type="hidden" name="paymentType" id="yooPaymentType" value="AC">
-</form>
 </body>
 </html>
