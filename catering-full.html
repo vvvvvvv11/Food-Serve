@@ -1,0 +1,1763 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taste & Serve — Премиум кейтеринг</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://api.yookassa.ru/v3/notification"></script>
+    <style>
+        :root {
+            /* LIGHT THEME */
+            --primary: #0f172a;
+            --secondary: #64748b;
+            --accent: #f97316;
+            --accent-dark: #ea580c;
+            --accent-light: #fed7aa;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --bg-tertiary: #f1f5f9;
+            --border: #e2e8f0;
+            --border-light: #f1f5f9;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-tertiary: #94a3b8;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            --radius-sm: 6px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        html[data-theme="dark"] {
+            /* DARK THEME */
+            --primary: #f5f5f5;
+            --secondary: #a0a0a0;
+            --accent: #ff9f43;
+            --accent-dark: #ffa940;
+            --accent-light: #ffb347;
+            --bg-primary: #0f0f0f;
+            --bg-secondary: #1a1a1a;
+            --bg-tertiary: #262626;
+            --border: #2a2a2a;
+            --border-light: #333333;
+            --text-primary: #f5f5f5;
+            --text-secondary: #b0b0b0;
+            --text-tertiary: #808080;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.4);
+            --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            transition: var(--transition);
+        }
+
+        /* ===== HEADER ===== */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            padding: 16px 40px;
+            transition: var(--transition);
+        }
+
+        html[data-theme="dark"] header {
+            background: rgba(15, 15, 15, 0.8);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Syne', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--accent);
+            letter-spacing: -0.5px;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .logo:hover {
+            color: var(--accent-dark);
+        }
+
+        .header-center {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+            flex: 1;
+            justify-content: center;
+        }
+
+        .nav {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+        }
+
+        .nav a {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav a:hover {
+            color: var(--accent);
+        }
+
+        .nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: var(--transition);
+        }
+
+        .nav a:hover::after {
+            width: 100%;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            margin-left: auto;
+        }
+
+        .phone {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* ===== ICON BUTTON STYLES ===== */
+        .icon-btn {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            position: relative;
+            color: var(--text-primary);
+        }
+
+        .icon-btn:hover {
+            border-color: var(--accent);
+            box-shadow: var(--shadow-md);
+            background: var(--bg-tertiary);
+        }
+
+        .icon-btn svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        /* ===== THEME TOGGLE ===== */
+        .theme-toggle {
+            overflow: hidden;
+        }
+
+        .theme-icon {
+            position: absolute;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .sun-icon {
+            opacity: 1;
+            transform: rotate(0deg) scale(1);
+        }
+
+        .moon-icon {
+            opacity: 0;
+            transform: rotate(-180deg) scale(0);
+        }
+
+        html[data-theme="dark"] .sun-icon {
+            opacity: 0;
+            transform: rotate(180deg) scale(0);
+        }
+
+        html[data-theme="dark"] .moon-icon {
+            opacity: 1;
+            transform: rotate(0deg) scale(1);
+        }
+
+        /* ===== CART BUTTON ===== */
+        .cart-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            box-shadow: var(--shadow-md);
+        }
+
+        .cart-btn:hover {
+            background: var(--accent-dark);
+            transform: scale(1.08);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--accent-dark);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            box-shadow: var(--shadow-md);
+        }
+
+        /* ===== MOBILE MENU ===== */
+        .mobile-menu-btn {
+            display: none;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            width: 44px;
+            height: 44px;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            transition: var(--transition);
+        }
+
+        .mobile-menu-btn:hover {
+            border-color: var(--accent);
+            background: var(--bg-tertiary);
+        }
+
+        .hamburger {
+            width: 20px;
+            height: 2px;
+            background: var(--text-primary);
+            transition: var(--transition);
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            margin-top: 70px;
+            padding: 100px 40px 80px;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .hero-content {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .hero-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 56px;
+            font-weight: 700;
+            line-height: 1.2;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+            letter-spacing: -1px;
+        }
+
+        .hero-subtitle {
+            font-size: 18px;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+            font-weight: 400;
+        }
+
+        .hero-badges {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            background: var(--bg-tertiary);
+            color: var(--text-secondary);
+            padding: 8px 16px;
+            border-radius: var(--radius-md);
+            font-size: 13px;
+            font-weight: 600;
+            border: 1px solid var(--border);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .badge:hover {
+            background: var(--accent-light);
+            color: var(--accent-dark);
+            border-color: var(--accent);
+        }
+
+        .badge svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* ===== MENU SECTION ===== */
+        .section {
+            padding: 80px 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 42px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
+        }
+
+        .section-subtitle {
+            font-size: 16px;
+            color: var(--text-secondary);
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        .card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .card:hover {
+            border-color: var(--accent);
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-4px);
+        }
+
+        .card-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, var(--accent-light), var(--bg-tertiary));
+            overflow: hidden;
+            position: relative;
+        }
+
+        .card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .card:hover .card-image img {
+            transform: scale(1.08);
+        }
+
+        .card-content {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .card-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            margin-bottom: 16px;
+            flex: 1;
+        }
+
+        .card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .price {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .card-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: var(--transition);
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .card-btn:hover {
+            background: var(--accent-dark);
+            transform: scale(1.05);
+        }
+
+        .card-btn svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* ===== CART SIDEBAR ===== */
+        .cart-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 998;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+        }
+
+        .cart-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .cart-sidebar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 500px;
+            height: 100vh;
+            background: var(--bg-primary);
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--shadow-xl);
+            transform: translateX(500px);
+            transition: var(--transition);
+        }
+
+        .cart-sidebar.active {
+            transform: translateX(0);
+        }
+
+        .cart-header {
+            padding: 24px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg-secondary);
+        }
+
+        .cart-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .cart-close {
+            background: var(--bg-tertiary);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            color: var(--text-primary);
+        }
+
+        .cart-close:hover {
+            background: var(--border);
+            transform: rotate(90deg);
+        }
+
+        .cart-close svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .cart-items {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+        }
+
+        .cart-item {
+            display: grid;
+            grid-template-columns: 1fr auto auto;
+            gap: 12px;
+            padding: 16px;
+            background: var(--bg-tertiary);
+            border-radius: var(--radius-md);
+            margin-bottom: 12px;
+            align-items: center;
+            transition: var(--transition);
+        }
+
+        .cart-item:hover {
+            background: var(--border-light);
+        }
+
+        .cart-item-info h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .cart-item-price {
+            font-size: 13px;
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        .cart-item-remove {
+            background: rgba(220, 38, 38, 0.1);
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            color: #dc2626;
+        }
+
+        .cart-item-remove:hover {
+            background: rgba(220, 38, 38, 0.2);
+        }
+
+        .cart-item-remove svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .cart-empty {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .cart-empty-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+
+        .cart-empty-text {
+            font-size: 16px;
+            color: var(--text-secondary);
+        }
+
+        /* ===== FORM VALIDATION ===== */
+        .form-error {
+            color: #dc2626;
+            font-size: 12px;
+            margin-top: 4px;
+            display: none;
+        }
+
+        .form-group.error input,
+        .form-group.error textarea {
+            border-color: #dc2626;
+        }
+
+        .form-group.error .form-error {
+            display: block;
+        }
+
+        /* ===== CART FORM ===== */
+        .cart-form {
+            border-top: 1px solid var(--border);
+            padding: 24px;
+            background: var(--bg-secondary);
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+            color: var(--text-primary);
+            background: var(--bg-primary);
+            transition: var(--transition);
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: var(--text-tertiary);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
+        }
+
+        .cart-summary {
+            padding: 16px;
+            background: var(--bg-primary);
+            border-radius: var(--radius-md);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            border: 1px solid var(--border);
+        }
+
+        .summary-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .summary-price {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .checkout-btn {
+            width: 100%;
+            padding: 14px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .checkout-btn:hover:not(:disabled) {
+            background: var(--accent-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .checkout-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* ===== SUCCESS MODAL ===== */
+        .success-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 40px;
+            z-index: 1000;
+            box-shadow: var(--shadow-xl);
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .success-modal.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .success-modal-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+        }
+
+        .success-modal-bg.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .success-icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 20px;
+            background: #d1fae5;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+        }
+
+        .success-modal h2 {
+            font-family: 'Syne', sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+        }
+
+        .success-modal p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+            line-height: 1.6;
+        }
+
+        .success-modal-close {
+            width: 100%;
+            padding: 12px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .success-modal-close:hover {
+            background: var(--accent-dark);
+        }
+
+        /* ===== ABOUT SECTION ===== */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .about-content h3 {
+            font-family: 'Syne', sans-serif;
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+        }
+
+        .about-content p {
+            font-size: 15px;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            line-height: 1.7;
+        }
+
+        .features-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .feature-item {
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+        }
+
+        .feature-icon {
+            width: 28px;
+            height: 28px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent);
+        }
+
+        .feature-icon svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .feature-text {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* ===== FAQ ===== */
+        .faq-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .faq-card {
+            background: var(--bg-secondary);
+            padding: 24px;
+            border-radius: var(--radius-lg);
+            border-left: 4px solid var(--accent);
+            transition: var(--transition);
+        }
+
+        .faq-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .faq-card h4 {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .faq-card svg {
+            width: 20px;
+            height: 20px;
+            color: var(--accent);
+            flex-shrink: 0;
+        }
+
+        .faq-card p {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            background: var(--text-primary);
+            color: var(--bg-primary);
+            padding: 60px 40px;
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        footer p {
+            font-size: 14px;
+            opacity: 0.8;
+            margin: 8px 0;
+        }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card {
+            animation: slideIn 0.4s ease-out;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .cart-btn {
+            animation: pulse 2s infinite;
+            animation-play-state: paused;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .header-center {
+                display: none;
+            }
+
+            .header-actions {
+                margin-left: auto;
+            }
+
+            .mobile-menu-btn {
+                display: flex;
+            }
+
+            .nav {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 12px 16px;
+            }
+
+            .header-content {
+                gap: 12px;
+            }
+
+            .logo {
+                font-size: 18px;
+            }
+
+            .phone {
+                display: none;
+            }
+
+            .hero {
+                margin-top: 60px;
+                padding: 60px 20px 40px;
+            }
+
+            .hero-title {
+                font-size: 36px;
+            }
+
+            .hero-subtitle {
+                font-size: 16px;
+                margin-bottom: 24px;
+            }
+
+            .section {
+                padding: 60px 20px;
+            }
+
+            .section-title {
+                font-size: 32px;
+            }
+
+            .section-header {
+                margin-bottom: 40px;
+            }
+
+            .menu-grid {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+                gap: 12px;
+            }
+
+            .card-content {
+                padding: 12px;
+            }
+
+            .card-title {
+                font-size: 13px;
+                margin-bottom: 4px;
+            }
+
+            .card-desc {
+                font-size: 12px;
+                margin-bottom: 8px;
+            }
+
+            .card-footer {
+                gap: 8px;
+            }
+
+            .price {
+                font-size: 14px;
+            }
+
+            .card-btn {
+                padding: 8px 12px;
+                font-size: 12px;
+            }
+
+            .card-image {
+                height: 140px;
+            }
+
+            .cart-sidebar {
+                width: 100%;
+                transform: translateX(100%);
+            }
+
+            .cart-sidebar.active {
+                transform: translateX(0);
+            }
+
+            .cart-header {
+                padding: 16px;
+            }
+
+            .cart-items {
+                padding: 12px;
+            }
+
+            .cart-item {
+                padding: 12px;
+                margin-bottom: 8px;
+            }
+
+            .cart-form {
+                padding: 16px;
+            }
+
+            .about-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .about-content h3 {
+                font-size: 24px;
+            }
+
+            .faq-grid {
+                grid-template-columns: 1fr;
+            }
+
+            footer {
+                padding: 40px 20px;
+            }
+
+            .cart-btn, .theme-toggle, .mobile-menu-btn {
+                width: 44px;
+                height: 44px;
+            }
+
+            .icon-btn svg {
+                width: 20px;
+                height: 20px;
+            }
+
+            .success-modal {
+                padding: 30px;
+                margin: 20px;
+                max-width: 90%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header {
+                padding: 10px 12px;
+            }
+
+            .logo {
+                font-size: 16px;
+            }
+
+            .hero {
+                margin-top: 50px;
+                padding: 40px 16px 30px;
+            }
+
+            .hero-title {
+                font-size: 28px;
+            }
+
+            .hero-subtitle {
+                font-size: 14px;
+            }
+
+            .hero-badges {
+                gap: 8px;
+            }
+
+            .badge {
+                padding: 6px 12px;
+                font-size: 12px;
+            }
+
+            .section {
+                padding: 40px 16px;
+            }
+
+            .section-title {
+                font-size: 26px;
+            }
+
+            .menu-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+
+            .card-image {
+                height: 120px;
+            }
+
+            .card-content {
+                padding: 10px;
+            }
+
+            .card-title {
+                font-size: 12px;
+            }
+
+            .card-desc {
+                font-size: 11px;
+                margin-bottom: 6px;
+            }
+
+            .price {
+                font-size: 13px;
+            }
+
+            .cart-item-info h4 {
+                font-size: 12px;
+            }
+
+            .cart-item-price {
+                font-size: 12px;
+            }
+
+            footer p {
+                font-size: 12px;
+            }
+
+            .success-modal {
+                padding: 20px;
+            }
+
+            .success-modal h2 {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <header>
+        <div class="header-content">
+            <div class="logo" onclick="location.href='#'">Taste & Serve</div>
+            
+            <nav class="nav" id="navMenu">
+                <a href="#menu">Меню</a>
+                <a href="#about">О нас</a>
+                <a href="#faq">FAQ</a>
+            </nav>
+
+            <div class="header-actions">
+                <span class="phone">+7 999 999-99-99</span>
+                
+                <button class="icon-btn theme-toggle" id="themeToggle" title="Переключить тему">
+                    <svg class="theme-icon sun-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2"/>
+                        <path d="M12 1V3M12 21V23M23 12H21M3 12H1M20.485 3.515L19.071 4.929M4.929 19.071L3.515 20.485M20.485 20.485L19.071 19.071M4.929 4.929L3.515 3.515" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    <svg class="theme-icon moon-icon" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                    </svg>
+                </button>
+
+                <button class="icon-btn cart-btn" id="cartBtn" title="Корзина">
+                    <svg viewBox="0 0 30 30" fill="white" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M2.75 3.75C2.75 3.19772 3.19772 2.75 3.75 2.75H7.5C7.99357 2.75 8.41332 3.11011 8.48837 3.59794L8.74253 5.25H26.25C26.5638 5.25 26.8594 5.39729 27.0483 5.6478C27.2373 5.89832 27.2977 6.223 27.2115 6.52472L24.7115 15.2747C24.5889 15.704 24.1965 16 23.75 16H10.3964L10.8579 19H25C25.5523 19 26 19.4477 26 20C26 20.5523 25.5523 21 25 21H10C9.50643 21 9.08668 20.6399 9.01163 20.1521L8.26365 15.2902C8.23702 15.2022 8.22218 15.1092 8.22097 15.0128L6.91753 6.5404C6.89084 6.45232 6.87598 6.3591 6.87479 6.26258L6.64208 4.75H3.75C3.19772 4.75 2.75 4.30228 2.75 3.75ZM9.05023 7.25L10.0887 14H22.9957L24.9243 7.25H9.05023ZM10 24.75C9.86193 24.75 9.75 24.8619 9.75 25C9.75 25.1381 9.86193 25.25 10 25.25C10.1381 25.25 10.25 25.1381 10.25 25C10.25 24.8619 10.1381 24.75 10 24.75ZM7.75 25C7.75 23.7574 8.75736 22.75 10 22.75C11.2426 22.75 12.25 23.7574 12.25 25C12.25 26.2426 11.2426 27.25 10 27.25C8.75736 27.25 7.75 26.2426 7.75 25ZM23.75 24.75C23.6119 24.75 23.5 24.8619 23.5 25C23.5 25.1381 23.6119 25.25 23.75 25.25C23.8881 25.25 24 25.1381 24 25C24 24.8619 23.8881 24.75 23.75 24.75ZM21.5 25C21.5 23.7574 22.5074 22.75 23.75 22.75C24.9926 22.75 26 23.7574 26 25C26 26.2426 24.9926 27.25 23.75 27.25C22.5074 27.25 21.5 26.2426 21.5 25Z" fill="white"/>
+                    </svg>
+                    <div class="cart-badge" id="cartBadge">0</div>
+                </button>
+
+                <button class="mobile-menu-btn" id="mobileMenuBtn" title="Меню">
+                    <div class="hamburger"></div>
+                    <div class="hamburger"></div>
+                    <div class="hamburger"></div>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">Создаём моменты, которые запоминаются</h1>
+            <p class="hero-subtitle">Премиум кейтеринг для свадеб, корпоративов и частных мероприятий</p>
+            <div class="hero-badges">
+                <div class="badge">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
+                    Свежие ингредиенты
+                </div>
+                <div class="badge">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
+                    Профессиональный сервис
+                </div>
+                <div class="badge">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
+                    Оперативная доставка
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MENU -->
+    <section class="section" id="menu">
+        <div class="section-header">
+            <h2 class="section-title">Наше Меню</h2>
+            <p class="section-subtitle">Подберите идеальные блюда для вашего события</p>
+        </div>
+        <div class="menu-grid" id="menuGrid"></div>
+    </section>
+
+    <!-- ABOUT -->
+    <section class="section" id="about">
+        <div class="section-header">
+            <h2 class="section-title">Почему Taste & Serve</h2>
+        </div>
+        <div class="about-grid">
+            <div class="about-content">
+                <h3>Мы создаём не просто еду, а впечатления</h3>
+                <p>Каждое событие уникально, и мы подходим к нему с вниманием к деталям. Наша команда опытных шефов готовит каждое блюдо с любовью, используя только лучшие ингредиенты.</p>
+                <p>Мы работаем с вами на всех этапах: от выбора меню до доставки и сервиса на месте.</p>
+            </div>
+            <div class="features-list">
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm-5-9h10v2H7z"/></svg>
+                    </div>
+                    <div class="feature-text">Команда профессиональных шефов с опытом работы в лучших ресторанах</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm-5-9h10v2H7z"/></svg>
+                    </div>
+                    <div class="feature-text">Только свежие, качественные ингредиенты от проверенных поставщиков</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm-5-9h10v2H7z"/></svg>
+                    </div>
+                    <div class="feature-text">Быстрая доставка в термоконтейнерах для сохранения температуры</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm-5-9h10v2H7z"/></svg>
+                    </div>
+                    <div class="feature-text">Профессиональная сервировка и красивая подача каждого блюда</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm-5-9h10v2H7z"/></svg>
+                    </div>
+                    <div class="feature-text">Индивидуальный подбор меню под ваш бюджет и пожелания</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm-5-9h10v2H7z"/></svg>
+                    </div>
+                    <div class="feature-text">Поддержка на всех этапах: до, во время и после события</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section" id="faq">
+        <div class="section-header">
+            <h2 class="section-title">Часто задаваемые вопросы</h2>
+        </div>
+        <div class="faq-grid">
+            <div class="faq-card">
+                <h4>
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                    Какой минимальный заказ?
+                </h4>
+                <p>Минимальный заказ — 10 000 рублей. Для маленьких мероприятий (2-5 человек) можно обсудить специальные условия.</p>
+            </div>
+            <div class="faq-card">
+                <h4>
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                    Как быстро вы доставляете?
+                </h4>
+                <p>Стандартная доставка — 24-48 часов. Спешные заказы обсуждаются индивидуально. Позвоните нам для уточнения деталей.</p>
+            </div>
+            <div class="faq-card">
+                <h4>
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                    Какой размер порции?
+                </h4>
+                <p>Стандартная порция — 100-150 грамм закуски или 1-2 штуки фингер-фуда. Точный размер зависит от типа блюда.</p>
+            </div>
+            <div class="faq-card">
+                <h4>
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                    Предоставляете посуду?
+                </h4>
+                <p>Да, включаем посуду, приборы, напитки и салфетки. Сервис с официантами доступен за дополнительную плату.</p>
+            </div>
+            <div class="faq-card">
+                <h4>
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                    Как гарантируется качество?
+                </h4>
+                <p>Все блюда готовятся максимум за 24 часа до доставки. У нас есть сертификаты качества и страховка по каждому заказу.</p>
+            </div>
+            <div class="faq-card">
+                <h4>
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                    Есть диетические опции?
+                </h4>
+                <p>Да! Мы предлагаем вегетарианское, веганское, безглютеновое меню. Обсудите ваши требования при заказе.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CART SIDEBAR -->
+    <div class="cart-overlay" id="cartOverlay"></div>
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h3 class="cart-title">Ваш заказ</h3>
+            <button class="cart-close" id="cartClose">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+            </button>
+        </div>
+
+        <div class="cart-items" id="cartItems">
+            <div class="cart-empty">
+                <div class="cart-empty-icon">🛒</div>
+                <p class="cart-empty-text">Корзина пуста</p>
+            </div>
+        </div>
+
+        <div class="cart-form">
+            <div class="form-group">
+                <label>Ваше имя *</label>
+                <input type="text" id="clientName" placeholder="Иван Петров">
+                <div class="form-error">Пожалуйста, введите имя</div>
+            </div>
+            <div class="form-group">
+                <label>Телефон (11 цифр) *</label>
+                <input type="tel" id="clientPhone" placeholder="+7 999 999-99-99">
+                <div class="form-error">Телефон должен содержать 11 цифр (+7XXXXXXXXXX)</div>
+            </div>
+            <div class="form-group">
+                <label>Адрес доставки *</label>
+                <input type="text" id="clientAddress" placeholder="Москва, ул. Пушкина, дом 15">
+                <div class="form-error">Пожалуйста, введите адрес</div>
+            </div>
+            <div class="form-group">
+                <label>Дополнительно</label>
+                <textarea id="clientComment" placeholder="Особые пожелания..." rows="2"></textarea>
+            </div>
+
+            <div class="cart-summary">
+                <span class="summary-label">Итого:</span>
+                <span class="summary-price" id="cartTotal">0 ₽</span>
+            </div>
+
+            <button class="checkout-btn" id="checkoutBtn">Оформить заказ</button>
+        </div>
+    </div>
+
+    <!-- SUCCESS MODAL -->
+    <div class="success-modal-bg" id="successBg"></div>
+    <div class="success-modal" id="successModal">
+        <div class="success-icon">✓</div>
+        <h2>Заказ успешно оформлен!</h2>
+        <p>Спасибо за ваш заказ. Наша команда свяжется с вами в ближайшее время для уточнения деталей доставки.</p>
+        <button class="success-modal-close" id="successModalClose">Закрыть</button>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <p><strong>Taste & Serve</strong></p>
+        <p>Премиум кейтеринг для ваших событий</p>
+        <p>📞 +7 999 999-99-99 • ✉ info@taste-serve.ru</p>
+        <p style="margin-top: 24px; opacity: 0.6; font-size: 12px;">© 2024 Taste & Serve. Все права защищены.</p>
+    </footer>
+
+    <script>
+        const TELEGRAM_TOKEN = '8308268852:AAEHfwkivigTH-UT-3QBGrPt_ykboumdYPU';
+        const CHAT_ID = '7984183942';
+        const SHOP_ID = 'ВАШ_SHOP_ID'; // Замените на ваш Shop ID Юмани
+        const KASSA_URL = 'https://yookassa.ru/checkout/'; // URL кассы Юмани
+
+        const products = [
+            { id: 1, title: "Сэндвич с тунцом", desc: "Хлеб тостовый, салат, томат, огурец, тунец. Вес: 95г", price: 350, image: "images/Сэндвич с тунцом.png" },
+            { id: 2, title: "Финики с хамоном", desc: "Финики, сыр дор блю, хамон, орех грецкий. Вес: 35г", price: 1800, image: "images/Финики с хамоном.png" },
+            { id: 3, title: "Фруктовая тарелка", desc: "Ананас, груша, виноград, киви, клубника. Вес: 810г", price: 3500, image: "images/Фруктовая тарелка.png" },
+            { id: 4, title: "Блины в ассортименте", desc: "Ассортимент блюд из свежих ингредиентов", price: 4500, image: "images/Блины в ассортименте.png" },
+            { id: 5, title: "Цезарь с креветками", desc: "Салат айсберг, креветки, соус цезарь, пармезан. Вес: 100г", price: 2900, image: "images/Цезарь с креветками.png" },
+            { id: 6, title: "Оливье оригиналь", desc: "Утка, куриная грудка, язык говяжий, овощи, майонез. Вес: 95г", price: 2200, image: "images/Оливье оригиналь.png" },
+            { id: 7, title: "Брускетта с креветками", desc: "Багет французский, креветки, соус кокосовый. Вес: 40г", price: 2200, image: "images/Брускетта с креветками.png" },
+            { id: 8, title: "Капрезе", desc: "Моцарелла, томаты, базилик, оливковое масло", price: 1200, image: "images/Капрезе.png" }
+        ];
+
+        let cart = [];
+
+        // ===== THEME TOGGLE =====
+        const themeToggle = document.getElementById('themeToggle');
+        const html = document.documentElement;
+
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        if (savedTheme === 'dark') {
+            html.setAttribute('data-theme', 'dark');
+        }
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        });
+
+        // ===== CHECK FOR SUCCESSFUL PAYMENT RETURN =====
+        function checkPaymentSuccess() {
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('payment_success') === 'true') {
+                showSuccessModal();
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
+        }
+
+        checkPaymentSuccess();
+
+        // ===== MENU GRID =====
+        const menuGrid = document.getElementById('menuGrid');
+        menuGrid.innerHTML = products.map(product => `
+            <div class="card">
+                <div class="card-image">
+                    <img src="${product.image}" alt="${product.title}">
+                </div>
+                <div class="card-content">
+                    <h3 class="card-title">${product.title}</h3>
+                    <p class="card-desc">${product.desc}</p>
+                    <div class="card-footer">
+                        <span class="price">${product.price} ₽</span>
+                        <button class="card-btn" onclick="addToCart(${product.id})">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+                            Добавить
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+
+        // ===== VALIDATION FUNCTIONS =====
+        function validateName(name) {
+            return name.trim().length > 0;
+        }
+
+        function validatePhone(phone) {
+            const cleanPhone = phone.replace(/\D/g, '');
+            return cleanPhone.length === 11 && cleanPhone.startsWith('7');
+        }
+
+        function validateAddress(address) {
+            return address.trim().length > 0;
+        }
+
+        function showFieldError(fieldId) {
+            const field = document.getElementById(fieldId);
+            const formGroup = field.closest('.form-group');
+            formGroup.classList.add('error');
+        }
+
+        function clearFieldError(fieldId) {
+            const field = document.getElementById(fieldId);
+            const formGroup = field.closest('.form-group');
+            formGroup.classList.remove('error');
+        }
+
+        // ===== CART FUNCTIONS =====
+        const cartBtn = document.getElementById('cartBtn');
+        const cartOverlay = document.getElementById('cartOverlay');
+        const cartSidebar = document.getElementById('cartSidebar');
+        const cartClose = document.getElementById('cartClose');
+        const cartBadge = document.getElementById('cartBadge');
+        const cartItems = document.getElementById('cartItems');
+        const cartTotal = document.getElementById('cartTotal');
+        const checkoutBtn = document.getElementById('checkoutBtn');
+        const successModal = document.getElementById('successModal');
+        const successBg = document.getElementById('successBg');
+        const successModalClose = document.getElementById('successModalClose');
+
+        function toggleCart() {
+            cartSidebar.classList.toggle('active');
+            cartOverlay.classList.toggle('active');
+        }
+
+        cartBtn.addEventListener('click', toggleCart);
+        cartClose.addEventListener('click', toggleCart);
+        cartOverlay.addEventListener('click', toggleCart);
+
+        document.querySelectorAll('.nav a').forEach(link => {
+            link.addEventListener('click', () => {
+                cartSidebar.classList.remove('active');
+                cartOverlay.classList.remove('active');
+            });
+        });
+
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            if (product) {
+                cart.push(product);
+                updateCart();
+                cartBtn.style.animationPlayState = 'running';
+                setTimeout(() => {
+                    cartBtn.style.animationPlayState = 'paused';
+                }, 600);
+            }
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCart();
+        }
+
+        function updateCart() {
+            cartBadge.textContent = cart.length;
+
+            if (cart.length === 0) {
+                cartItems.innerHTML = `
+                    <div class="cart-empty">
+                        <div class="cart-empty-icon">🛒</div>
+                        <p class="cart-empty-text">Корзина пуста</p>
+                    </div>
+                `;
+            } else {
+                cartItems.innerHTML = cart.map((item, index) => `
+                    <div class="cart-item">
+                        <div class="cart-item-info">
+                            <h4>${item.title}</h4>
+                            <div class="cart-item-price">${item.price} ₽</div>
+                        </div>
+                        <button class="cart-item-remove" onclick="removeFromCart(${index})">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+                        </button>
+                    </div>
+                `).join('');
+            }
+
+            const total = cart.reduce((sum, item) => sum + item.price, 0);
+            cartTotal.textContent = total + ' ₽';
+        }
+
+        function showSuccessModal() {
+            successModal.classList.add('active');
+            successBg.classList.add('active');
+        }
+
+        function hideSuccessModal() {
+            successModal.classList.remove('active');
+            successBg.classList.remove('active');
+            location.reload();
+        }
+
+        successModalClose.addEventListener('click', hideSuccessModal);
+
+        checkoutBtn.addEventListener('click', async () => {
+            // Clear previous errors
+            ['clientName', 'clientPhone', 'clientAddress'].forEach(id => {
+                clearFieldError(id);
+            });
+
+            if (cart.length === 0) {
+                alert('Корзина пуста!');
+                return;
+            }
+
+            const name = document.getElementById('clientName').value;
+            const phone = document.getElementById('clientPhone').value;
+            const address = document.getElementById('clientAddress').value;
+
+            // Validation
+            let hasErrors = false;
+
+            if (!validateName(name)) {
+                showFieldError('clientName');
+                hasErrors = true;
+            }
+
+            if (!validatePhone(phone)) {
+                showFieldError('clientPhone');
+                hasErrors = true;
+            }
+
+            if (!validateAddress(address)) {
+                showFieldError('clientAddress');
+                hasErrors = true;
+            }
+
+            if (hasErrors) {
+                return;
+            }
+
+            const total = cart.reduce((sum, item) => sum + item.price, 0);
+            const orderId = 'TS-' + Date.now();
+            const comment = document.getElementById('clientComment').value.trim();
+
+            let message = `🎉 <b>НОВЫЙ ЗАКАЗ: ${orderId}</b>\n\n`;
+            message += `👤 <b>Клиент:</b> ${name}\n`;
+            message += `📞 <b>Телефон:</b> ${phone}\n`;
+            message += `📍 <b>Адрес:</b> ${address}\n`;
+            if (comment) message += `💬 <b>Комментарий:</b> ${comment}\n`;
+            message += `\n🍽️ <b>Заказанные блюда:</b>\n`;
+            cart.forEach(item => {
+                message += `  • ${item.title} — ${item.price} ₽\n`;
+            });
+            message += `\n💰 <b>ИТОГО: ${total} ₽</b>`;
+
+            checkoutBtn.disabled = true;
+            checkoutBtn.textContent = 'Отправляем...';
+
+            try {
+                // Send order to Telegram
+await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+        chat_id: CHAT_ID,
+        text: message,
+        parse_mode: 'HTML'
+    })
+});
+
+// Подготовка к оплате через ЮMoney
+const yooSumInput = document.getElementById('yooSum');
+if (yooSumInput) {
+    yooSumInput.value = total;
+}
+
+// Устанавливаем ID заказа в label
+const labelInput = document.querySelector('#autoYooForm input[name="label"]');
+if (labelInput) {
+    labelInput.value = `Заказ ${orderId} от ${name}`;
+}
+
+// Отправляем форму на оплату
+const yooForm = document.getElementById('autoYooForm');
+if (yooForm) {
+    yooForm.submit();
+}
+
+// Очищаем корзину (но не показываем модалку, т.к. оплата в новом окне)
+setTimeout(() => {
+    cart = [];
+    updateCart();
+}, 500);
+
+// Закрываем корзину
+toggleCart();
+
+            } catch (error) {
+                console.error(error);
+                alert('❌ Ошибка отправки. Проверьте интернет-соединение.');
+            } finally {
+                checkoutBtn.disabled = false;
+                checkoutBtn.textContent = 'Оформить заказ';
+            }
+        });
+
+        // Clear error when user starts typing
+        ['clientName', 'clientPhone', 'clientAddress'].forEach(id => {
+            document.getElementById(id).addEventListener('input', () => {
+                clearFieldError(id);
+            });
+        });
+
+        updateCart();
+    </script>
+    <!-- Форма оплаты ЮMoney (скрытая) -->
+<form id="autoYooForm" method="POST" action="https://yoomoney.ru/quickpay/confirm" target="_blank" style="display:none;">
+    <input type="hidden" name="receiver" value="4100119441681698">
+    <input type="hidden" name="quickpay-form" value="shop">
+    <input type="hidden" name="targets" value="Оплата заказа Taste & Serve">
+    <input type="hidden" name="sum" id="yooSum" value="">
+    <input type="hidden" name="label" id="yooLabel" value="Заказ с сайта Taste & Serve">
+    <input type="hidden" name="successURL" value="https://твой-сайт.vercel.app/?payment_success=true">
+    <input type="hidden" name="paymentType" id="yooPaymentType" value="AC">
+</form>
+</body>
+</html>
