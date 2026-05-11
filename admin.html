@@ -1215,18 +1215,17 @@
 
                 console.log('Отправляю на Supabase:', updateData);
 
-                const { data, error } = await supabase
+                const { error } = await supabase
                     .from('products')
                     .update(updateData)
-                    .eq('id', editingProductId)
-                    .select();
+                    .eq('id', editingProductId);
 
                 if (error) {
                     console.error('Ошибка Supabase:', error);
                     throw error;
                 }
 
-                console.log('Товар успешно обновлен:', data);
+                console.log('Товар успешно обновлен в БД');
                 showMessage('✅ Блюдо успешно обновлено!', 'success');
                 
                 // Очищаем кэш и перезагружаем товары
