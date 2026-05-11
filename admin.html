@@ -1182,13 +1182,11 @@
             saveBtn.textContent = 'Сохранение...';
 
             try {
-                const product = products.find(p => p.id === editingProductId);
                 const updateData = {
                     title,
                     price,
                     description,
-                    category,
-                    updated_at: new Date().toISOString()
+                    category
                 };
 
                 // Только обновляем изображение, если пользователь выбрал новое
