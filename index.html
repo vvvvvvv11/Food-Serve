@@ -1585,38 +1585,59 @@
             `).join('');
         }
 
-        // РЕНДЕР МЕНЮ
-        function renderMenu() {
-            const menuGrid = document.getElementById('menuGrid');
-            
-            if (filteredProducts.length === 0) {
-                menuGrid.innerHTML = '<div class="empty-state" style="grid-column: 1/-1;"><h2>Нет товаров</h2><p>В этой категории пока нет товаров</p></div>';
-                return;
-            }
+        // РЕНДЕР МЕНЮ (с ленивой загрузкой картинок)
+function renderMenu() {
+    const menuGrid = document.getElementById('menuGrid');
+    
+    if (filteredProducts.length === 0) {
+        menuGrid.innerHTML = '<div class="empty-state" style="grid-column: 1/-1;"><h2>Нет товаров</h2><p>В этой категории пока нет товаров</p></div>';
+        return;
+    }
 
-            menuGrid.innerHTML = filteredProducts.map((product, idx) => {
-                const isFavorite = favorites.includes(product.title);
-                return `
-                    <div class="card" onclick="addToViewHistory('${product.title}')">
-                        <div class="card-image">
-                            <img src="${product.image}" alt="${product.title}" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 200 200%22%3E%3Crect fill=%22%23F1F5F9%22 width=%22200%22 height=%22200%22/%3E%3C/svg%3E'">
-                        </div>
-                        <button class="card-favorite ${isFavorite ? 'liked' : ''}" onclick="event.stopPropagation(); toggleFavorite('${product.title}')">
-                            ${isFavorite ? '❤️' : '🤍'}
-                        </button>
-                        <div class="card-content">
-                            <div class="card-category">${product.category || 'Прочое'}</div>
-                            <h3 class="card-title">${product.title}</h3>
-                            <p class="card-desc">${product.description}</p>
-                            <div class="card-footer">
-                                <span class="price">${product.price} ₽</span>
-                                <button class="card-btn" onclick="event.stopPropagation(); addToCart(${idx})">+ Добавить</button>
-                            </div>
-                        </div>
+    menuGrid.innerHTML = filteredProducts.map((product, idx) => {
+        const isFavorite = favorites.includes(product.title);
+        return `
+            <div class="card" onclick="addToViewHistory('${product.title}')">
+                <div class="card-image">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Crect fill='%23F1F5F9' width='200' height='200'/%3E%3C/svg%3E" 
+                         data-src="${product.image}" 
+                         alt="${product.title}" 
+                         class="lazy-image"
+                         style="width:100%; height:100%; object-fit:cover;"
+                         onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 200 200%22%3E%3Crect fill=%22%23F1F5F9%22 width=%22200%22 height=%22200%22/%3E%3C/svg%3E'">
+                </div>
+                <button class="card-favorite ${isFavorite ? 'liked' : ''}" onclick="event.stopPropagation(); toggleFavorite('${product.title}')">
+                    ${isFavorite ? '❤️' : '🤍'}
+                </button>
+                <div class="card-content">
+                    <div class="card-category">${product.category || 'Прочое'}</div>
+                    <h3 class="card-title">${product.title}</h3>
+                    <p class="card-desc">${product.description}</p>
+                    <div class="card-footer">
+                        <span class="price">${product.price} ₽</span>
+                        <button class="card-btn" onclick="event.stopPropagation(); addToCart(${idx})">+ Добавить</button>
                     </div>
-                `;
-            }).join('');
-        }
+                </div>
+            </div>
+        `;
+    }).join('');
+
+    // ЛЕНИВАЯ ЗАГРУЗКА: картинки подгружаются только когда появляются на экране
+    const lazyImages = document.querySelectorAll('.lazy-image');
+    
+    const imageObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const img = entry.target;
+                img.src = img.dataset.src;
+                img.classList.add('loaded');
+                observer.unobserve(img);
+            }
+        });
+    });
+
+    lazyImages.forEach(img => imageObserver.observe(img));
+}
 
         // ПОИСК
         const searchInput = document.getElementById('searchInput');
