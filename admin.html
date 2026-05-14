@@ -937,7 +937,7 @@
         const { createClient } = window.supabase;
         const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        let selectedImageBase64 = null;
+       // let selectedImageBase64 = null;
         let editingProductId = null;
         let products = [];
 
@@ -997,7 +997,7 @@
         // EDIT IMAGE UPLOAD
         const editFileInput = document.getElementById('editFileInput');
         const editPreviewImage = document.getElementById('editPreviewImage');
-        let editImageBase64 = null;
+        // let editImageBase64 = null;
 
         editFileInput.addEventListener('change', (e) => {
             const file = e.target.files[0];
@@ -1068,59 +1068,82 @@
         }
 
         // ADD PRODUCT
-        const addProductBtn = document.getElementById('addProductBtn');
-        const clearFormBtn = document.getElementById('clearFormBtn');
+const addProductBtn = document.getElementById('addProductBtn');
+const clearFormBtn = document.getElementById('clearFormBtn');
 
-        clearFormBtn.addEventListener('click', () => {
-            document.getElementById('productTitle').value = '';
-            document.getElementById('productPrice').value = '';
-            document.getElementById('productDesc').value = '';
-            document.getElementById('productCategory').value = '';
-            fileInput.value = '';
-            previewImage.style.display = 'none';
-            selectedImageBase64 = null;
-            editingProductId = null;
-        });
+clearFormBtn.addEventListener('click', () => {
+    document.getElementById('productTitle').value = '';
+    document.getElementById('productPrice').value = '';
+    document.getElementById('productDesc').value = '';
+    document.getElementById('productCategory').value = '';
+    fileInput.value = '';
+    previewImage.style.display = 'none';
+    editingProductId = null;
+});
 
-        addProductBtn.addEventListener('click', async () => {
-            const title = document.getElementById('productTitle').value.trim();
-            const price = parseInt(document.getElementById('productPrice').value);
-            const description = document.getElementById('productDesc').value.trim();
-            const category = document.getElementById('productCategory').value.trim();
+addProductBtn.addEventListener('click', async () => {
+    const title = document.getElementById('productTitle').value.trim();
+    const price = parseInt(document.getElementById('productPrice').value);
+    const description = document.getElementById('productDesc').value.trim();
+    const category = document.getElementById('productCategory').value.trim();
+    const file = fileInput.files[0];
 
-            if (!title || !price || !description || !category || !selectedImageBase64) {
-                showMessage('❌ Заполните все поля и выберите фото!', 'error');
-                return;
-            }
+    if (!title || !price || !description || !category || !file) {
+        showMessage('❌ Заполните все поля и выберите фото!', 'error');
+        return;
+    }
 
-            addProductBtn.disabled = true;
-            addProductBtn.textContent = 'Загрузка...';
+    addProductBtn.disabled = true;
+    addProductBtn.textContent = 'Загрузка...';
 
-            try {
-                const { data, error } = await supabase
-                    .from('products')
-                    .insert([{
-                        title,
-                        price,
-                        description,
-                        category,
-                        image: selectedImageBase64
-                    }])
-                    .select();
+    try {
+        // 1. Сначала создаём товар без фото
+        const { data: product, error: insertError } = await supabase
+            .from('products')
+            .insert([{
+                title,
+                price,
+                description,
+                category,
+                image: ''
+            }])
+            .select()
+            .single();
 
-                if (error) throw error;
+        if (insertError) throw insertError;
 
-                showMessage('✅ Блюдо успешно добавлено!', 'success');
-                clearFormBtn.click();
-                await loadProducts();
-            } catch (error) {
-                console.error('Ошибка:', error);
-                showMessage('❌ Ошибка добавления: ' + error.message, 'error');
-            } finally {
-                addProductBtn.disabled = false;
-                addProductBtn.textContent = 'Добавить блюдо';
-            }
-        });
+        // 2. Загружаем фото в Storage
+        const fileName = `${product.id}_${Date.now()}.jpg`;
+        const { error: uploadError } = await supabase.storage
+            .from('product-images')
+            .upload(fileName, file);
+
+        if (uploadError) throw uploadError;
+
+        // 3. Получаем публичную ссылку
+        const { data: { publicUrl } } = supabase.storage
+            .from('product-images')
+            .getPublicUrl(fileName);
+
+        // 4. Обновляем товар со ссылкой на фото
+        const { error: updateError } = await supabase
+            .from('products')
+            .update({ image: publicUrl })
+            .eq('id', product.id);
+
+        if (updateError) throw updateError;
+
+        showMessage('✅ Блюдо успешно добавлено!', 'success');
+        clearFormBtn.click();
+        await loadProducts();
+    } catch (error) {
+        console.error('Ошибка:', error);
+        showMessage('❌ Ошибка добавления: ' + error.message, 'error');
+    } finally {
+        addProductBtn.disabled = false;
+        addProductBtn.textContent = 'Добавить блюдо';
+    }
+});
 
         // DELETE PRODUCT
         async function deleteProduct(id) {
@@ -1169,87 +1192,109 @@
         }
 
         // SAVE EDIT
-        document.getElementById('saveEditBtn').addEventListener('click', async () => {
-            console.log('Попытка сохранить товар ID:', editingProductId);
+document.getElementById('saveEditBtn').addEventListener('click', async () => {
+    console.log('Попытка сохранить товар ID:', editingProductId);
+    
+    if (!editingProductId) {
+        console.error('editingProductId не установлен');
+        showMessage('❌ Ошибка: товар не выбран', 'error');
+        return;
+    }
+
+    const title = document.getElementById('editTitle').value.trim();
+    const priceStr = document.getElementById('editPrice').value;
+    const description = document.getElementById('editDesc').value.trim();
+    const category = document.getElementById('editCategory').value.trim();
+    const newFile = document.getElementById('editFileInput').files[0];
+
+    console.log('Данные для сохранения:', { title, price: priceStr, description, category });
+
+    if (!title || !priceStr || !description || !category) {
+        showMessage('❌ Заполните все обязательные поля!', 'error');
+        return;
+    }
+
+    const price = parseInt(priceStr);
+    if (isNaN(price)) {
+        showMessage('❌ Цена должна быть числом!', 'error');
+        return;
+    }
+
+    const saveBtn = document.getElementById('saveEditBtn');
+    saveBtn.disabled = true;
+    saveBtn.textContent = 'Сохранение...';
+
+    try {
+        let updateData = {
+            title: title,
+            price: price,
+            description: description,
+            category: category
+        };
+
+        // Если выбрали новое фото
+        if (newFile) {
+            const fileName = `${editingProductId}_${Date.now()}.jpg`;
             
-            if (!editingProductId) {
-                console.error('editingProductId не установлен');
-                showMessage('❌ Ошибка: товар не выбран', 'error');
-                return;
+            // Удаляем старое фото (если есть)
+            const { data: oldFiles } = await supabase.storage
+                .from('product-images')
+                .list('', { search: `${editingProductId}` });
+            
+            if (oldFiles && oldFiles.length) {
+                await supabase.storage
+                    .from('product-images')
+                    .remove(oldFiles.map(f => f.name));
             }
+            
+            // Загружаем новое фото
+            const { error: uploadError } = await supabase.storage
+                .from('product-images')
+                .upload(fileName, newFile);
+            
+            if (uploadError) throw uploadError;
+            
+            // Получаем публичную ссылку
+            const { data: { publicUrl } } = supabase.storage
+                .from('product-images')
+                .getPublicUrl(fileName);
+            
+            updateData.image = publicUrl;
+        }
 
-            const title = document.getElementById('editTitle').value.trim();
-            const priceStr = document.getElementById('editPrice').value;
-            const description = document.getElementById('editDesc').value.trim();
-            const category = document.getElementById('editCategory').value.trim();
+        console.log('Отправляю на Supabase:', updateData);
 
-            console.log('Данные для сохранения:', { title, price: priceStr, description, category });
+        const { error } = await supabase
+            .from('products')
+            .update(updateData)
+            .eq('id', editingProductId);
 
-            if (!title || !priceStr || !description || !category) {
-                showMessage('❌ Заполните все обязательные поля!', 'error');
-                return;
-            }
+        if (error) {
+            console.error('Ошибка Supabase:', error);
+            throw error;
+        }
 
-            const price = parseInt(priceStr);
-            if (isNaN(price)) {
-                showMessage('❌ Цена должна быть числом!', 'error');
-                return;
-            }
+        console.log('Товар успешно обновлен в БД');
+        showMessage('✅ Блюдо успешно обновлено!', 'success');
+        
+        // Очищаем и закрываем
+        editingProductId = null;
+        document.getElementById('editModal').classList.remove('active');
+        
+        // Перезагружаем товары
+        await loadProducts();
+    } catch (error) {
+        console.error('Ошибка при сохранении:', error);
+        showMessage('❌ Ошибка: ' + (error.message || 'Неизвестная ошибка'), 'error');
+    } finally {
+        saveBtn.disabled = false;
+        saveBtn.textContent = 'Сохранить';
+    }
+});
 
-            const saveBtn = document.getElementById('saveEditBtn');
-            saveBtn.disabled = true;
-            saveBtn.textContent = 'Сохранение...';
-
-            try {
-                const updateData = {
-                    title: title,
-                    price: price,
-                    description: description,
-                    category: category
-                };
-
-                // Добавляем изображение если оно выбрано
-                if (editImageBase64) {
-                    updateData.image = editImageBase64;
-                }
-
-                console.log('Отправляю на Supabase:', updateData);
-
-                const { error } = await supabase
-                    .from('products')
-                    .update(updateData)
-                    .eq('id', editingProductId);
-
-                if (error) {
-                    console.error('Ошибка Supabase:', error);
-                    throw error;
-                }
-
-                console.log('Товар успешно обновлен в БД');
-                showMessage('✅ Блюдо успешно обновлено!', 'success');
-                
-                // Очищаем кэш и перезагружаем товары
-                editingProductId = null;
-                editImageBase64 = null;
-                
-                document.getElementById('editModal').classList.remove('active');
-                
-                // Маленькая задержка перед загрузкой
-                setTimeout(() => {
-                    loadProducts();
-                }, 300);
-            } catch (error) {
-                console.error('Ошибка при сохранении:', error);
-                showMessage('❌ Ошибка: ' + (error.message || 'Неизвестная ошибка'), 'error');
-            } finally {
-                saveBtn.disabled = false;
-                saveBtn.textContent = 'Сохранить';
-            }
-        });
-
-        window.deleteProduct = deleteProduct;
-        window.openEditModal = openEditModal;
-        window.closeEditModal = closeEditModal;
+window.deleteProduct = deleteProduct;
+window.openEditModal = openEditModal;
+window.closeEditModal = closeEditModal;
     </script>
 </body>
 </html>
