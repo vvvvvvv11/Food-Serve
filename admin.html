@@ -255,11 +255,12 @@
         }
 
         .image-input-btn:hover {
-            background: var(--border);
+            background: var(--bg-secondary);
             border-color: var(--accent);
+            color: var(--accent);
         }
 
-        .image-input-wrapper input[type="file"] {
+        #fileInput {
             position: absolute;
             top: 0;
             left: 0;
@@ -270,66 +271,107 @@
         }
 
         .image-preview {
-            max-width: 200px;
-            max-height: 200px;
-            margin-top: 12px;
+            width: 150px;
+            height: 150px;
             border-radius: var(--radius-md);
-            display: none;
+            object-fit: cover;
+            margin-top: 12px;
+            border: 1px solid var(--border);
         }
 
-        .product-list {
+        .btn-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .message {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 16px 24px;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            z-index: 999;
+            opacity: 0;
+            transition: var(--transition);
+            pointer-events: none;
+        }
+
+        .message.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .message.success {
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        .message.error {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .products-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 20px;
         }
 
         .product-card {
-            background: var(--bg-secondary);
+            border: 1px solid var(--border);
             border-radius: var(--radius-lg);
             overflow: hidden;
-            box-shadow: var(--shadow-md);
             transition: var(--transition);
+            display: flex;
+            flex-direction: column;
         }
 
         .product-card:hover {
-            box-shadow: var(--shadow-lg);
-            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--accent);
         }
 
         .product-image {
             width: 100%;
-            height: 220px;
+            height: 200px;
             object-fit: cover;
+            background: var(--bg-tertiary);
         }
 
         .product-info {
             padding: 16px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
         }
 
         .product-category {
             font-size: 12px;
             color: var(--accent);
-            font-weight: 600;
+            font-weight: 700;
             text-transform: uppercase;
             margin-bottom: 8px;
         }
 
-        .product-card h3 {
+        .product-info h3 {
             font-size: 16px;
             font-weight: 700;
             margin-bottom: 8px;
             color: var(--text-primary);
         }
 
-        .product-card p {
+        .product-info p {
             font-size: 13px;
             color: var(--text-secondary);
             margin-bottom: 12px;
-            line-height: 1.4;
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
-            overflow: hidden;
         }
 
         .product-price {
@@ -344,55 +386,352 @@
             gap: 8px;
         }
 
-        .product-actions .btn {
+        .product-actions button {
             flex: 1;
+            padding: 8px 12px;
+            font-size: 12px;
+            font-weight: 600;
         }
 
-        .btn-group {
-            display: flex;
-            gap: 12px;
-            margin-top: 20px;
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-secondary);
         }
 
-        .btn-group .btn {
-            flex: 1;
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid var(--bg-tertiary);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 16px;
         }
 
-        .message {
-            padding: 16px;
-            border-radius: var(--radius-md);
-            margin-bottom: 16px;
-            display: none;
-            animation: slideIn 0.3s ease-out;
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
 
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
+        @media (max-width: 1024px) {
+            .form-row {
+                grid-template-columns: 1fr;
             }
-            to {
-                opacity: 1;
-                transform: translateY(0);
+
+            .admin-container {
+                padding: 20px 16px;
+            }
+
+            .section {
+                padding: 20px;
+                margin-bottom: 20px;
+            }
+
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+                gap: 16px;
             }
         }
 
-        .message.show {
-            display: block;
+        @media (max-width: 768px) {
+            .login-box {
+                width: 95%;
+                padding: 30px 20px;
+            }
+
+            .login-box h1 {
+                font-size: 22px;
+            }
+
+            .admin-header {
+                padding: 16px;
+                margin-bottom: 20px;
+                flex-direction: column;
+                gap: 12px;
+                text-align: center;
+            }
+
+            .admin-header h1 {
+                font-size: 22px;
+                margin-bottom: 0;
+            }
+
+            .logout-btn {
+                width: 100%;
+            }
+
+            .admin-container {
+                padding: 16px 12px;
+                max-width: 100%;
+            }
+
+            .section {
+                padding: 16px;
+                margin-bottom: 16px;
+            }
+
+            .section h2 {
+                font-size: 16px;
+                margin-bottom: 16px;
+            }
+
+            .form-group label {
+                font-size: 11px;
+            }
+
+            .form-group input,
+            .form-group select,
+            .form-group textarea {
+                padding: 10px;
+                font-size: 16px;
+            }
+
+            .form-row {
+                gap: 12px;
+                margin-bottom: 12px;
+            }
+
+            .image-preview {
+                width: 120px;
+                height: 120px;
+                margin-top: 8px;
+            }
+
+            .btn-group {
+                gap: 12px;
+            }
+
+            .btn {
+                padding: 10px;
+                font-size: 13px;
+            }
+
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+                gap: 12px;
+            }
+
+            .product-card {
+                border-radius: 8px;
+            }
+
+            .product-image {
+                height: 150px;
+            }
+
+            .product-info {
+                padding: 12px;
+            }
+
+            .product-category {
+                font-size: 10px;
+                margin-bottom: 6px;
+            }
+
+            .product-info h3 {
+                font-size: 13px;
+                margin-bottom: 6px;
+            }
+
+            .product-info p {
+                font-size: 11px;
+                margin-bottom: 8px;
+                -webkit-line-clamp: 1;
+            }
+
+            .product-price {
+                font-size: 14px;
+                margin-bottom: 8px;
+            }
+
+            .product-actions {
+                gap: 6px;
+            }
+
+            .product-actions button {
+                padding: 6px 8px;
+                font-size: 10px;
+            }
+
+            .modal-content {
+                padding: 20px;
+                width: 95%;
+            }
+
+            .modal-header {
+                font-size: 18px;
+                margin-bottom: 16px;
+            }
         }
 
-        .message.success {
-            background: #dcfce7;
-            color: #15803d;
-            border: 1px solid #bbf7d0;
+        @media (max-width: 480px) {
+            .login-box {
+                width: 100%;
+                padding: 24px 16px;
+                border-radius: 12px;
+            }
+
+            .login-box h1 {
+                font-size: 20px;
+            }
+
+            .login-box p {
+                font-size: 13px;
+            }
+
+            .admin-header {
+                padding: 12px;
+                margin-bottom: 16px;
+            }
+
+            .admin-header h1 {
+                font-size: 18px;
+            }
+
+            .logout-btn {
+                padding: 8px 12px;
+                font-size: 12px;
+            }
+
+            .admin-container {
+                padding: 12px;
+            }
+
+            .section {
+                padding: 12px;
+                margin-bottom: 12px;
+            }
+
+            .section h2 {
+                font-size: 14px;
+                margin-bottom: 12px;
+            }
+
+            .form-group label {
+                font-size: 10px;
+                margin-bottom: 6px;
+            }
+
+            .form-group input,
+            .form-group select,
+            .form-group textarea {
+                padding: 8px;
+                font-size: 14px;
+            }
+
+            .form-row {
+                gap: 8px;
+                margin-bottom: 8px;
+            }
+
+            .form-row.full {
+                grid-template-columns: 1fr;
+            }
+
+            .image-input-btn {
+                padding: 10px;
+                font-size: 12px;
+            }
+
+            .image-preview {
+                width: 100px;
+                height: 100px;
+                margin-top: 6px;
+            }
+
+            .btn {
+                padding: 8px;
+                font-size: 12px;
+            }
+
+            .btn-small {
+                padding: 6px 10px;
+                font-size: 10px;
+            }
+
+            .btn-group {
+                gap: 8px;
+            }
+
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+                gap: 8px;
+            }
+
+            .product-card {
+                border-radius: 6px;
+            }
+
+            .product-image {
+                height: 120px;
+            }
+
+            .product-info {
+                padding: 8px;
+            }
+
+            .product-category {
+                font-size: 9px;
+                margin-bottom: 4px;
+            }
+
+            .product-info h3 {
+                font-size: 11px;
+                margin-bottom: 4px;
+            }
+
+            .product-info p {
+                font-size: 9px;
+                margin-bottom: 6px;
+            }
+
+            .product-price {
+                font-size: 12px;
+                margin-bottom: 6px;
+            }
+
+            .product-actions {
+                gap: 4px;
+                flex-direction: column;
+            }
+
+            .product-actions button {
+                padding: 4px 6px;
+                font-size: 9px;
+            }
+
+            .message {
+                left: 10px;
+                right: 10px;
+                top: 10px;
+                padding: 12px 16px;
+                font-size: 12px;
+                border-radius: 6px;
+            }
+
+            .modal {
+                padding: 0 16px;
+            }
+
+            .modal-content {
+                padding: 16px;
+                width: 100%;
+                max-height: 95vh;
+            }
+
+            .modal-header {
+                font-size: 16px;
+                margin-bottom: 12px;
+            }
+
+            .modal-close {
+                top: 12px;
+                right: 12px;
+                font-size: 20px;
+            }
         }
 
-        .message.error {
-            background: #fee2e2;
-            color: #dc2626;
-            border: 1px solid #fecaca;
-        }
-
+        /* Modal Styles */
         .modal {
             display: none;
             position: fixed;
@@ -401,7 +740,7 @@
             width: 100%;
             height: 100%;
             background: rgba(0, 0, 0, 0.5);
-            z-index: 999;
+            z-index: 500;
             align-items: center;
             justify-content: center;
         }
@@ -412,102 +751,70 @@
 
         .modal-content {
             background: white;
-            padding: 40px;
             border-radius: var(--radius-lg);
-            max-width: 500px;
+            padding: 40px;
+            max-width: 600px;
             width: 90%;
             max-height: 90vh;
             overflow-y: auto;
+            box-shadow: var(--shadow-lg);
         }
 
-        .modal-content h2 {
-            margin-bottom: 20px;
+        .modal-header {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            color: var(--text-primary);
         }
 
-        .loading {
-            text-align: center;
-            padding: 40px 20px;
+        .modal-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
             color: var(--text-secondary);
-        }
-
-        .loading p {
-            margin-bottom: 16px;
-        }
-
-        .spinner {
-            border: 4px solid var(--bg-tertiary);
-            border-top: 4px solid var(--accent);
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        @media (max-width: 768px) {
-            .form-row {
-                grid-template-columns: 1fr;
-            }
-
-            .admin-header {
-                flex-direction: column;
-                gap: 16px;
-                text-align: center;
-            }
-
-            .product-list {
-                grid-template-columns: 1fr;
-            }
-
-            .modal-content {
-                padding: 20px;
-            }
         }
     </style>
 </head>
 <body>
+    <div id="message" class="message"></div>
+
+    <!-- LOGIN -->
     <div class="login-container" id="loginContainer">
         <div class="login-box">
-            <h1>🔐 Админ Панель</h1>
-            <p>Введите email и пароль</p>
-            <div class="form-group">
-                <label>Email</label>
-                <input type="email" id="emailInput" placeholder="your@email.com" />
-            </div>
+            <h1>🔐 Вход</h1>
+            <p>Введите пароль админа для доступа</p>
             <div class="form-group">
                 <label>Пароль</label>
-                <input type="password" id="passwordInput" placeholder="••••••••" />
+                <input type="password" id="passwordInput" placeholder="••••••••">
             </div>
             <button class="btn" id="loginBtn">Войти</button>
         </div>
     </div>
 
+    <!-- ADMIN PANEL -->
     <div id="adminPanel" style="display: none;">
+        <div class="admin-header">
+            <h1>⚙️ Админ Панель</h1>
+            <button class="logout-btn" id="logoutBtn">Выход</button>
+        </div>
+
         <div class="admin-container">
-            <div class="admin-header">
-                <h1>📊 Управление меню</h1>
-                <button class="logout-btn" id="logoutBtn">Выход</button>
-            </div>
-
-            <div id="messageContainer"></div>
-
-            <!-- ДОБАВЛЕНИЕ ТОВАРА -->
+            <!-- Add/Edit Product Section -->
             <div class="section">
-                <h2>➕ Добавить новое блюдо</h2>
-
+                <h2>➕ Добавить/Изменить блюдо</h2>
+                
                 <div class="form-row">
                     <div class="form-group">
                         <label>Название блюда *</label>
-                        <input type="text" id="productTitle" placeholder="Название блюда...">
+                        <input type="text" id="productTitle" placeholder="Сэндвич с тунцом">
                     </div>
                     <div class="form-group">
                         <label>Цена (₽) *</label>
-                        <input type="number" id="productPrice" placeholder="0" min="0">
+                        <input type="number" id="productPrice" placeholder="350" min="0">
                     </div>
                 </div>
 
@@ -515,42 +822,51 @@
                     <div class="form-group">
                         <label>Категория *</label>
                         <select id="productCategory">
-                            <option value="">Выберите категорию</option>
-                            <option value="Закуски">Закуски</option>
-                            <option value="Супы">Супы</option>
+                            <option value="">-- Выберите категорию --</option>
+                            <option value="Брускетты и канапе">Брускетты и канапе</option>
+                            <option value="Сэндвичи и блины">Сэндвичи и блины</option>
+                            <option value="Холодные закуски">Холодные закуски</option>
                             <option value="Салаты">Салаты</option>
                             <option value="Гарниры">Гарниры</option>
                             <option value="Горячие блюда">Горячие блюда</option>
                             <option value="Десерты">Десерты</option>
                         </select>
                     </div>
-                    <div class="form-group">
-                        <label>Фото *</label>
-                        <div class="image-input-wrapper">
-                            <div class="image-input-btn">📷 Выбрать фото</div>
-                            <input type="file" id="fileInput" accept="image/*">
-                        </div>
-                        <img id="previewImage" class="image-preview">
-                    </div>
                 </div>
 
                 <div class="form-row full">
                     <div class="form-group">
                         <label>Описание *</label>
-                        <textarea id="productDesc" placeholder="Описание блюда..." rows="3" style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: var(--radius-md); font-family: 'Inter', sans-serif; color: var(--text-primary);"></textarea>
+                        <textarea id="productDesc" placeholder="Хлеб тостовый, салат, томат, огурец, тунец..." rows="3" style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: var(--radius-md); font-family: 'Inter', sans-serif; color: var(--text-primary);"></textarea>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Фото блюда *</label>
+                        <div class="image-input-wrapper">
+                            <div class="image-input-btn">📷 Выбрать фото</div>
+                            <input type="file" id="fileInput" accept="image/*">
+                        </div>
+                        <img id="previewImage" class="image-preview" style="display: none;">
                     </div>
                 </div>
 
                 <div class="btn-group">
-                    <button class="btn" id="addProductBtn">✅ Добавить блюдо</button>
+                    <button class="btn" id="addProductBtn">Добавить блюдо</button>
                     <button class="btn btn-secondary" id="clearFormBtn">Очистить</button>
                 </div>
             </div>
 
-            <!-- СПИСОК ТОВАРОВ -->
+            <!-- Products List Section -->
             <div class="section">
-                <h2>📋 Список блюд</h2>
-                <div id="productList" class="product-list"></div>
+                <h2>📋 Все блюда</h2>
+                <div id="productsList" class="products-grid">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        <p>Загрузка блюд...</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -558,16 +874,17 @@
     <!-- EDIT MODAL -->
     <div class="modal" id="editModal">
         <div class="modal-content">
-            <h2>✏️ Редактировать блюдо</h2>
-
+            <button class="modal-close" onclick="closeEditModal()">✕</button>
+            <div class="modal-header">Редактировать блюдо</div>
+            
             <div class="form-row">
                 <div class="form-group">
                     <label>Название блюда *</label>
-                    <input type="text" id="editTitle" placeholder="Название...">
+                    <input type="text" id="editTitle" placeholder="Название">
                 </div>
                 <div class="form-group">
                     <label>Цена (₽) *</label>
-                    <input type="number" id="editPrice" placeholder="0" min="0">
+                    <input type="number" id="editPrice" placeholder="350" min="0">
                 </div>
             </div>
 
@@ -575,9 +892,10 @@
                 <div class="form-group">
                     <label>Категория *</label>
                     <select id="editCategory">
-                        <option value="">Выберите категорию</option>
-                        <option value="Закуски">Закуски</option>
-                        <option value="Супы">Супы</option>
+                        <option value="">-- Выберите категорию --</option>
+                        <option value="Брускетты и канапе">Брускетты и канапе</option>
+                        <option value="Сэндвичи и блины">Сэндвичи и блины</option>
+                        <option value="Холодные закуски">Холодные закуски</option>
                         <option value="Салаты">Салаты</option>
                         <option value="Гарниры">Гарниры</option>
                         <option value="Горячие блюда">Горячие блюда</option>
@@ -612,53 +930,30 @@
     </div>
 
     <script>
-        // ===== КОНФИГУРАЦИЯ =====
         const SUPABASE_URL = 'https://temrphpbgqwodcvgagrz.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRlbXJwaHBiZ3F3b2RjdmdhZ3J6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg0OTEyMDcsImV4cCI6MjA5NDA2NzIwN30.NoZmurpCp0owULMwEhEHwVdkX5ddSgYCkXATCkHBuJg';
-        const ADMIN_PASSWORD = 'admin123';
+        const ADMIN_PASSWORD = 'admin123'; // Измените на свой пароль!
 
-        // ===== ИНИЦИАЛИЗАЦИЯ =====
         const { createClient } = window.supabase;
         const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        let selectedImageBase64 = null;
+       // let selectedImageBase64 = null;
         let editingProductId = null;
-        let editImageBase64 = null;
         let products = [];
 
-        // ===== DOM ЭЛЕМЕНТЫ =====
+        // LOGIN
         const loginContainer = document.getElementById('loginContainer');
         const adminPanel = document.getElementById('adminPanel');
         const passwordInput = document.getElementById('passwordInput');
         const loginBtn = document.getElementById('loginBtn');
         const logoutBtn = document.getElementById('logoutBtn');
-        const messageContainer = document.getElementById('messageContainer');
-        const productList = document.getElementById('productList');
-        const fileInput = document.getElementById('fileInput');
-        const previewImage = document.getElementById('previewImage');
-        const addProductBtn = document.getElementById('addProductBtn');
-        const clearFormBtn = document.getElementById('clearFormBtn');
-        const editFileInput = document.getElementById('editFileInput');
-        const editPreviewImage = document.getElementById('editPreviewImage');
 
-        // ===== ФУНКЦИИ =====
-        function showMessage(text, type) {
-            const msg = document.createElement('div');
-            msg.className = `message ${type} show`;
-            msg.textContent = text;
-            messageContainer.innerHTML = '';
-            messageContainer.appendChild(msg);
-            setTimeout(() => msg.remove(), 4000);
-        }
-
-        // ПРОВЕРКА ЛОГИНА ПРИ ЗАГРУЗКЕ
         if (localStorage.getItem('adminLoggedIn') === 'true') {
             loginContainer.classList.add('hidden');
             adminPanel.style.display = 'block';
             loadProducts();
         }
 
-        // ===== ЛОГИН =====
         loginBtn.addEventListener('click', () => {
             if (passwordInput.value === ADMIN_PASSWORD) {
                 localStorage.setItem('adminLoggedIn', 'true');
@@ -667,7 +962,7 @@
                 passwordInput.value = '';
                 loadProducts();
             } else {
-                showMessage('❌ Неверный пароль!', 'error');
+                alert('❌ Неверный пароль!');
             }
         });
 
@@ -682,7 +977,10 @@
             passwordInput.value = '';
         });
 
-        // ===== ЗАГРУЗКА ФОТО =====
+        // IMAGE UPLOAD
+        const fileInput = document.getElementById('fileInput');
+        const previewImage = document.getElementById('previewImage');
+
         fileInput.addEventListener('change', (e) => {
             const file = e.target.files[0];
             if (file) {
@@ -695,6 +993,11 @@
                 reader.readAsDataURL(file);
             }
         });
+
+        // EDIT IMAGE UPLOAD
+        const editFileInput = document.getElementById('editFileInput');
+        const editPreviewImage = document.getElementById('editPreviewImage');
+        // let editImageBase64 = null;
 
         editFileInput.addEventListener('change', (e) => {
             const file = e.target.files[0];
@@ -709,41 +1012,47 @@
             }
         });
 
-        // ===== ЗАГРУЗКА ТОВАРОВ ИЗ БД =====
+        // MESSAGE DISPLAY
+        function showMessage(text, type) {
+            const messageEl = document.getElementById('message');
+            messageEl.className = `message show ${type}`;
+            messageEl.textContent = text;
+            setTimeout(() => {
+                messageEl.classList.remove('show');
+            }, 3000);
+        }
+
+        // LOAD PRODUCTS
         async function loadProducts() {
             try {
-                productList.innerHTML = '<div class="loading"><div class="spinner"></div><p>Загрузка блюд...</p></div>';
-                
-                // ОПТИМИЗИРОВАННЫЙ ЗАПРОС - без сложных операций
+                console.log('Загружаю товары...');
                 const { data, error } = await supabase
                     .from('products')
-                    .select('id, title, price, description, category, image')
-                    .order('id', { ascending: false });
+                    .select('*')
+                    .order('created_at', { ascending: false });
 
-                if (error) {
-                    console.error('Ошибка загрузки:', error);
-                    throw error;
-                }
-
+                if (error) throw error;
+                
                 products = data || [];
-                renderProductList();
+                console.log('Загруженные товары:', products);
+                renderProducts();
+                console.log('Товары отрендерены на странице');
             } catch (error) {
-                console.error('Ошибка:', error);
-                showMessage('❌ Ошибка загрузки блюд: ' + (error.message || 'Timeout'), 'error');
-                productList.innerHTML = '<div class="loading"><p>⚠️ Ошибка при загрузке. Попробуйте перезагрузить страницу.</p></div>';
+                console.error('Ошибка загрузки:', error);
+                showMessage('Ошибка загрузки блюд: ' + error.message, 'error');
             }
         }
 
-        // ===== ОТОБРАЖЕНИЕ ТОВАРОВ =====
-        function renderProductList() {
+        function renderProducts() {
+            const listEl = document.getElementById('productsList');
             if (products.length === 0) {
-                productList.innerHTML = '<div class="loading"><p>Нет добавленных блюд</p></div>';
+                listEl.innerHTML = '<div class="loading"><p>Нет добавленных блюд</p></div>';
                 return;
             }
 
-            productList.innerHTML = products.map(product => `
+            listEl.innerHTML = products.map(product => `
                 <div class="product-card">
-                    <img src="${product.image || 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 200 200%22%3E%3Crect fill=%22%23F1F5F9%22 width=%22200%22 height=%22200%22/%3E%3C/svg%3E'}" alt="${product.title}" class="product-image" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 200 200%22%3E%3Crect fill=%22%23F1F5F9%22 width=%22200%22 height=%22200%22/%3E%3C/svg%3E'">
+                    <img src="${product.image}" alt="${product.title}" class="product-image" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 200 200%22%3E%3Crect fill=%22%23F1F5F9%22 width=%22200%22 height=%22200%22/%3E%3C/svg%3E'">
                     <div class="product-info">
                         <div class="product-category">${product.category || 'Прочее'}</div>
                         <h3>${product.title}</h3>
@@ -758,83 +1067,85 @@
             `).join('');
         }
 
-        // ===== ДОБАВЛЕНИЕ ТОВАРА =====
-        clearFormBtn.addEventListener('click', () => {
-            document.getElementById('productTitle').value = '';
-            document.getElementById('productPrice').value = '';
-            document.getElementById('productDesc').value = '';
-            document.getElementById('productCategory').value = '';
-            fileInput.value = '';
-            previewImage.style.display = 'none';
-            selectedImageBase64 = null;
-            editingProductId = null;
-        });
+        // ADD PRODUCT
+const addProductBtn = document.getElementById('addProductBtn');
+const clearFormBtn = document.getElementById('clearFormBtn');
 
-        addProductBtn.addEventListener('click', async () => {
-            const title = document.getElementById('productTitle').value.trim();
-            const price = parseInt(document.getElementById('productPrice').value);
-            const description = document.getElementById('productDesc').value.trim();
-            const category = document.getElementById('productCategory').value.trim();
-            const file = fileInput.files[0];
+clearFormBtn.addEventListener('click', () => {
+    document.getElementById('productTitle').value = '';
+    document.getElementById('productPrice').value = '';
+    document.getElementById('productDesc').value = '';
+    document.getElementById('productCategory').value = '';
+    fileInput.value = '';
+    previewImage.style.display = 'none';
+    editingProductId = null;
+});
 
-            if (!title || !price || !description || !category || !file) {
-                showMessage('❌ Заполните все поля и выберите фото!', 'error');
-                return;
-            }
+addProductBtn.addEventListener('click', async () => {
+    const title = document.getElementById('productTitle').value.trim();
+    const price = parseInt(document.getElementById('productPrice').value);
+    const description = document.getElementById('productDesc').value.trim();
+    const category = document.getElementById('productCategory').value.trim();
+    const file = fileInput.files[0];
 
-            addProductBtn.disabled = true;
-            addProductBtn.textContent = 'Загрузка...';
+    if (!title || !price || !description || !category || !file) {
+        showMessage('❌ Заполните все поля и выберите фото!', 'error');
+        return;
+    }
 
-            try {
-                // 1. Создаём товар без фото
-                const { data: product, error: insertError } = await supabase
-                    .from('products')
-                    .insert([{
-                        title,
-                        price,
-                        description,
-                        category,
-                        image: ''
-                    }])
-                    .select()
-                    .single();
+    addProductBtn.disabled = true;
+    addProductBtn.textContent = 'Загрузка...';
 
-                if (insertError) throw insertError;
+    try {
+        // 1. Сначала создаём товар без фото
+        const { data: product, error: insertError } = await supabase
+            .from('products')
+            .insert([{
+                title,
+                price,
+                description,
+                category,
+                image: ''
+            }])
+            .select()
+            .single();
 
-                // 2. Загружаем фото
-                const fileName = `${product.id}_${Date.now()}.jpg`;
-                const { error: uploadError } = await supabase.storage
-                    .from('product-images')
-                    .upload(fileName, file);
+        if (insertError) throw insertError;
 
-                if (uploadError) throw uploadError;
+        // 2. Загружаем фото в Storage
+        const fileName = `${product.id}_${Date.now()}.jpg`;
+        const { error: uploadError } = await supabase.storage
+            .from('product-images')
+            .upload(fileName, file);
 
-                // 3. Получаем публичную ссылку
-                const { data: { publicUrl } } = supabase.storage
-                    .from('product-images')
-                    .getPublicUrl(fileName);
+        if (uploadError) throw uploadError;
 
-                // 4. Обновляем товар со ссылкой на фото
-                const { error: updateError } = await supabase
-                    .from('products')
-                    .update({ image: publicUrl })
-                    .eq('id', product.id);
+        // 3. Получаем публичную ссылку
+        const { data: { publicUrl } } = supabase.storage
+            .from('product-images')
+            .getPublicUrl(fileName);
 
-                if (updateError) throw updateError;
+        // 4. Обновляем товар со ссылкой на фото
+        const { error: updateError } = await supabase
+            .from('products')
+            .update({ image: publicUrl })
+            .eq('id', product.id);
 
-                showMessage('✅ Блюдо успешно добавлено!', 'success');
-                clearFormBtn.click();
-                await loadProducts();
-            } catch (error) {
-                console.error('Ошибка:', error);
-                showMessage('❌ Ошибка добавления: ' + error.message, 'error');
-            } finally {
-                addProductBtn.disabled = false;
-                addProductBtn.textContent = '✅ Добавить блюдо';
-            }
-        });
+        if (updateError) throw updateError;
 
-        // ===== УДАЛЕНИЕ ТОВАРА =====
+        showMessage('✅ Блюдо успешно добавлено!', 'success');
+        clearFormBtn.click();
+        await loadProducts();
+    } catch (error) {
+        console.error('Ошибка:', error);
+        showMessage('❌ Ошибка добавления: ' + error.message, 'error');
+    } finally {
+        addProductBtn.disabled = false;
+        addProductBtn.textContent = 'Добавить блюдо';
+    }
+});
+
+        // DELETE PRODUCT
         async function deleteProduct(id) {
             if (!confirm('Вы уверены? Это действие нельзя отменить!')) return;
 
@@ -854,7 +1165,7 @@
             }
         }
 
-        // ===== РЕДАКТИРОВАНИЕ ТОВАРА =====
+        // EDIT MODAL FUNCTIONS
         function openEditModal(productId) {
             editingProductId = productId;
             const product = products.find(p => p.id === productId);
@@ -865,11 +1176,12 @@
                 document.getElementById('editDesc').value = product.description || '';
                 document.getElementById('editCategory').value = product.category || '';
                 editPreviewImage.src = product.image || '';
-                editPreviewImage.style.display = product.image ? 'block' : 'none';
+                editPreviewImage.style.display = 'block';
                 editImageBase64 = null;
                 editFileInput.value = '';
                 
                 document.getElementById('editModal').classList.add('active');
+                console.log('Открыто редактирование товара:', productId);
             }
         }
 
@@ -879,85 +1191,110 @@
             editImageBase64 = null;
         }
 
-        // ===== СОХРАНЕНИЕ РЕДАКТИРОВАНИЯ =====
-        document.getElementById('saveEditBtn').addEventListener('click', async () => {
-            if (!editingProductId) {
-                showMessage('❌ Ошибка: товар не выбран', 'error');
-                return;
+        // SAVE EDIT
+document.getElementById('saveEditBtn').addEventListener('click', async () => {
+    console.log('Попытка сохранить товар ID:', editingProductId);
+    
+    if (!editingProductId) {
+        console.error('editingProductId не установлен');
+        showMessage('❌ Ошибка: товар не выбран', 'error');
+        return;
+    }
+
+    const title = document.getElementById('editTitle').value.trim();
+    const priceStr = document.getElementById('editPrice').value;
+    const description = document.getElementById('editDesc').value.trim();
+    const category = document.getElementById('editCategory').value.trim();
+    const newFile = document.getElementById('editFileInput').files[0];
+
+    console.log('Данные для сохранения:', { title, price: priceStr, description, category });
+
+    if (!title || !priceStr || !description || !category) {
+        showMessage('❌ Заполните все обязательные поля!', 'error');
+        return;
+    }
+
+    const price = parseInt(priceStr);
+    if (isNaN(price)) {
+        showMessage('❌ Цена должна быть числом!', 'error');
+        return;
+    }
+
+    const saveBtn = document.getElementById('saveEditBtn');
+    saveBtn.disabled = true;
+    saveBtn.textContent = 'Сохранение...';
+
+    try {
+        let updateData = {
+            title: title,
+            price: price,
+            description: description,
+            category: category
+        };
+
+        // Если выбрали новое фото
+        if (newFile) {
+            const fileName = `${editingProductId}_${Date.now()}.jpg`;
+            
+            // Удаляем старое фото (если есть)
+            const { data: oldFiles } = await supabase.storage
+                .from('product-images')
+                .list('', { search: `${editingProductId}` });
+            
+            if (oldFiles && oldFiles.length) {
+                await supabase.storage
+                    .from('product-images')
+                    .remove(oldFiles.map(f => f.name));
             }
+            
+            // Загружаем новое фото
+            const { error: uploadError } = await supabase.storage
+                .from('product-images')
+                .upload(fileName, newFile);
+            
+            if (uploadError) throw uploadError;
+            
+            // Получаем публичную ссылку
+            const { data: { publicUrl } } = supabase.storage
+                .from('product-images')
+                .getPublicUrl(fileName);
+            
+            updateData.image = publicUrl;
+        }
 
-            const title = document.getElementById('editTitle').value.trim();
-            const priceStr = document.getElementById('editPrice').value;
-            const description = document.getElementById('editDesc').value.trim();
-            const category = document.getElementById('editCategory').value.trim();
-            const newFile = editFileInput.files[0];
+        console.log('Отправляю на Supabase:', updateData);
 
-            if (!title || !priceStr || !description || !category) {
-                showMessage('❌ Заполните все обязательные поля!', 'error');
-                return;
-            }
+        const { error } = await supabase
+            .from('products')
+            .update(updateData)
+            .eq('id', editingProductId);
 
-            const price = parseInt(priceStr);
-            if (isNaN(price)) {
-                showMessage('❌ Цена должна быть числом!', 'error');
-                return;
-            }
+        if (error) {
+            console.error('Ошибка Supabase:', error);
+            throw error;
+        }
 
-            const saveBtn = document.getElementById('saveEditBtn');
-            saveBtn.disabled = true;
-            saveBtn.textContent = 'Сохранение...';
+        console.log('Товар успешно обновлен в БД');
+        showMessage('✅ Блюдо успешно обновлено!', 'success');
+        
+        // Очищаем и закрываем
+        editingProductId = null;
+        document.getElementById('editModal').classList.remove('active');
+        
+        // Перезагружаем товары
+        await loadProducts();
+    } catch (error) {
+        console.error('Ошибка при сохранении:', error);
+        showMessage('❌ Ошибка: ' + (error.message || 'Неизвестная ошибка'), 'error');
+    } finally {
+        saveBtn.disabled = false;
+        saveBtn.textContent = 'Сохранить';
+    }
+});
 
-            try {
-                let updateData = {
-                    title: title,
-                    price: price,
-                    description: description,
-                    category: category
-                };
-
-                // Если выбрали новое фото
-                if (newFile) {
-                    const fileName = `${editingProductId}_${Date.now()}.jpg`;
-                    
-                    // Загружаем новое фото
-                    const { error: uploadError } = await supabase.storage
-                        .from('product-images')
-                        .upload(fileName, newFile);
-                    
-                    if (uploadError) throw uploadError;
-                    
-                    // Получаем публичную ссылку
-                    const { data: { publicUrl } } = supabase.storage
-                        .from('product-images')
-                        .getPublicUrl(fileName);
-                    
-                    updateData.image = publicUrl;
-                }
-
-                const { error } = await supabase
-                    .from('products')
-                    .update(updateData)
-                    .eq('id', editingProductId);
-
-                if (error) throw error;
-
-                showMessage('✅ Блюдо успешно обновлено!', 'success');
-                editingProductId = null;
-                document.getElementById('editModal').classList.remove('active');
-                await loadProducts();
-            } catch (error) {
-                console.error('Ошибка при сохранении:', error);
-                showMessage('❌ Ошибка: ' + (error.message || 'Неизвестная ошибка'), 'error');
-            } finally {
-                saveBtn.disabled = false;
-                saveBtn.textContent = 'Сохранить';
-            }
-        });
-
-        // ===== ЭКСПОРТ ФУНКЦИЙ В ГЛОБАЛЬНУЮ ОБЛАСТЬ =====
-        window.deleteProduct = deleteProduct;
-        window.openEditModal = openEditModal;
-        window.closeEditModal = closeEditModal;
+window.deleteProduct = deleteProduct;
+window.openEditModal = openEditModal;
+window.closeEditModal = closeEditModal;
     </script>
 </body>
 </html>
