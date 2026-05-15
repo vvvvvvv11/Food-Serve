@@ -474,7 +474,11 @@
     <div class="login-container" id="loginContainer">
         <div class="login-box">
             <h1>🔐 Админ Панель</h1>
-            <p>Введите пароль для входа</p>
+            <p>Введите email и пароль</p>
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="emailInput" placeholder="your@email.com" />
+            </div>
             <div class="form-group">
                 <label>Пароль</label>
                 <input type="password" id="passwordInput" placeholder="••••••••" />
@@ -710,18 +714,10 @@
             try {
                 productList.innerHTML = '<div class="loading"><div class="spinner"></div><p>Загрузка блюд...</p></div>';
                 
-                // Получаем текущего пользователя
-                const { data: { user } } = await supabase.auth.getUser();
-                if (!user) {
-                    showMessage('❌ Вы не авторизованы!', 'error');
-                    return;
-                }
-                
-                // Загружаем только товары текущего пользователя
+                // ОПТИМИЗИРОВАННЫЙ ЗАПРОС - без сложных операций
                 const { data, error } = await supabase
                     .from('products')
                     .select('id, title, price, description, category, image')
-                    .eq('user_id', user.id)
                     .order('id', { ascending: false });
 
                 if (error) {
@@ -790,14 +786,7 @@
             addProductBtn.textContent = 'Загрузка...';
 
             try {
-                // 1. Получаем текущего пользователя
-                const { data: { user } } = await supabase.auth.getUser();
-                if (!user) {
-                    showMessage('❌ Вы не авторизованы!', 'error');
-                    return;
-                }
-
-                // 2. Создаём товар с user_id
+                // 1. Создаём товар без фото
                 const { data: product, error: insertError } = await supabase
                     .from('products')
                     .insert([{
@@ -805,8 +794,7 @@
                         price,
                         description,
                         category,
-                        image: '',
-                        user_id: user.id
+                        image: ''
                     }])
                     .select()
                     .single();
