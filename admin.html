@@ -710,10 +710,18 @@
             try {
                 productList.innerHTML = '<div class="loading"><div class="spinner"></div><p>Загрузка блюд...</p></div>';
                 
-                // ОПТИМИЗИРОВАННЫЙ ЗАПРОС - без сложных операций
+                // Получаем текущего пользователя
+                const { data: { user } } = await supabase.auth.getUser();
+                if (!user) {
+                    showMessage('❌ Вы не авторизованы!', 'error');
+                    return;
+                }
+                
+                // Загружаем только товары текущего пользователя
                 const { data, error } = await supabase
                     .from('products')
                     .select('id, title, price, description, category, image')
+                    .eq('user_id', user.id)
                     .order('id', { ascending: false });
 
                 if (error) {
@@ -782,7 +790,14 @@
             addProductBtn.textContent = 'Загрузка...';
 
             try {
-                // 1. Создаём товар без фото
+                // 1. Получаем текущего пользователя
+                const { data: { user } } = await supabase.auth.getUser();
+                if (!user) {
+                    showMessage('❌ Вы не авторизованы!', 'error');
+                    return;
+                }
+
+                // 2. Создаём товар с user_id
                 const { data: product, error: insertError } = await supabase
                     .from('products')
                     .insert([{
@@ -790,7 +805,8 @@
                         price,
                         description,
                         category,
-                        image: ''
+                        image: '',
+                        user_id: user.id
                     }])
                     .select()
                     .single();
