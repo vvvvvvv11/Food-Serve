@@ -29,12 +29,8 @@
             box-sizing: border-box;
         }
 
-        html {
-            scroll-behavior: smooth;
-        }
-
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-family: 'Inter', sans-serif;
             background: var(--bg-secondary);
             color: var(--text-primary);
             line-height: 1.6;
@@ -71,7 +67,6 @@
             font-size: 28px;
             font-weight: 700;
             margin-bottom: 12px;
-            color: var(--text-primary);
         }
 
         .login-box p {
@@ -192,7 +187,6 @@
             font-family: 'Syne', sans-serif;
             font-size: 28px;
             font-weight: 700;
-            color: var(--text-primary);
         }
 
         .logout-btn {
@@ -222,7 +216,6 @@
             font-size: 20px;
             font-weight: 700;
             margin-bottom: 24px;
-            color: var(--text-primary);
         }
 
         .form-row {
@@ -260,7 +253,7 @@
             color: var(--accent);
         }
 
-        #fileInput {
+        #fileInput, #editFileInput {
             position: absolute;
             top: 0;
             left: 0;
@@ -283,6 +276,7 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 16px;
+            margin-top: 20px;
         }
 
         .message {
@@ -359,7 +353,6 @@
             font-size: 16px;
             font-weight: 700;
             margin-bottom: 8px;
-            color: var(--text-primary);
         }
 
         .product-info p {
@@ -413,325 +406,6 @@
             to { transform: rotate(360deg); }
         }
 
-        @media (max-width: 1024px) {
-            .form-row {
-                grid-template-columns: 1fr;
-            }
-
-            .admin-container {
-                padding: 20px 16px;
-            }
-
-            .section {
-                padding: 20px;
-                margin-bottom: 20px;
-            }
-
-            .products-grid {
-                grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-                gap: 16px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .login-box {
-                width: 95%;
-                padding: 30px 20px;
-            }
-
-            .login-box h1 {
-                font-size: 22px;
-            }
-
-            .admin-header {
-                padding: 16px;
-                margin-bottom: 20px;
-                flex-direction: column;
-                gap: 12px;
-                text-align: center;
-            }
-
-            .admin-header h1 {
-                font-size: 22px;
-                margin-bottom: 0;
-            }
-
-            .logout-btn {
-                width: 100%;
-            }
-
-            .admin-container {
-                padding: 16px 12px;
-                max-width: 100%;
-            }
-
-            .section {
-                padding: 16px;
-                margin-bottom: 16px;
-            }
-
-            .section h2 {
-                font-size: 16px;
-                margin-bottom: 16px;
-            }
-
-            .form-group label {
-                font-size: 11px;
-            }
-
-            .form-group input,
-            .form-group select,
-            .form-group textarea {
-                padding: 10px;
-                font-size: 16px;
-            }
-
-            .form-row {
-                gap: 12px;
-                margin-bottom: 12px;
-            }
-
-            .image-preview {
-                width: 120px;
-                height: 120px;
-                margin-top: 8px;
-            }
-
-            .btn-group {
-                gap: 12px;
-            }
-
-            .btn {
-                padding: 10px;
-                font-size: 13px;
-            }
-
-            .products-grid {
-                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-                gap: 12px;
-            }
-
-            .product-card {
-                border-radius: 8px;
-            }
-
-            .product-image {
-                height: 150px;
-            }
-
-            .product-info {
-                padding: 12px;
-            }
-
-            .product-category {
-                font-size: 10px;
-                margin-bottom: 6px;
-            }
-
-            .product-info h3 {
-                font-size: 13px;
-                margin-bottom: 6px;
-            }
-
-            .product-info p {
-                font-size: 11px;
-                margin-bottom: 8px;
-                -webkit-line-clamp: 1;
-            }
-
-            .product-price {
-                font-size: 14px;
-                margin-bottom: 8px;
-            }
-
-            .product-actions {
-                gap: 6px;
-            }
-
-            .product-actions button {
-                padding: 6px 8px;
-                font-size: 10px;
-            }
-
-            .modal-content {
-                padding: 20px;
-                width: 95%;
-            }
-
-            .modal-header {
-                font-size: 18px;
-                margin-bottom: 16px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .login-box {
-                width: 100%;
-                padding: 24px 16px;
-                border-radius: 12px;
-            }
-
-            .login-box h1 {
-                font-size: 20px;
-            }
-
-            .login-box p {
-                font-size: 13px;
-            }
-
-            .admin-header {
-                padding: 12px;
-                margin-bottom: 16px;
-            }
-
-            .admin-header h1 {
-                font-size: 18px;
-            }
-
-            .logout-btn {
-                padding: 8px 12px;
-                font-size: 12px;
-            }
-
-            .admin-container {
-                padding: 12px;
-            }
-
-            .section {
-                padding: 12px;
-                margin-bottom: 12px;
-            }
-
-            .section h2 {
-                font-size: 14px;
-                margin-bottom: 12px;
-            }
-
-            .form-group label {
-                font-size: 10px;
-                margin-bottom: 6px;
-            }
-
-            .form-group input,
-            .form-group select,
-            .form-group textarea {
-                padding: 8px;
-                font-size: 14px;
-            }
-
-            .form-row {
-                gap: 8px;
-                margin-bottom: 8px;
-            }
-
-            .form-row.full {
-                grid-template-columns: 1fr;
-            }
-
-            .image-input-btn {
-                padding: 10px;
-                font-size: 12px;
-            }
-
-            .image-preview {
-                width: 100px;
-                height: 100px;
-                margin-top: 6px;
-            }
-
-            .btn {
-                padding: 8px;
-                font-size: 12px;
-            }
-
-            .btn-small {
-                padding: 6px 10px;
-                font-size: 10px;
-            }
-
-            .btn-group {
-                gap: 8px;
-            }
-
-            .products-grid {
-                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-                gap: 8px;
-            }
-
-            .product-card {
-                border-radius: 6px;
-            }
-
-            .product-image {
-                height: 120px;
-            }
-
-            .product-info {
-                padding: 8px;
-            }
-
-            .product-category {
-                font-size: 9px;
-                margin-bottom: 4px;
-            }
-
-            .product-info h3 {
-                font-size: 11px;
-                margin-bottom: 4px;
-            }
-
-            .product-info p {
-                font-size: 9px;
-                margin-bottom: 6px;
-            }
-
-            .product-price {
-                font-size: 12px;
-                margin-bottom: 6px;
-            }
-
-            .product-actions {
-                gap: 4px;
-                flex-direction: column;
-            }
-
-            .product-actions button {
-                padding: 4px 6px;
-                font-size: 9px;
-            }
-
-            .message {
-                left: 10px;
-                right: 10px;
-                top: 10px;
-                padding: 12px 16px;
-                font-size: 12px;
-                border-radius: 6px;
-            }
-
-            .modal {
-                padding: 0 16px;
-            }
-
-            .modal-content {
-                padding: 16px;
-                width: 100%;
-                max-height: 95vh;
-            }
-
-            .modal-header {
-                font-size: 16px;
-                margin-bottom: 12px;
-            }
-
-            .modal-close {
-                top: 12px;
-                right: 12px;
-                font-size: 20px;
-            }
-        }
-
-        /* Modal Styles */
         .modal {
             display: none;
             position: fixed;
@@ -757,14 +431,13 @@
             width: 90%;
             max-height: 90vh;
             overflow-y: auto;
-            box-shadow: var(--shadow-lg);
+            position: relative;
         }
 
         .modal-header {
             font-size: 24px;
             font-weight: 700;
             margin-bottom: 24px;
-            color: var(--text-primary);
         }
 
         .modal-close {
@@ -776,6 +449,21 @@
             font-size: 24px;
             cursor: pointer;
             color: var(--text-secondary);
+        }
+
+        @media (max-width: 768px) {
+            .admin-container {
+                padding: 20px 16px;
+            }
+            .section {
+                padding: 20px;
+            }
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            }
         }
     </style>
 </head>
@@ -803,9 +491,9 @@
         </div>
 
         <div class="admin-container">
-            <!-- Add/Edit Product Section -->
+            <!-- Add Product Section -->
             <div class="section">
-                <h2>➕ Добавить/Изменить блюдо</h2>
+                <h2>➕ Добавить блюдо</h2>
                 
                 <div class="form-row">
                     <div class="form-group">
@@ -837,7 +525,7 @@
                 <div class="form-row full">
                     <div class="form-group">
                         <label>Описание *</label>
-                        <textarea id="productDesc" placeholder="Хлеб тостовый, салат, томат, огурец, тунец..." rows="3" style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: var(--radius-md); font-family: 'Inter', sans-serif; color: var(--text-primary);"></textarea>
+                        <textarea id="productDesc" placeholder="Хлеб тостовый, салат, томат, огурец, тунец..." rows="3"></textarea>
                     </div>
                 </div>
 
@@ -849,6 +537,7 @@
                             <input type="file" id="fileInput" accept="image/*">
                         </div>
                         <img id="previewImage" class="image-preview" style="display: none;">
+                        <div id="uploadProgress" style="display: none; margin-top: 8px; font-size: 12px; color: var(--accent);"></div>
                     </div>
                 </div>
 
@@ -875,16 +564,16 @@
     <div class="modal" id="editModal">
         <div class="modal-content">
             <button class="modal-close" onclick="closeEditModal()">✕</button>
-            <div class="modal-header">Редактировать блюдо</div>
+            <div class="modal-header">✏️ Редактировать блюдо</div>
             
             <div class="form-row">
                 <div class="form-group">
                     <label>Название блюда *</label>
-                    <input type="text" id="editTitle" placeholder="Название">
+                    <input type="text" id="editTitle">
                 </div>
                 <div class="form-group">
                     <label>Цена (₽) *</label>
-                    <input type="number" id="editPrice" placeholder="350" min="0">
+                    <input type="number" id="editPrice" min="0">
                 </div>
             </div>
 
@@ -907,7 +596,7 @@
             <div class="form-row full">
                 <div class="form-group">
                     <label>Описание *</label>
-                    <textarea id="editDesc" placeholder="Описание..." rows="3" style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: var(--radius-md); font-family: 'Inter', sans-serif; color: var(--text-primary);"></textarea>
+                    <textarea id="editDesc" rows="3"></textarea>
                 </div>
             </div>
 
@@ -919,6 +608,7 @@
                         <input type="file" id="editFileInput" accept="image/*">
                     </div>
                     <img id="editPreviewImage" class="image-preview">
+                    <div id="editUploadProgress" style="display: none; margin-top: 8px; font-size: 12px; color: var(--accent);"></div>
                 </div>
             </div>
 
@@ -933,11 +623,13 @@
         const SUPABASE_URL = 'https://temrphpbgqwodcvgagrz.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRlbXJwaHBiZ3F3b2RjdmdhZ3J6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg0OTEyMDcsImV4cCI6MjA5NDA2NzIwN30.NoZmurpCp0owULMwEhEHwVdkX5ddSgYCkXATCkHBuJg';
         const ADMIN_PASSWORD = 'admin123'; // Измените на свой пароль!
+        const STORAGE_BUCKET = 'products'; // Название bucket для хранения фото
 
         const { createClient } = window.supabase;
         const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        let selectedImageBase64 = null;
+        let selectedFile = null;
+        let editSelectedFile = null;
         let editingProductId = null;
         let products = [];
 
@@ -951,6 +643,7 @@
         if (localStorage.getItem('adminLoggedIn') === 'true') {
             loginContainer.classList.add('hidden');
             adminPanel.style.display = 'block';
+            checkAndCreateBucket();
             loadProducts();
         }
 
@@ -960,59 +653,113 @@
                 loginContainer.classList.add('hidden');
                 adminPanel.style.display = 'block';
                 passwordInput.value = '';
+                checkAndCreateBucket();
                 loadProducts();
             } else {
-                alert('❌ Неверный пароль!');
+                showMessage('❌ Неверный пароль!', 'error');
             }
-        });
-
-        passwordInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') loginBtn.click();
         });
 
         logoutBtn.addEventListener('click', () => {
             localStorage.removeItem('adminLoggedIn');
             loginContainer.classList.remove('hidden');
             adminPanel.style.display = 'none';
-            passwordInput.value = '';
         });
 
-        // IMAGE UPLOAD
-        const fileInput = document.getElementById('fileInput');
-        const previewImage = document.getElementById('previewImage');
-
-        fileInput.addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = (event) => {
-                    selectedImageBase64 = event.target.result;
-                    previewImage.src = selectedImageBase64;
-                    previewImage.style.display = 'block';
-                };
-                reader.readAsDataURL(file);
+        // ПРОВЕРКА И СОЗДАНИЕ BUCKET
+        async function checkAndCreateBucket() {
+            try {
+                // Проверяем, существует ли bucket
+                const { data: buckets, error: listError } = await supabase.storage.listBuckets();
+                
+                if (listError) {
+                    console.error('Ошибка получения списка buckets:', listError);
+                    return;
+                }
+                
+                const bucketExists = buckets?.some(b => b.name === STORAGE_BUCKET);
+                
+                if (!bucketExists) {
+                    console.log('Создаю bucket:', STORAGE_BUCKET);
+                    const { error: createError } = await supabase.storage.createBucket(STORAGE_BUCKET, {
+                        public: true, // Делаем bucket публичным
+                        fileSizeLimit: 5242880, // 5MB лимит
+                        allowedMimeTypes: ['image/png', 'image/jpeg', 'image/jpg', 'image/webp']
+                    });
+                    
+                    if (createError) {
+                        console.error('Ошибка создания bucket:', createError);
+                        showMessage('⚠️ Не удалось создать bucket, но вы можете создать его вручную в Supabase Dashboard', 'error');
+                    } else {
+                        console.log('✅ Bucket успешно создан');
+                        showMessage('✅ Bucket для фото создан!', 'success');
+                    }
+                } else {
+                    console.log('✅ Bucket уже существует');
+                }
+            } catch (error) {
+                console.error('Ошибка:', error);
             }
-        });
+        }
 
-        // EDIT IMAGE UPLOAD
-        const editFileInput = document.getElementById('editFileInput');
-        const editPreviewImage = document.getElementById('editPreviewImage');
-        let editImageBase64 = null;
-
-        editFileInput.addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = (event) => {
-                    editImageBase64 = event.target.result;
-                    editPreviewImage.src = editImageBase64;
-                    editPreviewImage.style.display = 'block';
-                };
-                reader.readAsDataURL(file);
+        // ЗАГРУЗКА ФАЙЛА В STORAGE
+        async function uploadImageToStorage(file, productTitle) {
+            if (!file) return null;
+            
+            // Создаем уникальное имя файла
+            const fileExt = file.name.split('.').pop();
+            const fileName = `${Date.now()}-${productTitle.toLowerCase().replace(/[^a-z0-9]/g, '-')}.${fileExt}`;
+            const filePath = `products/${fileName}`;
+            
+            console.log('Загрузка файла:', filePath);
+            
+            const { data, error } = await supabase.storage
+                .from(STORAGE_BUCKET)
+                .upload(filePath, file, {
+                    cacheControl: '3600',
+                    upsert: true
+                });
+            
+            if (error) {
+                console.error('Ошибка загрузки:', error);
+                throw error;
             }
-        });
+            
+            // Получаем публичный URL
+            const { data: publicUrlData } = supabase.storage
+                .from(STORAGE_BUCKET)
+                .getPublicUrl(filePath);
+            
+            console.log('Файл загружен, URL:', publicUrlData.publicUrl);
+            return publicUrlData.publicUrl;
+        }
 
-        // MESSAGE DISPLAY
+        // УДАЛЕНИЕ ФАЙЛА ИЗ STORAGE
+        async function deleteImageFromStorage(imageUrl) {
+            if (!imageUrl) return;
+            
+            try {
+                // Извлекаем путь из URL
+                const urlParts = imageUrl.split('/');
+                const filePath = urlParts.slice(urlParts.indexOf(STORAGE_BUCKET) + 1).join('/');
+                
+                if (filePath) {
+                    const { error } = await supabase.storage
+                        .from(STORAGE_BUCKET)
+                        .remove([filePath]);
+                    
+                    if (error) {
+                        console.error('Ошибка удаления файла:', error);
+                    } else {
+                        console.log('Файл удален:', filePath);
+                    }
+                }
+            } catch (error) {
+                console.error('Ошибка при удалении:', error);
+            }
+        }
+
+        // ПОКАЗ СООБЩЕНИЙ
         function showMessage(text, type) {
             const messageEl = document.getElementById('message');
             messageEl.className = `message show ${type}`;
@@ -1022,10 +769,9 @@
             }, 3000);
         }
 
-        // LOAD PRODUCTS
+        // ЗАГРУЗКА ТОВАРОВ
         async function loadProducts() {
             try {
-                console.log('Загружаю товары...');
                 const { data, error } = await supabase
                     .from('products')
                     .select('*')
@@ -1034,9 +780,7 @@
                 if (error) throw error;
                 
                 products = data || [];
-                console.log('Загруженные товары:', products);
                 renderProducts();
-                console.log('Товары отрендерены на странице');
             } catch (error) {
                 console.error('Ошибка загрузки:', error);
                 showMessage('Ошибка загрузки блюд: ' + error.message, 'error');
@@ -1046,13 +790,16 @@
         function renderProducts() {
             const listEl = document.getElementById('productsList');
             if (products.length === 0) {
-                listEl.innerHTML = '<div class="loading"><p>Нет добавленных блюд</p></div>';
+                listEl.innerHTML = '<div class="loading"><p>📭 Нет добавленных блюд</p></div>';
                 return;
             }
 
             listEl.innerHTML = products.map(product => `
                 <div class="product-card">
-                    <img src="${product.image}" alt="${product.title}" class="product-image" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 200 200%22%3E%3Crect fill=%22%23F1F5F9%22 width=%22200%22 height=%22200%22/%3E%3C/svg%3E'">
+                    <img src="${product.image_url || product.image || ''}" 
+                         alt="${product.title}" 
+                         class="product-image" 
+                         onerror="this.src='https://placehold.co/400x300/f97316/white?text=${encodeURIComponent(product.title)}'">
                     <div class="product-info">
                         <div class="product-category">${product.category || 'Прочее'}</div>
                         <h3>${product.title}</h3>
@@ -1067,36 +814,62 @@
             `).join('');
         }
 
-        // ADD PRODUCT
-        const addProductBtn = document.getElementById('addProductBtn');
-        const clearFormBtn = document.getElementById('clearFormBtn');
+        // ДОБАВЛЕНИЕ ТОВАРА
+        const fileInput = document.getElementById('fileInput');
+        const previewImage = document.getElementById('previewImage');
+        const uploadProgress = document.getElementById('uploadProgress');
 
-        clearFormBtn.addEventListener('click', () => {
+        fileInput.addEventListener('change', (e) => {
+            selectedFile = e.target.files[0];
+            if (selectedFile) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    previewImage.src = event.target.result;
+                    previewImage.style.display = 'block';
+                };
+                reader.readAsDataURL(selectedFile);
+            }
+        });
+
+        document.getElementById('clearFormBtn').addEventListener('click', () => {
             document.getElementById('productTitle').value = '';
             document.getElementById('productPrice').value = '';
             document.getElementById('productDesc').value = '';
             document.getElementById('productCategory').value = '';
             fileInput.value = '';
             previewImage.style.display = 'none';
-            selectedImageBase64 = null;
+            selectedFile = null;
             editingProductId = null;
         });
 
-        addProductBtn.addEventListener('click', async () => {
+        document.getElementById('addProductBtn').addEventListener('click', async () => {
             const title = document.getElementById('productTitle').value.trim();
             const price = parseInt(document.getElementById('productPrice').value);
             const description = document.getElementById('productDesc').value.trim();
-            const category = document.getElementById('productCategory').value.trim();
+            const category = document.getElementById('productCategory').value;
 
-            if (!title || !price || !description || !category || !selectedImageBase64) {
+            if (!title || !price || !description || !category || !selectedFile) {
                 showMessage('❌ Заполните все поля и выберите фото!', 'error');
                 return;
             }
 
-            addProductBtn.disabled = true;
-            addProductBtn.textContent = 'Загрузка...';
+            const addBtn = document.getElementById('addProductBtn');
+            addBtn.disabled = true;
+            addBtn.textContent = 'Загрузка...';
+            uploadProgress.style.display = 'block';
+            uploadProgress.textContent = '📤 Загрузка фото...';
 
             try {
+                // Сначала загружаем фото в Storage
+                const imageUrl = await uploadImageToStorage(selectedFile, title);
+                
+                if (!imageUrl) {
+                    throw new Error('Не удалось загрузить фото');
+                }
+                
+                uploadProgress.textContent = '💾 Сохранение в базу...';
+                
+                // Сохраняем товар в базу с URL фото
                 const { data, error } = await supabase
                     .from('products')
                     .insert([{
@@ -1104,29 +877,38 @@
                         price,
                         description,
                         category,
-                        image: selectedImageBase64
+                        image_url: imageUrl,
+                        image: imageUrl
                     }])
                     .select();
 
                 if (error) throw error;
 
                 showMessage('✅ Блюдо успешно добавлено!', 'success');
-                clearFormBtn.click();
+                document.getElementById('clearFormBtn').click();
                 await loadProducts();
             } catch (error) {
                 console.error('Ошибка:', error);
                 showMessage('❌ Ошибка добавления: ' + error.message, 'error');
             } finally {
-                addProductBtn.disabled = false;
-                addProductBtn.textContent = 'Добавить блюдо';
+                addBtn.disabled = false;
+                addBtn.textContent = 'Добавить блюдо';
+                uploadProgress.style.display = 'none';
             }
         });
 
-        // DELETE PRODUCT
+        // УДАЛЕНИЕ ТОВАРА
         async function deleteProduct(id) {
-            if (!confirm('Вы уверены? Это действие нельзя отменить!')) return;
+            const product = products.find(p => p.id === id);
+            if (!confirm(`Удалить "${product?.title}"? Это действие нельзя отменить!`)) return;
 
             try {
+                // Удаляем фото из Storage
+                if (product?.image_url) {
+                    await deleteImageFromStorage(product.image_url);
+                }
+                
+                // Удаляем товар из базы
                 const { error } = await supabase
                     .from('products')
                     .delete()
@@ -1142,7 +924,23 @@
             }
         }
 
-        // EDIT MODAL FUNCTIONS
+        // РЕДАКТИРОВАНИЕ
+        const editFileInput = document.getElementById('editFileInput');
+        const editPreviewImage = document.getElementById('editPreviewImage');
+        const editUploadProgress = document.getElementById('editUploadProgress');
+
+        editFileInput.addEventListener('change', (e) => {
+            editSelectedFile = e.target.files[0];
+            if (editSelectedFile) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    editPreviewImage.src = event.target.result;
+                    editPreviewImage.style.display = 'block';
+                };
+                reader.readAsDataURL(editSelectedFile);
+            }
+        });
+
         function openEditModal(productId) {
             editingProductId = productId;
             const product = products.find(p => p.id === productId);
@@ -1152,101 +950,93 @@
                 document.getElementById('editPrice').value = product.price || '';
                 document.getElementById('editDesc').value = product.description || '';
                 document.getElementById('editCategory').value = product.category || '';
-                editPreviewImage.src = product.image || '';
+                editPreviewImage.src = product.image_url || product.image || '';
                 editPreviewImage.style.display = 'block';
-                editImageBase64 = null;
+                editSelectedFile = null;
                 editFileInput.value = '';
                 
                 document.getElementById('editModal').classList.add('active');
-                console.log('Открыто редактирование товара:', productId);
             }
         }
 
         function closeEditModal() {
             document.getElementById('editModal').classList.remove('active');
             editingProductId = null;
-            editImageBase64 = null;
+            editSelectedFile = null;
         }
 
-        // SAVE EDIT
         document.getElementById('saveEditBtn').addEventListener('click', async () => {
-            console.log('Попытка сохранить товар ID:', editingProductId);
-            
             if (!editingProductId) {
-                console.error('editingProductId не установлен');
                 showMessage('❌ Ошибка: товар не выбран', 'error');
                 return;
             }
 
             const title = document.getElementById('editTitle').value.trim();
-            const priceStr = document.getElementById('editPrice').value;
+            const price = parseInt(document.getElementById('editPrice').value);
             const description = document.getElementById('editDesc').value.trim();
-            const category = document.getElementById('editCategory').value.trim();
+            const category = document.getElementById('editCategory').value;
 
-            console.log('Данные для сохранения:', { title, price: priceStr, description, category });
-
-            if (!title || !priceStr || !description || !category) {
+            if (!title || !price || !description || !category) {
                 showMessage('❌ Заполните все обязательные поля!', 'error');
-                return;
-            }
-
-            const price = parseInt(priceStr);
-            if (isNaN(price)) {
-                showMessage('❌ Цена должна быть числом!', 'error');
                 return;
             }
 
             const saveBtn = document.getElementById('saveEditBtn');
             saveBtn.disabled = true;
             saveBtn.textContent = 'Сохранение...';
+            
+            if (editSelectedFile) {
+                editUploadProgress.style.display = 'block';
+                editUploadProgress.textContent = '📤 Загрузка нового фото...';
+            }
 
             try {
-                const updateData = {
-                    title: title,
-                    price: price,
-                    description: description,
-                    category: category
-                };
-
-                // Добавляем изображение если оно выбрано
-                if (editImageBase64) {
-                    updateData.image = editImageBase64;
+                let imageUrl = null;
+                const oldProduct = products.find(p => p.id === editingProductId);
+                
+                // Если выбрано новое фото - загружаем его
+                if (editSelectedFile) {
+                    // Удаляем старое фото
+                    if (oldProduct?.image_url) {
+                        await deleteImageFromStorage(oldProduct.image_url);
+                    }
+                    // Загружаем новое
+                    imageUrl = await uploadImageToStorage(editSelectedFile, title);
                 }
-
-                console.log('Отправляю на Supabase:', updateData);
-
+                
+                const updateData = {
+                    title,
+                    price,
+                    description,
+                    category
+                };
+                
+                if (imageUrl) {
+                    updateData.image_url = imageUrl;
+                    updateData.image = imageUrl;
+                }
+                
                 const { error } = await supabase
                     .from('products')
                     .update(updateData)
                     .eq('id', editingProductId);
 
-                if (error) {
-                    console.error('Ошибка Supabase:', error);
-                    throw error;
-                }
+                if (error) throw error;
 
-                console.log('Товар успешно обновлен в БД');
                 showMessage('✅ Блюдо успешно обновлено!', 'success');
-                
-                // Очищаем кэш и перезагружаем товары
-                editingProductId = null;
-                editImageBase64 = null;
-                
-                document.getElementById('editModal').classList.remove('active');
-                
-                // Маленькая задержка перед загрузкой
-                setTimeout(() => {
-                    loadProducts();
-                }, 300);
+                closeEditModal();
+                await loadProducts();
             } catch (error) {
-                console.error('Ошибка при сохранении:', error);
-                showMessage('❌ Ошибка: ' + (error.message || 'Неизвестная ошибка'), 'error');
+                console.error('Ошибка:', error);
+                showMessage('❌ Ошибка: ' + error.message, 'error');
             } finally {
                 saveBtn.disabled = false;
                 saveBtn.textContent = 'Сохранить';
+                editUploadProgress.style.display = 'none';
             }
         });
 
+        // Глобальные функции для onclick
         window.deleteProduct = deleteProduct;
         window.openEditModal = openEditModal;
         window.closeEditModal = closeEditModal;
