@@ -7,6 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.38.4"></script>
     <style>
+        /* ВСЕ ВАШИ СТИЛИ ОСТАВЬТЕ ТЕ ЖЕ */
         :root {
             --accent: #f97316;
             --accent-dark: #ea580c;
@@ -452,18 +453,10 @@
         }
 
         @media (max-width: 768px) {
-            .admin-container {
-                padding: 20px 16px;
-            }
-            .section {
-                padding: 20px;
-            }
-            .form-row {
-                grid-template-columns: 1fr;
-            }
-            .products-grid {
-                grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            }
+            .admin-container { padding: 20px 16px; }
+            .section { padding: 20px; }
+            .form-row { grid-template-columns: 1fr; }
+            .products-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
         }
     </style>
 </head>
@@ -491,7 +484,6 @@
         </div>
 
         <div class="admin-container">
-            <!-- Add Product Section -->
             <div class="section">
                 <h2>➕ Добавить блюдо</h2>
                 
@@ -525,7 +517,7 @@
                 <div class="form-row full">
                     <div class="form-group">
                         <label>Описание *</label>
-                        <textarea id="productDesc" placeholder="Хлеб тостовый, салат, томат, огурец, тунец..." rows="3"></textarea>
+                        <textarea id="productDesc" placeholder="Описание блюда..." rows="3"></textarea>
                     </div>
                 </div>
 
@@ -547,7 +539,6 @@
                 </div>
             </div>
 
-            <!-- Products List Section -->
             <div class="section">
                 <h2>📋 Все блюда</h2>
                 <div id="productsList" class="products-grid">
@@ -622,8 +613,8 @@
     <script>
         const SUPABASE_URL = 'https://temrphpbgqwodcvgagrz.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRlbXJwaHBiZ3F3b2RjdmdhZ3J6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg0OTEyMDcsImV4cCI6MjA5NDA2NzIwN30.NoZmurpCp0owULMwEhEHwVdkX5ddSgYCkXATCkHBuJg';
-        const ADMIN_PASSWORD = 'admin123'; // Измените на свой пароль!
-        const STORAGE_BUCKET = 'product-images'; // Название bucket для хранения фото
+        const ADMIN_PASSWORD = 'admin123';
+        const STORAGE_BUCKET = 'product-images';  // ВАШ БАКЕТ
 
         const { createClient } = window.supabase;
         const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -633,133 +624,6 @@
         let editingProductId = null;
         let products = [];
 
-        // LOGIN
-        const loginContainer = document.getElementById('loginContainer');
-        const adminPanel = document.getElementById('adminPanel');
-        const passwordInput = document.getElementById('passwordInput');
-        const loginBtn = document.getElementById('loginBtn');
-        const logoutBtn = document.getElementById('logoutBtn');
-
-        if (localStorage.getItem('adminLoggedIn') === 'true') {
-            loginContainer.classList.add('hidden');
-            adminPanel.style.display = 'block';
-            checkAndCreateBucket();
-            loadProducts();
-        }
-
-        loginBtn.addEventListener('click', () => {
-            if (passwordInput.value === ADMIN_PASSWORD) {
-                localStorage.setItem('adminLoggedIn', 'true');
-                loginContainer.classList.add('hidden');
-                adminPanel.style.display = 'block';
-                passwordInput.value = '';
-                checkAndCreateBucket();
-                loadProducts();
-            } else {
-                showMessage('❌ Неверный пароль!', 'error');
-            }
-        });
-
-        logoutBtn.addEventListener('click', () => {
-            localStorage.removeItem('adminLoggedIn');
-            loginContainer.classList.remove('hidden');
-            adminPanel.style.display = 'none';
-        });
-
-        // ПРОВЕРКА И СОЗДАНИЕ BUCKET
-        async function checkAndCreateBucket() {
-            try {
-                // Проверяем, существует ли bucket
-                const { data: buckets, error: listError } = await supabase.storage.listBuckets();
-                
-                if (listError) {
-                    console.error('Ошибка получения списка buckets:', listError);
-                    return;
-                }
-                
-                const bucketExists = buckets?.some(b => b.name === STORAGE_BUCKET);
-                
-                if (!bucketExists) {
-                    console.log('Создаю bucket:', STORAGE_BUCKET);
-                    const { error: createError } = await supabase.storage.createBucket(STORAGE_BUCKET, {
-                        public: true, // Делаем bucket публичным
-                        fileSizeLimit: 5242880, // 5MB лимит
-                        allowedMimeTypes: ['image/png', 'image/jpeg', 'image/jpg', 'image/webp']
-                    });
-                    
-                    if (createError) {
-                        console.error('Ошибка создания bucket:', createError);
-                        showMessage('⚠️ Не удалось создать bucket, но вы можете создать его вручную в Supabase Dashboard', 'error');
-                    } else {
-                        console.log('✅ Bucket успешно создан');
-                        showMessage('✅ Bucket для фото создан!', 'success');
-                    }
-                } else {
-                    console.log('✅ Bucket уже существует');
-                }
-            } catch (error) {
-                console.error('Ошибка:', error);
-            }
-        }
-
-        // ЗАГРУЗКА ФАЙЛА В STORAGE
-        async function uploadImageToStorage(file, productTitle) {
-            if (!file) return null;
-            
-            // Создаем уникальное имя файла
-            const fileExt = file.name.split('.').pop();
-            const fileName = `${Date.now()}-${productTitle.toLowerCase().replace(/[^a-z0-9]/g, '-')}.${fileExt}`;
-            const filePath = `products/${fileName}`;
-            
-            console.log('Загрузка файла:', filePath);
-            
-            const { data, error } = await supabase.storage
-                .from(STORAGE_BUCKET)
-                .upload(filePath, file, {
-                    cacheControl: '3600',
-                    upsert: true
-                });
-            
-            if (error) {
-                console.error('Ошибка загрузки:', error);
-                throw error;
-            }
-            
-            // Получаем публичный URL
-            const { data: publicUrlData } = supabase.storage
-                .from(STORAGE_BUCKET)
-                .getPublicUrl(filePath);
-            
-            console.log('Файл загружен, URL:', publicUrlData.publicUrl);
-            return publicUrlData.publicUrl;
-        }
-
-        // УДАЛЕНИЕ ФАЙЛА ИЗ STORAGE
-        async function deleteImageFromStorage(imageUrl) {
-            if (!imageUrl) return;
-            
-            try {
-                // Извлекаем путь из URL
-                const urlParts = imageUrl.split('/');
-                const filePath = urlParts.slice(urlParts.indexOf(STORAGE_BUCKET) + 1).join('/');
-                
-                if (filePath) {
-                    const { error } = await supabase.storage
-                        .from(STORAGE_BUCKET)
-                        .remove([filePath]);
-                    
-                    if (error) {
-                        console.error('Ошибка удаления файла:', error);
-                    } else {
-                        console.log('Файл удален:', filePath);
-                    }
-                }
-            } catch (error) {
-                console.error('Ошибка при удалении:', error);
-            }
-        }
-
-        // ПОКАЗ СООБЩЕНИЙ
         function showMessage(text, type) {
             const messageEl = document.getElementById('message');
             messageEl.className = `message show ${type}`;
@@ -769,21 +633,84 @@
             }, 3000);
         }
 
-        // ЗАГРУЗКА ТОВАРОВ
-        async function loadProducts() {
+        // Upload image to Storage
+        async function uploadImageToStorage(file, productTitle) {
+            if (!file) return null;
+            
+            const fileExt = file.name.split('.').pop();
+            const fileName = `${Date.now()}-${productTitle.toLowerCase().replace(/[^a-z0-9]/g, '-')}.${fileExt}`;
+            
+            console.log('📤 Загрузка в bucket:', STORAGE_BUCKET, 'файл:', fileName);
+            
+            const { data, error } = await supabase.storage
+                .from(STORAGE_BUCKET)
+                .upload(fileName, file, {
+                    cacheControl: '3600',
+                    upsert: true
+                });
+            
+            if (error) {
+                console.error('Ошибка загрузки:', error);
+                throw error;
+            }
+            
+            const { data: publicUrlData } = supabase.storage
+                .from(STORAGE_BUCKET)
+                .getPublicUrl(fileName);
+            
+            console.log('✅ Файл загружен, URL:', publicUrlData.publicUrl);
+            return publicUrlData.publicUrl;
+        }
+
+        // Delete image from Storage
+        async function deleteImageFromStorage(imageUrl) {
+            if (!imageUrl) return;
+            
             try {
-                const { data, error } = await supabase
+                const fileName = imageUrl.split('/').pop().split('?')[0];
+                if (fileName) {
+                    const { error } = await supabase.storage
+                        .from(STORAGE_BUCKET)
+                        .remove([fileName]);
+                    if (error) console.error('Ошибка удаления:', error);
+                    else console.log('✅ Файл удален:', fileName);
+                }
+            } catch (error) {
+                console.error('Ошибка:', error);
+            }
+        }
+
+        // Load products with timeout handling
+        async function loadProducts() {
+            const listEl = document.getElementById('productsList');
+            listEl.innerHTML = '<div class="loading"><div class="spinner"></div><p>Загрузка блюд...</p></div>';
+            
+            try {
+                // Добавляем timeout вручную
+                const timeoutPromise = new Promise((_, reject) => 
+                    setTimeout(() => reject(new Error('Timeout')), 10000)
+                );
+                
+                const fetchPromise = supabase
                     .from('products')
                     .select('*')
-                    .order('created_at', { ascending: false });
-
+                    .order('created_at', { ascending: false })
+                    .limit(50);  // Ограничиваем количество для скорости
+                
+                const { data, error } = await Promise.race([fetchPromise, timeoutPromise]);
+                
                 if (error) throw error;
                 
                 products = data || [];
+                console.log('📦 Загружено блюд:', products.length);
                 renderProducts();
             } catch (error) {
                 console.error('Ошибка загрузки:', error);
-                showMessage('Ошибка загрузки блюд: ' + error.message, 'error');
+                if (error.message === 'Timeout') {
+                    listEl.innerHTML = '<div class="loading"><p>⏱️ Превышено время ожидания. Попробуйте обновить страницу.</p></div>';
+                } else {
+                    listEl.innerHTML = `<div class="loading"><p>❌ Ошибка: ${error.message}</p></div>`;
+                }
             }
         }
 
@@ -802,8 +729,8 @@
                          onerror="this.src='https://placehold.co/400x300/f97316/white?text=${encodeURIComponent(product.title)}'">
                     <div class="product-info">
                         <div class="product-category">${product.category || 'Прочее'}</div>
-                        <h3>${product.title}</h3>
-                        <p>${product.description}</p>
+                        <h3>${escapeHtml(product.title)}</h3>
+                        <p>${escapeHtml(product.description)}</p>
                         <div class="product-price">${product.price} ₽</div>
                         <div class="product-actions">
                             <button class="btn btn-small btn-success" onclick="openEditModal(${product.id})">✏️ Редактировать</button>
@@ -814,7 +741,17 @@
             `).join('');
         }
 
-        // ДОБАВЛЕНИЕ ТОВАРА
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/[&<>]/g, function(m) {
+                if (m === '&') return '&amp;';
+                if (m === '<') return '&lt;';
+                if (m === '>') return '&gt;';
+                return m;
+            });
+        }
+
+        // Add product
         const fileInput = document.getElementById('fileInput');
         const previewImage = document.getElementById('previewImage');
         const uploadProgress = document.getElementById('uploadProgress');
@@ -839,7 +776,6 @@
             fileInput.value = '';
             previewImage.style.display = 'none';
             selectedFile = null;
-            editingProductId = null;
         });
 
         document.getElementById('addProductBtn').addEventListener('click', async () => {
@@ -860,27 +796,20 @@
             uploadProgress.textContent = '📤 Загрузка фото...';
 
             try {
-                // Сначала загружаем фото в Storage
                 const imageUrl = await uploadImageToStorage(selectedFile, title);
-                
-                if (!imageUrl) {
-                    throw new Error('Не удалось загрузить фото');
-                }
+                if (!imageUrl) throw new Error('Не удалось загрузить фото');
                 
                 uploadProgress.textContent = '💾 Сохранение в базу...';
                 
-                // Сохраняем товар в базу с URL фото
-                const { data, error } = await supabase
+                const { error } = await supabase
                     .from('products')
                     .insert([{
                         title,
                         price,
                         description,
                         category,
-                        image_url: imageUrl,
-                        image: imageUrl
-                    }])
-                    .select();
+                        image_url: imageUrl
+                    }]);
 
                 if (error) throw error;
 
@@ -889,7 +818,7 @@
                 await loadProducts();
             } catch (error) {
                 console.error('Ошибка:', error);
-                showMessage('❌ Ошибка добавления: ' + error.message, 'error');
+                showMessage('❌ Ошибка: ' + error.message, 'error');
             } finally {
                 addBtn.disabled = false;
                 addBtn.textContent = 'Добавить блюдо';
@@ -897,18 +826,16 @@
             }
         });
 
-        // УДАЛЕНИЕ ТОВАРА
+        // Delete product
         async function deleteProduct(id) {
             const product = products.find(p => p.id === id);
-            if (!confirm(`Удалить "${product?.title}"? Это действие нельзя отменить!`)) return;
+            if (!confirm(`Удалить "${product?.title}"?`)) return;
 
             try {
-                // Удаляем фото из Storage
                 if (product?.image_url) {
                     await deleteImageFromStorage(product.image_url);
                 }
                 
-                // Удаляем товар из базы
                 const { error } = await supabase
                     .from('products')
                     .delete()
@@ -924,7 +851,7 @@
             }
         }
 
-        // РЕДАКТИРОВАНИЕ
+        // Edit modal
         const editFileInput = document.getElementById('editFileInput');
         const editPreviewImage = document.getElementById('editPreviewImage');
         const editUploadProgress = document.getElementById('editUploadProgress');
@@ -950,7 +877,7 @@
                 document.getElementById('editPrice').value = product.price || '';
                 document.getElementById('editDesc').value = product.description || '';
                 document.getElementById('editCategory').value = product.category || '';
-                editPreviewImage.src = product.image_url || product.image || '';
+                editPreviewImage.src = product.image_url || '';
                 editPreviewImage.style.display = 'block';
                 editSelectedFile = null;
                 editFileInput.value = '';
@@ -994,27 +921,15 @@
                 let imageUrl = null;
                 const oldProduct = products.find(p => p.id === editingProductId);
                 
-                // Если выбрано новое фото - загружаем его
                 if (editSelectedFile) {
-                    // Удаляем старое фото
                     if (oldProduct?.image_url) {
                         await deleteImageFromStorage(oldProduct.image_url);
                     }
-                    // Загружаем новое
                     imageUrl = await uploadImageToStorage(editSelectedFile, title);
                 }
                 
-                const updateData = {
-                    title,
-                    price,
-                    description,
-                    category
-                };
-                
-                if (imageUrl) {
-                    updateData.image_url = imageUrl;
-                    updateData.image = imageUrl;
-                }
+                const updateData = { title, price, description, category };
+                if (imageUrl) updateData.image_url = imageUrl;
                 
                 const { error } = await supabase
                     .from('products')
@@ -1036,7 +951,38 @@
             }
         });
 
-        // Глобальные функции для onclick
+        // LOGIN
+        const loginContainer = document.getElementById('loginContainer');
+        const adminPanel = document.getElementById('adminPanel');
+        const passwordInput = document.getElementById('passwordInput');
+        const loginBtn = document.getElementById('loginBtn');
+        const logoutBtn = document.getElementById('logoutBtn');
+
+        if (localStorage.getItem('adminLoggedIn') === 'true') {
+            loginContainer.classList.add('hidden');
+            adminPanel.style.display = 'block';
+            loadProducts();
+        }
+
+        loginBtn.addEventListener('click', () => {
+            if (passwordInput.value === ADMIN_PASSWORD) {
+                localStorage.setItem('adminLoggedIn', 'true');
+                loginContainer.classList.add('hidden');
+                adminPanel.style.display = 'block';
+                passwordInput.value = '';
+                loadProducts();
+            } else {
+                showMessage('❌ Неверный пароль!', 'error');
+            }
+        });
+
+        logoutBtn.addEventListener('click', () => {
+            localStorage.removeItem('adminLoggedIn');
+            loginContainer.classList.remove('hidden');
+            adminPanel.style.display = 'none';
+        });
+
+        // Global functions
         window.deleteProduct = deleteProduct;
         window.openEditModal = openEditModal;
         window.closeEditModal = closeEditModal;
