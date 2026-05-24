@@ -681,38 +681,31 @@
         }
 
         // Load products with timeout handling
-        async function loadProducts() {
-            const listEl = document.getElementById('productsList');
-            listEl.innerHTML = '<div class="loading"><div class="spinner"></div><p>Загрузка блюд...</p></div>';
+        // ПРОСТАЯ ЗАГРУЗКА БЕЗ СОРТИРОВКИ
+async function loadProducts() {
+    const listEl = document.getElementById('productsList');
+    listEl.innerHTML = '<div class="loading"><div class="spinner"></div><p>Загрузка блюд...</p></div>';
+    
+    try {
+        // Самый простой запрос - без сортировки
+        const { data, error } = await supabase
+            .from('products')
+            .select('*');
             
-            try {
-                // Добавляем timeout вручную
-                const timeoutPromise = new Promise((_, reject) => 
-                    setTimeout(() => reject(new Error('Timeout')), 10000)
-                );
-                
-                const fetchPromise = supabase
-                    .from('products')
-                    .select('*')
-                    .order('created_at', { ascending: false })
-                    .limit(50);  // Ограничиваем количество для скорости
-                
-                const { data, error } = await Promise.race([fetchPromise, timeoutPromise]);
-                
-                if (error) throw error;
-                
-                products = data || [];
-                console.log('📦 Загружено блюд:', products.length);
-                renderProducts();
-            } catch (error) {
-                console.error('Ошибка загрузки:', error);
-                if (error.message === 'Timeout') {
-                    listEl.innerHTML = '<div class="loading"><p>⏱️ Превышено время ожидания. Попробуйте обновить страницу.</p></div>';
-                } else {
-                    listEl.innerHTML = `<div class="loading"><p>❌ Ошибка: ${error.message}</p></div>`;
-                }
-            }
-        }
+        if (error) throw error;
+        
+        products = data || [];
+        console.log('📦 Загружено блюд:', products.length);
+        renderProducts();
+        
+    } catch (error) {
+        console.error('Ошибка:', error);
+        listEl.innerHTML = `<div class="loading">
+            <p style="color: #dc2626;">❌ ${error.message}</p>
+            <button onclick="loadProducts()" class="btn btn-small" style="margin-top: 16px; width: auto;">🔄 Повторить</button>
+        </div>`;
+    }
+}
 
         function renderProducts() {
             const listEl = document.getElementById('productsList');
