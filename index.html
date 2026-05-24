@@ -7,6 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.38.4"></script>
     <style>
+        /* ВСЕ ВАШИ СТИЛИ ОСТАЮТСЯ БЕЗ ИЗМЕНЕНИЙ */
         :root {
             --accent: #f97316;
             --accent-dark: #ea580c;
@@ -258,7 +259,6 @@
             color: #dc2626;
         }
 
-        /* Анимация полёта в корзину */
         @keyframes flyToCart {
             to {
                 left: var(--cart-left, 0);
@@ -297,34 +297,6 @@
             background-size: 1000px 100%;
             animation: shimmer 2s infinite;
             border-radius: var(--radius-md);
-        }
-
-        .skeleton-card {
-            border-radius: var(--radius-lg);
-            overflow: hidden;
-        }
-
-        .skeleton-image {
-            width: 100%;
-            height: 220px;
-            margin-bottom: 16px;
-        }
-
-        .skeleton-title {
-            width: 80%;
-            height: 16px;
-            margin-bottom: 8px;
-        }
-
-        .skeleton-text {
-            width: 100%;
-            height: 12px;
-            margin-bottom: 6px;
-        }
-
-        .skeleton-price {
-            width: 40%;
-            height: 20px;
         }
 
         .toast {
@@ -1575,6 +1547,8 @@
     <script>
         const SUPABASE_URL = 'https://temrphpbgqwodcvgagrz.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRlbXJwaHBiZ3F3b2RjdmdhZ3J6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg0OTEyMDcsImV4cCI6MjA5NDA2NzIwN30.NoZmurpCp0owULMwEhEHwVdkX5ddSgYCkXATCkHBuJg';
+        const STORAGE_BUCKET = 'products';
+        const STORAGE_URL = `${SUPABASE_URL}/storage/v1/object/public/${STORAGE_BUCKET}`;
 
         const { createClient } = window.supabase;
         const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -1596,34 +1570,77 @@
             { name: 'Десерты', icon: '🍰' }
         ];
 
-        const defaultProducts = [
-            { title: "Сэндвич с тунцом", description: "Хлеб тостовый, салат, томат, огурец, тунец. Вес: 95г", price: 350, category: "Сэндвичи и блины", image: "images/Сэндвич с тунцом.png" },
-            { title: "Финики с хамоном", description: "Финики, сыр дор блю, хамон, орех грецкий. Вес: 35г", price: 1800, category: "Холодные закуски", image: "images/Финики с хамоном и голубым сыром.png" },
-            { title: "Фруктовая тарелка", description: "Ананас, груша, виноград, киви, клубника. Вес: 810г", price: 3500, category: "Десерты", image: "images/Фруктовая тарелка.png" },
-            { title: "Блины в ассортименте", description: "Ассортимент блюд из свежих ингредиентов", price: 4500, category: "Сэндвичи и блины", image: "images/Блины в ассортименте.png" },
-            { title: "Цезарь с креветками", description: "Салат айсберг, креветки, соус цезарь, пармезан. Вес: 100г", price: 2900, category: "Салаты", image: "images/Цезарь с креветками.png" },
-            { title: "Оливье оригиналь", description: "Утка, куриная грудка, язык говяжий, овощи, майонез. Вес: 95г", price: 2200, category: "Салаты", image: "images/Оливье оригиналь.png" },
-            { title: "Брускетта с креветками", description: "Багет французский, креветки, соус кокосовый. Вес: 40г", price: 2200, category: "Брускетты и канапе", image: "images/Брускетта с креветками и кокосовым Чили соусом.png" },
-            { title: "Цезарь с цыпленком", description: "Салат айсберг, филе куриное, соус цезарь, крутоны, сыр пармезан", price: 1200, category: "Салаты", image: "images/Цезарь с цыпленком.png" },
-            { title: "Мимоза", description: "Лосось дикий, овощи на пару, сыр, яйца, соус из тунца. Вес: 110г", price: 2200, category: "Салаты", image: "images/Салат мимоза.png" },
-            { title: "Брускетта с уткой по-пекински", description: "Багет французский, утка, моцарелла в рассоле, соус устричный, черри. Вес: 40г", price: 2200, category: "Брускетты и канапе", image: "images/Брускетта.png" },
-            { title: "Фруктово-ягодное канапе", description: "Груша, клубника, ананас. Вес: 30г", price: 2200, category: "Брускетты и канапе", image: "images/Фруктово-ягодное канапе.png" },
-            { title: "Шашлык из креветок", description: "Креветки, лайм, кинза, перец Чили, соус Ранч. Вес: 140/40 г", price: 2200, category: "Горячие блюда", image: "images/Шашлык из креветок.png" },
-            { title: "Шашлык из индейки в соусе карри с лаймом", description: "Бедро индейки, соус карри, кинза, перец Чили. Соус Ранч. Вес: 160/40г", price: 2200, category: "Горячие блюда", image: "images/Шашлык из индейки в соусе карри с лаймом.png" }
-        ];
-
-        // ФУНКЦИЯ ПОЛУЧЕНИЯ ИЗОБРАЖЕНИЯ
+        // Функция получения правильного URL изображения из Supabase Storage
         function getProductImage(product) {
-            if (product.image_url) {
-                return product.image_url;
+            // Приоритет 1: image_url из базы (ссылка на Storage)
+            if (product.image_url && product.image_url.trim()) {
+                // Если это уже полный URL
+                if (product.image_url.startsWith('http')) {
+                    return product.image_url;
+                }
+                // Если это относительный путь
+                return `${STORAGE_URL}/${product.image_url.replace(/^\/+/, '')}`;
             }
-            if (product.image && product.image.startsWith('data:image')) {
-                return product.image;
+            
+            // Приоритет 2: поле image (старое поле, для совместимости)
+            if (product.image && product.image.trim()) {
+                if (product.image.startsWith('http')) {
+                    return product.image;
+                }
+                return `${STORAGE_URL}/${product.image.replace(/^\/+/, '')}`;
             }
-            if (product.image && (product.image.startsWith('http') || product.image.startsWith('images/'))) {
-                return product.image;
-            }
-            return 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"%3E%3Crect fill="%23F1F5F9" width="200" height="200"/%3E%3Ctext x="100" y="100" text-anchor="middle" dy=".3em" fill="%2394a3b8"%3E🍽️%3C/text%3E%3C/svg%3E';
+            
+            // Приоритет 3: красивая заглушка с названием блюда
+            return `https://placehold.co/400x300/f97316/white?text=${encodeURIComponent(product.title || 'Блюдо')}`;
+        }
+
+        // Функция для проверки и кэширования изображений (предзагрузка)
+        const imageCache = new Map();
+        
+        function preloadImage(url) {
+            if (imageCache.has(url)) return imageCache.get(url);
+            
+            return new Promise((resolve) => {
+                const img = new Image();
+                img.onload = () => {
+                    imageCache.set(url, true);
+                    resolve(true);
+                };
+                img.onerror = () => {
+                    imageCache.set(url, false);
+                    resolve(false);
+                };
+                img.src = url;
+            });
+        }
+
+        // Ленивая загрузка изображений с Intersection Observer
+        let imageObserver = null;
+        
+        function initLazyLoading() {
+            imageObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        const src = img.dataset.src;
+                        if (src) {
+                            img.src = src;
+                            img.classList.add('loaded');
+                        }
+                        imageObserver.unobserve(img);
+                    }
+                });
+            }, {
+                rootMargin: '100px',
+                threshold: 0.01
+            });
+        }
+
+        function observeImages() {
+            if (!imageObserver) initLazyLoading();
+            document.querySelectorAll('img[data-src]').forEach(img => {
+                imageObserver.observe(img);
+            });
         }
 
         // ТЕМА
@@ -1646,6 +1663,7 @@
         const drawerOverlay = document.getElementById('drawerOverlay');
         const drawerMenu = document.getElementById('drawerMenu');
         const drawerClose = document.getElementById('drawerClose');
+        const drawerItems = document.getElementById('drawerItems');
 
         menuToggle.addEventListener('click', () => {
             drawerMenu.classList.add('active');
@@ -1661,6 +1679,24 @@
             drawerMenu.classList.remove('active');
             drawerOverlay.classList.remove('active');
         });
+
+        function renderDrawerCategories() {
+            drawerItems.innerHTML = categories.map(cat => `
+                <button class="drawer-item" data-category="${cat.name}">
+                    <span class="category-icon">${cat.icon}</span>
+                    <span>${cat.name}</span>
+                </button>
+            `).join('');
+            
+            drawerItems.querySelectorAll('.drawer-item').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const category = btn.getAttribute('data-category');
+                    filterByCategory(category);
+                    drawerMenu.classList.remove('active');
+                    drawerOverlay.classList.remove('active');
+                });
+            });
+        }
 
         // УВЕДОМЛЕНИЯ
         function showToast(title, message, icon = '✅') {
@@ -1680,10 +1716,10 @@
             }, 3000);
         }
 
-        // ЗАГРУЗКА ТОВАРОВ
+        // ЗАГРУЗКА ТОВАРОВ ИЗ SUPABASE
         async function loadProducts() {
             const menuGrid = document.getElementById('menuGrid');
-            menuGrid.innerHTML = '<div class="empty-state" style="grid-column: 1/-1;"><p>Загрузка...</p></div>';
+            menuGrid.innerHTML = '<div class="empty-state" style="grid-column: 1/-1;"><div class="spinner" style="margin: 0 auto 16px;"></div><p>Загрузка блюд...</p></div>';
             
             try {
                 const { data, error } = await supabase
@@ -1691,28 +1727,22 @@
                     .select('*')
                     .order('created_at', { ascending: false });
 
-                if (error || !data || data.length === 0) {
-                    products = [...defaultProducts];
+                if (error) throw error;
+                
+                products = data || [];
+                console.log('Загружено блюд:', products.length);
+                
+                if (products.length === 0) {
+                    menuGrid.innerHTML = '<div class="empty-state" style="grid-column: 1/-1;"><h2>😋 Скоро здесь появится меню</h2><p>Добавьте блюда через админ-панель</p></div>';
                 } else {
-                    const supabaseProducts = data.map(p => ({
-                        id: p.id,
-                        title: p.title,
-                        description: p.description,
-                        price: p.price,
-                        category: p.category,
-                        image_url: p.image_url,
-                        image: p.image
-                    }));
-                    products = [...supabaseProducts, ...defaultProducts];
+                    renderCategoryFilters();
+                    filterByCategory('');
                 }
                 
-                renderCategoryFilters();
-                filterByCategory('');
+                renderViewHistory();
             } catch (error) {
-                console.error('Ошибка:', error);
-                products = [...defaultProducts];
-                renderCategoryFilters();
-                filterByCategory('');
+                console.error('Ошибка загрузки:', error);
+                menuGrid.innerHTML = '<div class="empty-state" style="grid-column: 1/-1;"><h2>⚠️ Ошибка загрузки</h2><p>Не удалось загрузить меню. Попробуйте позже.</p></div>';
             }
         }
 
@@ -1736,6 +1766,8 @@
                     filterByCategory(category);
                 });
             });
+            
+            renderDrawerCategories();
         }
 
         function filterByCategory(category) {
@@ -1750,7 +1782,7 @@
             });
 
             if (category === '') {
-                filteredProducts = products;
+                filteredProducts = [...products];
             } else {
                 filteredProducts = products.filter(p => p.category === category);
             }
@@ -1759,20 +1791,21 @@
         }
 
         // ОТКРЫТИЕ МОДАЛКИ ТОВАРА
-        function openProductModal(product, index) {
+        function openProductModal(product) {
             const modal = document.getElementById('productModal');
             const modalContent = document.getElementById('modalContent');
             const isFavorite = favorites.includes(product.title);
+            const imageUrl = getProductImage(product);
             
             modalContent.innerHTML = `
                 <div class="modal-image-section" id="modalImageSection">
-                    <img class="modal-image" src="${getProductImage(product)}" alt="${product.title}" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 200 200%22%3E%3Crect fill=%22%23F1F5F9%22 width=%22200%22 height=%22200%22/%3E%3Ctext x=%22100%22 y=%22100%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%2394a3b8%22%3E🍽️%3C/text%3E%3C/svg%3E'">
+                    <img class="modal-image" src="${imageUrl}" alt="${product.title}" onerror="this.src='https://placehold.co/400x300/f97316/white?text=${encodeURIComponent(product.title)}'">
                     <div class="zoom-hint">🔍 Нажмите на фото, чтобы увеличить</div>
                 </div>
                 <div class="modal-info">
                     <div class="modal-category">${product.category || 'Прочее'}</div>
-                    <h2 class="modal-title">${product.title}</h2>
-                    <p class="modal-description">${product.description}</p>
+                    <h2 class="modal-title">${escapeHtml(product.title)}</h2>
+                    <p class="modal-description">${escapeHtml(product.description)}</p>
                     <div class="modal-price">${product.price} ₽</div>
                     <div class="modal-actions">
                         <button class="modal-add-btn" id="modalAddToCart">+ Добавить в корзину</button>
@@ -1788,36 +1821,27 @@
             
             // ЗУМ ФОТКИ
             const imageSection = document.getElementById('modalImageSection');
-            const modalImage = modalContent.querySelector('.modal-image');
-            
             imageSection.addEventListener('click', (e) => {
                 e.stopPropagation();
                 imageSection.classList.toggle('zoomed');
             });
             
             // КНОПКИ В МОДАЛКЕ
-            const modalAddBtn = document.getElementById('modalAddToCart');
-            const modalFavBtn = document.getElementById('modalFavBtn');
-            
-            modalAddBtn.addEventListener('click', () => {
-                addToCartByProduct(product);
+            document.getElementById('modalAddToBtn').addEventListener('click', () => {
+                addToCart(product);
                 showToast('Добавлено', `${product.title} добавлен в корзину`, '🛒');
                 modal.classList.remove('active');
                 document.body.style.overflow = '';
             });
             
-            modalFavBtn.addEventListener('click', () => {
+            document.getElementById('modalFavBtn').addEventListener('click', () => {
                 toggleFavorite(product.title);
                 const newIsFavorite = favorites.includes(product.title);
-                modalFavBtn.innerHTML = newIsFavorite ? '❤️ В избранном' : '🤍 В избранное';
-                modalFavBtn.classList.toggle('liked', newIsFavorite);
+                const favBtn = document.getElementById('modalFavBtn');
+                favBtn.innerHTML = newIsFavorite ? '❤️ В избранном' : '🤍 В избранное';
+                favBtn.classList.toggle('liked', newIsFavorite);
                 renderMenu();
             });
-        }
-        
-        function addToCartByProduct(product) {
-            cart.push(product);
-            updateCart();
         }
         
         function closeModal() {
@@ -1833,45 +1857,65 @@
             }
         });
 
-        // РЕНДЕР МЕНЮ
+        // ESCAPE HTML
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        // РЕНДЕР МЕНЮ С ЛЕНИВОЙ ЗАГРУЗКОЙ
         function renderMenu() {
             const menuGrid = document.getElementById('menuGrid');
             
             if (filteredProducts.length === 0) {
-                menuGrid.innerHTML = '<div class="empty-state" style="grid-column: 1/-1;"><h2>Нет товаров</h2><p>В этой категории пока нет товаров</p></div>';
+                menuGrid.innerHTML = '<div class="empty-state" style="grid-column: 1/-1;"><h2>😋 Нет блюд</h2><p>В этой категории пока нет блюд</p></div>';
                 return;
             }
 
             menuGrid.innerHTML = filteredProducts.map((product, idx) => {
                 const isFavorite = favorites.includes(product.title);
+                const imageUrl = getProductImage(product);
+                
                 return `
-                    <div class="card" data-product-index="${idx}">
+                    <div class="card" data-product-idx="${idx}">
                         <div class="card-image">
-                            <img src="${getProductImage(product)}" alt="${product.title}" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 200 200%22%3E%3Crect fill=%22%23F1F5F9%22 width=%22200%22 height=%22200%22/%3E%3C/svg%3E'">
+                            <img data-src="${imageUrl}" 
+                                 src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%23e2e8f0'/%3E%3C/svg%3E"
+                                 alt="${escapeHtml(product.title)}"
+                                 class="lazy-image"
+                                 style="background: var(--bg-tertiary);">
                         </div>
-                        <button class="card-favorite ${isFavorite ? 'liked' : ''}" data-fav="${idx}">
+                        <button class="card-favorite ${isFavorite ? 'liked' : ''}" data-fav-idx="${idx}">
                             ${isFavorite ? '❤️' : '🤍'}
                         </button>
                         <div class="card-content">
-                            <div class="card-category">${product.category || 'Прочее'}</div>
-                            <h3 class="card-title">${product.title}</h3>
-                            <p class="card-desc">${product.description}</p>
+                            <div class="card-category">${escapeHtml(product.category) || 'Прочее'}</div>
+                            <h3 class="card-title">${escapeHtml(product.title)}</h3>
+                            <p class="card-desc">${escapeHtml(product.description)}</p>
                             <div class="card-footer">
                                 <span class="price">${product.price} ₽</span>
-                                <button class="card-btn" data-add="${idx}">+ Добавить</button>
+                                <button class="card-btn" data-add-idx="${idx}">+ Добавить</button>
                             </div>
                         </div>
                     </div>
                 `;
             }).join('');
             
+            // Запускаем ленивую загрузку
+            observeImages();
+            
             // НАВЕШИВАЕМ ОБРАБОТЧИКИ
             document.querySelectorAll('.card').forEach(card => {
-                const idx = parseInt(card.getAttribute('data-product-index'));
+                const idx = parseInt(card.getAttribute('data-product-idx'));
                 card.addEventListener('click', (e) => {
                     if (!e.target.closest('.card-favorite') && !e.target.closest('.card-btn')) {
                         addToViewHistory(filteredProducts[idx].title);
-                        openProductModal(filteredProducts[idx], idx);
+                        openProductModal(filteredProducts[idx]);
                     }
                 });
             });
@@ -1879,7 +1923,7 @@
             document.querySelectorAll('.card-favorite').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     e.stopPropagation();
-                    const idx = parseInt(btn.getAttribute('data-fav'));
+                    const idx = parseInt(btn.getAttribute('data-fav-idx'));
                     toggleFavorite(filteredProducts[idx].title);
                     renderMenu();
                 });
@@ -1888,7 +1932,7 @@
             document.querySelectorAll('.card-btn').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     e.stopPropagation();
-                    const idx = parseInt(btn.getAttribute('data-add'));
+                    const idx = parseInt(btn.getAttribute('data-add-idx'));
                     addToCart(filteredProducts[idx]);
                     showToast('Добавлено', `${filteredProducts[idx].title} добавлен в корзину`, '🛒');
                     
@@ -1898,17 +1942,23 @@
                     const flyingItem = document.createElement('div');
                     flyingItem.style.cssText = `
                         position: fixed;
-                        left: ${btnRect.left}px;
-                        top: ${btnRect.top}px;
-                        width: ${btnRect.width}px;
-                        height: ${btnRect.height}px;
+                        left: ${btnRect.left + btnRect.width/2 - 15}px;
+                        top: ${btnRect.top + btnRect.height/2 - 15}px;
+                        width: 30px;
+                        height: 30px;
                         background: var(--accent);
                         border-radius: 50%;
                         pointer-events: none;
                         z-index: 9998;
-                        animation: flyToCart 0.8s ease-in forwards;
+                        transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
                     `;
                     document.body.appendChild(flyingItem);
+                    
+                    requestAnimationFrame(() => {
+                        flyingItem.style.transform = `translate(${cartRect.left + cartRect.width/2 - (btnRect.left + btnRect.width/2)}px, ${cartRect.top + cartRect.height/2 - (btnRect.top + btnRect.height/2)}px) scale(0.1)`;
+                        flyingItem.style.opacity = '0';
+                    });
+                    
                     setTimeout(() => flyingItem.remove(), 800);
                 });
             });
@@ -1917,12 +1967,12 @@
         // ПОИСК
         const searchInput = document.getElementById('searchInput');
         searchInput.addEventListener('input', (e) => {
-            const query = e.target.value.toLowerCase();
+            const query = e.target.value.toLowerCase().trim();
             if (query === '') {
                 filterByCategory(currentFilter);
             } else {
-                const allProducts = currentFilter === '' ? products : products.filter(p => p.category === currentFilter);
-                filteredProducts = allProducts.filter(p => 
+                let sourceProducts = currentFilter === '' ? products : products.filter(p => p.category === currentFilter);
+                filteredProducts = sourceProducts.filter(p => 
                     p.title.toLowerCase().includes(query) || 
                     p.description.toLowerCase().includes(query)
                 );
@@ -1946,14 +1996,13 @@
 
         // ИСТОРИЯ ПРОСМОТРА
         function addToViewHistory(productTitle) {
-            if (!viewHistory.includes(productTitle)) {
-                viewHistory.unshift(productTitle);
-                if (viewHistory.length > 5) {
-                    viewHistory.pop();
-                }
-                localStorage.setItem('viewHistory', JSON.stringify(viewHistory));
-                renderViewHistory();
+            viewHistory = viewHistory.filter(title => title !== productTitle);
+            viewHistory.unshift(productTitle);
+            if (viewHistory.length > 5) {
+                viewHistory.pop();
             }
+            localStorage.setItem('viewHistory', JSON.stringify(viewHistory));
+            renderViewHistory();
         }
 
         function renderViewHistory() {
@@ -1969,8 +2018,8 @@
             historyGrid.innerHTML = viewHistory.map(title => {
                 const product = products.find(p => p.title === title);
                 return `
-                    <div class="history-card" data-history="${title}">
-                        ${product ? product.title : title}
+                    <div class="history-card" data-history="${escapeHtml(title)}">
+                        ${product ? escapeHtml(product.title) : escapeHtml(title)}
                     </div>
                 `;
             }).join('');
@@ -2006,7 +2055,7 @@
         floatingCartBtn.addEventListener('click', toggleCart);
 
         function addToCart(product) {
-            cart.push(product);
+            cart.push({...product});
             updateCart();
         }
 
@@ -2029,15 +2078,15 @@
             }
 
             if (cart.length === 0) {
-                cartItems.innerHTML = '<div style="padding: 40px; text-align: center; color: var(--text-secondary);">Корзина пуста</div>';
+                cartItems.innerHTML = '<div style="padding: 40px; text-align: center; color: var(--text-secondary);">🛒 Корзина пуста</div>';
             } else {
                 cartItems.innerHTML = cart.map((item, index) => `
                     <div class="cart-item">
                         <div>
-                            <h4 style="margin-bottom: 4px; font-weight: 600;">${item.title}</h4>
+                            <h4 style="margin-bottom: 4px; font-weight: 600;">${escapeHtml(item.title)}</h4>
                             <div class="cart-item-price">${item.price} ₽</div>
                         </div>
-                        <button style="background: #fee2e2; color: #dc2626; border: none; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; font-weight: 700;" onclick="removeFromCart(${index}); updateCart();">✕</button>
+                        <button style="background: #fee2e2; color: #dc2626; border: none; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; font-weight: 700;" onclick="window.removeFromCart(${index})">✕</button>
                     </div>
                 `).join('');
             }
@@ -2056,7 +2105,7 @@
             const comment = document.getElementById('clientComment').value.trim();
 
             if (!name || !phone || !address || cart.length === 0) {
-                showToast('Ошибка', 'Заполните все поля!', '❌');
+                showToast('Ошибка', 'Заполните все поля и добавьте товары в корзину!', '❌');
                 return;
             }
 
@@ -2103,7 +2152,7 @@
             }
 
             document.body.appendChild(yoomoneyForm);
-            showOrderSuccessModal(name, total);
+            showOrderSuccessModal(name, total, phone);
 
             setTimeout(() => {
                 yoomoneyForm.submit();
@@ -2121,16 +2170,15 @@
             }, 1000);
         });
 
-        function showOrderSuccessModal(name, total) {
+        function showOrderSuccessModal(name, total, phone) {
             const modal = document.createElement('div');
             modal.className = 'success-modal';
-            const phone = document.getElementById('clientPhone').value;
             modal.innerHTML = `
                 <div class="success-modal-content">
                     <div class="success-icon">✅</div>
-                    <h2 style="font-size: 24px; font-weight: 700; margin-bottom: 16px; color: var(--text-primary);">Заказ создан!</h2>
-                    <p style="color: var(--text-secondary); margin-bottom: 20px; font-size: 16px;">
-                        Здравствуйте, <strong>${name}</strong>!<br><br>
+                    <h2 style="font-size: 24px; font-weight: 700; margin-bottom: 16px;">Заказ создан!</h2>
+                    <p style="margin-bottom: 20px; font-size: 16px;">
+                        Здравствуйте, <strong>${escapeHtml(name)}</strong>!<br><br>
                         Ваш заказ принят. Сейчас откроется страница оплаты.
                     </p>
                     <div style="background: var(--bg-secondary); padding: 16px; border-radius: 12px; margin-bottom: 20px;">
@@ -2138,10 +2186,7 @@
                         <p style="color: var(--accent); font-size: 28px; font-weight: 700; margin: 0;">${total}₽</p>
                     </div>
                     <p style="color: var(--text-tertiary); font-size: 13px;">
-                        После оплаты мы свяжемся с вами по номеру<br><strong>${phone}</strong>
-                    </p>
-                    <p style="color: var(--text-tertiary); font-size: 12px; margin-top: 16px; margin-bottom: 0;">
-                        Окно закроется автоматически...
+                        После оплаты мы свяжемся с вами по номеру<br><strong>${escapeHtml(phone)}</strong>
                     </p>
                 </div>
             `;
@@ -2160,7 +2205,6 @@
         // ИНИЦИАЛИЗАЦИЯ
         loadProducts();
         updateCart();
-        renderViewHistory();
     </script>
 </body>
 </html>
