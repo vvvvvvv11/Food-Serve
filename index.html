@@ -859,31 +859,64 @@ function getProductImage(product) {
     // Приоритет 4: Плейсхолдер
     return `https://placehold.co/400x300/f97316/white?text=${encodeURIComponent(product.title)}`;
 }
-        async function loadProducts() {
-            try {
-                const response = await fetch('products_rows.json');
-                if (!response.ok) {
-                    throw new Error('Ошибка загрузки файла');
-                }
-                const data = await response.json();
-                products = data;
-                filteredProducts = [...products];
-                renderCategoryFilters();
-                renderMenu();
-                renderViewHistory();
-            } catch (error) {
-                console.error('Ошибка загрузки меню:', error);
-                products = [];
-                filteredProducts = [];
-                renderMenu();
-                showToast('❌', 'Ошибка загрузки меню');
-            }
-        }
+        const defaultProducts = [
+    { id: 1001, title: "Сэндвич с тунцом", description: "Хлеб тостовый, салат, томат, огурец, тунец. Вес: 95г", price: 180, category: "Сэндвичи и блины", image: "images/Сэндвич с тунцом.png" },
+    { id: 1002, title: "Финики с хамоном", description: "Финики, сыр дор блю, хамон, орех грецкий. Вес: 35г", price: 220, category: "Брускетты и канапе", image: "images/Финики с хамоном и голубым сыром.png" },
+    { id: 1003, title: "Фруктовая тарелка", description: "Ананас, груша, виноград, киви, клубника. Вес: 810г", price: 900, category: "Десерты", image: "images/Фруктовая тарелка.png" },
+    { id: 1004, title: "Блины в ассортименте", description: "Ассортимент блюд из свежих ингредиентов", price: 250, category: "Сэндвичи и блины", image: "images/Блины в ассортименте.png" },
+    { id: 1005, title: "Цезарь с креветками", description: "Салат айсберг, креветки, соус цезарь, пармезан. Вес: 100г", price: 310, category: "Салаты", image: "images/Цезарь с креветками.png" },
+    { id: 1006, title: "Оливье оригиналь", description: "Утка, куриная грудка, язык говяжий, овощи, майонез. Вес: 95г", price: 270, category: "Салаты", image: "images/Оливье оригиналь.png" },
+    { id: 1007, title: "Брускетта с креветками", description: "Багет французский, креветки, соус кокосовый. Вес: 40г", price: 140, category: "Брускетты и канапе", image: "images/Брускетта с креветками и кокосовым Чили соусом.png" },
+    { id: 1008, title: "Цезарь с цыпленком", description: "Салат айсберг, филе куриное, соус цезарь, крутоны, сыр пармезан", price: 230, category: "Салаты", image: "images/Цезарь с цыпленком.png" },
+    { id: 1009, title: "Мимоза", description: "Лосось дикий, овощи на пару, сыр, яйца, соус из тунца. Вес: 110г", price: 220, category: "Салаты", image: "images/Салат мимоза.png" },
+    { id: 1010, title: "Брускетта с уткой по-пекински", description: "Багет французский, утка, моцарелла в рассоле, соус устричный, черри. Вес: 40г", price: 140, category: "Брускетты и канапе", image: "images/Брускетта.png" },
+    { id: 1011, title: "Фруктово-ягодное канапе", description: "Груша, клубника, ананас. Вес: 30г", price: 85, category: "Брускетты и канапе", image: "images/Фруктово-ягодное канапе.png" },
+    { id: 1012, title: "Шашлык из креветок", description: "Креветки, лайм, кинза, перец Чили, соус Ранч. Вес: 140/40 г", price: 910, category: "Горячие блюда", image: "images/Шашлык из креветок.png" },
+    { id: 1013, title: "Шашлык из индейки в соусе карри с лаймом", description: "Бедро индейки, соус карри, кинза, перец Чили. Соус Ранч. Вес: 160/40г", price: 540, category: "Горячие блюда", image: "images/Шашлык из индейки в соусе карри с лаймом.png" }
+];
 
-        // ВСЕ ОСТАЛЬНЫЕ ФУНКЦИИ ОСТАЮТСЯ БЕЗ ИЗМЕНЕНИЙ
-        // (renderCategoryFilters, filterByCategory, renderMenu, openProductModal, 
-        //  closeModal, escapeHtml, showToast, toggleFavorite, addToViewHistory, 
-        //  renderViewHistory, addToCart, removeFromCart, updateCart и т.д.)
+async function loadProducts() {
+    try {
+        const response = await fetch('products_rows.json');
+        let jsonProducts = [];
+        
+        if (response.ok) {
+            jsonProducts = await response.json();
+        }
+        
+        // Объединяем товары из JSON и дефолтные
+        products = [...jsonProducts, ...defaultProducts];
+        
+        // Удаляем дубликаты по title
+        const uniqueProducts = new Map();
+        products.forEach(product => {
+            if (!uniqueProducts.has(product.title)) {
+                uniqueProducts.set(product.title, product);
+            }
+        });
+        products = Array.from(uniqueProducts.values());
+        
+        filteredProducts = [...products];
+        renderCategoryFilters();
+        renderMenu();
+        renderViewHistory();
+        
+        if (jsonProducts.length === 0) {
+            console.log('Используются дефолтные товары');
+        }
+    } catch (error) {
+        console.error('Ошибка загрузки меню:', error);
+        // Если JSON не загрузился, используем только дефолтные товары
+        products = [...defaultProducts];
+        filteredProducts = [...products];
+        renderCategoryFilters();
+        renderMenu();
+        renderViewHistory();
+        showToast('⚠️', 'Загружены демо-товары');
+    }
+}
+
+// ВСЕ ОСТАЛЬНЫЕ ФУНКЦИИ ОСТАЮТСЯ БЕЗ ИЗМЕНЕНИЙ
         
         function renderCategoryFilters() {
             const filterContainer = document.getElementById('categoryFilters');
