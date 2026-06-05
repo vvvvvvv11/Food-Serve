@@ -840,27 +840,25 @@
         let viewHistory = JSON.parse(localStorage.getItem('viewHistory')) || [];
 
         // Функция получения изображения
-        function getProductImage(product) {
-            // Приоритет 1: Внешняя ссылка (image_url)
-            if (product.image_url && product.image_url.startsWith('http')) {
-                return product.image_url;
-            }
-            
-            // Приоритет 2: Base64 изображение
-            if (product.image_url && product.image_url.startsWith('data:image')) {
-                return product.image_url;
-            }
-            
-            // Приоритет 3: Локальный файл из папки images (поле image)
-            if (product.image && product.image.trim() !== '') {
-                return product.image;
-            }
-            
-            // Приоритет 4: Плейсхолдер
-            return `https://placehold.co/400x300/f97316/white?text=${encodeURIComponent(product.title)}`;
-        }
-
-        // Загрузка товаров из JSON файла
+function getProductImage(product) {
+    // Приоритет 1: Внешняя ссылка (image)
+    if (product.image && product.image.startsWith('http')) {
+        return product.image;
+    }
+    
+    // Приоритет 2: Base64 изображение (image)
+    if (product.image && product.image.startsWith('data:image')) {
+        return product.image;
+    }
+    
+    // Приоритет 3: Локальный файл из папки images (image)
+    if (product.image && product.image.trim() !== '') {
+        return product.image;
+    }
+    
+    // Приоритет 4: Плейсхолдер
+    return `https://placehold.co/400x300/f97316/white?text=${encodeURIComponent(product.title)}`;
+}
         async function loadProducts() {
             try {
                 const response = await fetch('products_rows.json');
