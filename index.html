@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Taste & Serve — Премиум кейтеринг</title>
     <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.38.4"></script>
     <style>
         /* ВСЕ ВАШИ СТИЛИ ОСТАЮТСЯ БЕЗ ИЗМЕНЕНИЙ */
         :root {
@@ -831,98 +830,8 @@
     </footer>
 
     <script>
-        const SUPABASE_URL = 'https://temrphpbgqwodcvgagrz.supabase.co';
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRlbXJwaHBiZ3F3b2RjdmdhZ3J6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg0OTEyMDcsImV4cCI6MjA5NDA2NzIwN30.NoZmurpCp0owULMwEhEHwVdkX5ddSgYCkXATCkHBuJg';
-        const STORAGE_BUCKET = 'product-images';
-        const STORAGE_URL = `${SUPABASE_URL}/storage/v1/object/public/${STORAGE_BUCKET}`;
-
-        const { createClient } = window.supabase;
-        const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-        const localProducts = [
-            { id: 1, title: "Сэндвич с тунцом", description: "Хлеб тостовый, салат, томат, огурец, тунец. Вес: 95г", price: 180, category: "Сэндвичи и блины", image: "images/Сэндвич с тунцом.png" },
-            { id: 2, title: "Блины в ассортименте", description: "Ассортимент блюд из свежих ингредиентов", price: 250, category: "Сэндвичи и блины", image: "images/Блины в ассортименте.png" },
-            { id: 3, title: "Сэндвич с цыпленком гриль", description: "Хлеб тостовый, соус цезарь, куриная грудка, салат айсберг, томат, огурец свежий, Чеддер красный. Вес: 105г. Заказ от 10шт", price: 170, category: "Сэндвичи и блины", image_url: "" },
-            { id: 4, title: "Сэндвич с ветчиной и хрустящим беконом", description: "Хлеб тостовый, соус цезарь, ветчина, бекон, салат айсберг, огурец свежий, томат, сыр Чеддер красный. Вес: 110г. Заказ от 10шт", price: 170, category: "Сэндвичи и блины", image_url: "" },
-            { id: 5, title: "Финики с хамоном", description: "Финики, сыр дор блю, хамон, орех грецкий. Вес: 35г", price: 220, category: "Холодные закуски", image_url: "" },
-            { id: 6, title: "Тарелка к пенному", description: "Джерки из свинины копченые, пивчики Том ям, гренки Бородинские чесночные, сыр коса сливочный, креветки Чили, соус сливочно-чесночный. Вес:240/40", price: 940, category: "Холодные закуски", image_url: "" },
-            { id: 7, title: "Севиче из гребешка с манго", description: "Гребешок, манго, ягоды годжи, соус из лайма. Вес:160г. Заказ от 5шт", price: 690, category: "Холодные закуски", image_url: "" },
-            { id: 8, title: "Сырное плато", description: "Камамбер, Чеддер красный, дор блю, пармезан, виноград, мед. Вес:180/30г.", price: 720, category: "Холодные закуски", image_url: "https://i.imgur.com/LhgBbUH.jpeg" },
-            { id: 9, title: "Овощное плато", description: "Томаты розовые, огурцы, редис, перец болгарский, лук красный, морковь", price: 360, category: "Холодные закуски", image_url: "" },
-            { id: 10, title: "Мясное плато", description: "Индейка с вяленой клюквой, грудинка в/к, Краковская колбаса, вырезка свиная в/к, паштет из печени индейки (деликатесы собственного производства)", price: 480, category: "Холодные закуски", image_url: "https://i.imgur.com/Ev9fALy.png" },
-            { id: 11, title: "Цезарь с креветками", description: "Салат айсберг, креветки, соус цезарь, пармезан. Вес: 100г", price: 310, category: "Салаты", image: "images/Цезарь с креветками.png" },
-            { id: 12, title: "Оливье оригиналь", description: "Утка, куриная грудка, язык говяжий, овощи, майонез. Вес: 95г", price: 270, category: "Салаты", image: "images/Оливье оригиналь.png" },
-            { id: 13, title: "Цезарь с цыпленком", description: "Салат айсберг, филе куриное, соус цезарь, крутоны, сыр пармезан", price: 230, category: "Салаты", image: "images/Цезарь с цыпленком.png" },
-            { id: 14, title: "Мимоза", description: "Лосось дикий, овощи на пару, сыр, яйца, соус из тунца. Вес: 110г", price: 220, category: "Салаты", image: "images/Салат мимоза.png" },
-            { id: 15, title: "Салат греческий с творожным сыром", description: "Салат айсберг, томат, огурец, черри, оливки, лук красный, каперсы, сыр творожный, масло оливковое. Вес:200г", price: 440, category: "Салаты", image_url: "" },
-            { id: 16, title: "Салат с индейкой, грушей и соусом из сыра с голубой плесенью", description: "Листья салата, грудка индейки, соус из сыра с голубой плесенью, груша, кешью, черри. Вес:220г", price: 470, category: "Салаты", image_url: "" },
-            { id: 17, title: "Салат с осьминогом и печёным молодым картофелем", description: "Микс салата, осьминог су-вид, картофель, соус из мяты и лайма. Вес:200г", price: 660, category: "Салаты", image_url: "" },
-            { id: 18, title: "Салат с утиной грудкой и голубикой", description: "Микс салата, орех кедровый, утиная грудка су-вид, гриб белый, соус брусничный. Вес:160г", price: 440, category: "Салаты", image_url: "" },
-            { id: 19, title: "Салат поморский", description: "Кальмар, крабовые палочки, креветки тигровые, сыр Российский, томаты, перец болгарский, картофель, соус устричный. Вес:150", price: 510, category: "Салаты", image_url: "" },
-            { id: 20, title: "Салат с инжиром и брынзой", description: "Инжир, брынза, фундук, гранат, огурец свежий, микс салата, соус цитрусовый. Вес:80г", price: 340, category: "Салаты", image_url: "" },
-            { id: 21, title: "Рыба под шубой", description: "Скумбрия с/с, картофель, морковь, лук репчатый, яйцо куриное, свёкла, майонез. Вес:100г", price: 230, category: "Салаты", image_url: "" },
-            { id: 22, title: "Шашлык из креветок", description: "Креветки, лайм, кинза, перец Чили, соус Ранч. Вес: 140г", price: 910, category: "Горячие блюда", image: "images/Шашлык из креветок.png" },
-            { id: 23, title: "Шашлык из индейки в соусе карри с лаймом", description: "Бедро индейки, соус карри, кинза, перец Чили. Соус Ранч. Вес: 160/40г", price: 540, category: "Горячие блюда", image: "images/Шашлык из индейки в соусе карри с лаймом.png" },
-            { id: 24, title: "Индейка с манго в ореховом соусе", description: "Индейка бедро, соус ореховый, манго, грейпфрут, грибы белые, сыр моцарелла. Вес:170г", price: 410, category: "Горячие блюда", image_url: "" },
-            { id: 25, title: "Судак жареный с соусом Бер Блан", description: "Филе судака, соус на основе белого вина и сливок. Вес: 140г", price: 470, category: "Горячие блюда", image_url: "" },
-            { id: 26, title: "Говяжьи щёчки в мясном жу", description: "Говяжьи щёчки, мясной соус. Вес:180г", price: 430, category: "Горячие блюда", image_url: "" },
-            { id: 27, title: "Барашек томленый с абрикосом и изюмом", description: "Баранина, абрикос, изюм, крупа булгур. Вес:250г", price: 640, category: "Горячие блюда", image_url: "" },
-            { id: 28, title: "Шашлык из куриных крылышек", description: "Крылья куриные, соус Ранч, лук маринованный", price: 350, category: "Горячие блюда", image_url: "" },
-            { id: 29, title: "Шашлык из свиной шейки", description: "Шея свиная (или вырезка), соус пикантный, лук маринованный", price: 480, category: "Горячие блюда", image_url: "" },
-            { id: 30, title: "Шашлык из говядины", description: "Говядина мякоть, соус пикантный, лук маринованный", price: 640, category: "Горячие блюда", image_url: "" },
-            { id: 31, title: "Утиная ножка конфи с брусничным соусом", description: "Утиная ножка су-вид, соус брусничный. Вес:1шт(~200г)", price: 545, category: "Горячие блюда", image_url: "" },
-            { id: 32, title: "Фруктовая тарелка", description: "Ананас, груша, виноград, киви, клубника. Вес: 810г", price: 900, category: "Десерты", image: "images/Фруктовая тарелка.png" },
-            { id: 33, title: "Медовик", description: "Медовик. Вес: 90г", price: 190, category: "Десерты", image_url: "https://i.imgur.com/JTgCcgg.png" },
-            { id: 34, title: "Эклер с ванильным кремом", description: "Вес 50г", price: 170, category: "Десерты", image_url: "https://i.imgur.com/65iCASw.png" },
-            { id: 35, title: "Эклер манго-маракуйя", description: "Эклер манго-маракуйя. Вес: 50г", price: 170, category: "Десерты", image_url: "https://i.imgur.com/Y4tAnG9.png" },
-            { id: 36, title: "Пирожное картошка в шоколадной глазури", description: "Пирожное картошка в шоколадной глазури. Вес: 45г", price: 100, category: "Десерты", image_url: "" },
-            { id: 37, title: "Пирожное картошка", description: "Пирожное картошка. Вес: 45г", price: 100, category: "Десерты", image_url: "" },
-            { id: 38, title: "Меренговый рулет вишня/миндаль", description: "Меренговый рулет вишня/миндаль. Вес: 180г", price: 320, category: "Десерты", image_url: "" },
-            { id: 39, title: "Кейк-попс малина/вишня", description: "Кейк-попс малина/вишня. Вес: 30г. Заказ от 16шт", price: 80, category: "Десерты", image_url: "" },
-            { id: 40, title: "Зефир", description: "Вес:30г", price: 60, category: "Десерты", image_url: "https://i.imgur.com/Qmi1MeZ.png" },
-            { id: 41, title: "Макаронс малина", description: "Вес:30г", price: 175, category: "Десерты", image_url: "https://i.imgur.com/zSuKMpG.png" },
-            { id: 42, title: "Макаронс фисташка", description: "Вес:30г", price: 175, category: "Десерты", image_url: "https://i.imgur.com/QFqbcEH.png" },
-            { id: 43, title: "Макаронс манго-маракуйя", description: "Вес:30г", price: 175, category: "Десерты", image_url: "https://i.imgur.com/q2jGhaK.png" },
-            { id: 44, title: "Пирожное Анна Павлова", description: "Безе, крем сливочный, свежие ягоды. Вес: 80г. Заказ от 10шт", price: 320, category: "Десерты", image_url: "https://i.imgur.com/Ilztl5O.png" },
-            { id: 45, title: "Тарт со свежей клубникой", description: "Вес:100г", price: 210, category: "Десерты", image_url: "https://i.imgur.com/N1nonZG.png" },
-            { id: 46, title: "Тарт с голубикой", description: "Вес:100г. Заказ от 10шт", price: 210, category: "Десерты", image_url: "https://i.imgur.com/RGLiT6H.png" },
-            { id: 47, title: "Брускетта с креветками", description: "Багет французский, креветки, соус кокосовый. Вес: 40г", price: 140, category: "Брускетты и канапе", image: "images/Брускетта с креветками и кокосовым Чили соусом.png" },
-            { id: 48, title: "Брускетта с уткой", description: "Багет французский, утка, моцарелла, соус устричный, черри. Вес: 40г", price: 140, category: "Брускетты и канапе", image: "images/Брускетта.png" },
-            { id: 49, title: "Брускетта с уткой, сыром камамбер и фруктово-ягодным конфи", description: "Багет французский, утиная грудка, камамбер, фруктово-ягодное конфи. Заказ от 10шт", price: 180, category: "Брускетты и канапе", image_url: "" },
-            { id: 50, title: "Тапас с кремом из рикотты и свежими ягодами", description: "Багет французский, свежие ягоды, крем из рикотты. Вес: 35г. Заказ от 10шт", price: 130, category: "Брускетты и канапе", image_url: "" },
-            { id: 51, title: "Мешочек из хамона и голубого сыра", description: "Хамон, дор блю, груша, мед. Вес: 30г. Заказ от 10шт", price: 140, category: "Брускетты и канапе", image_url: "https://i.imgur.com/HiaLc1y.png" },
-            { id: 52, title: "Канапе капризе", description: "Сыр моцарелла мини, томаты Черри, микрозелень. Вес:30г. Заказ от 10шт", price: 100, category: "Брускетты и канапе", image_url: "https://i.imgur.com/yb6JHoz.png" },
-            { id: 53, title: "Брускетта с паштетом из печени утки", description: "Багет ржано-пшеничный, паштет из печени утки, чатни из груши, крем-чиз, фундук. Вес:35г. Заказ от 10шт", price: 140, category: "Брускетты и канапе", image_url: "" },
-            { id: 54, title: "Брускетта с печеной хурмой и тар-таром из креветок", description: "Багет французский, хурма, крем-чиз, тар-тар из креветок, кешью. Вес:30г. Заказ от 10шт", price: 170, category: "Брускетты и канапе", image_url: "" },
-            { id: 55, title: "Брускетта с диким лососем и крем-чизом", description: "Багет ржаной, крем-чиз, лосось дикий с/с, кунжут. Вес:30г. Заказ от 10шт", price: 140, category: "Брускетты и канапе", image_url: "" },
-            { id: 56, title: "Тост со шпротами и соусом из тунца", description: "Хлеб Бородинский, шпроты, соус из тунца, редис, яйцо перепелиное. Вес:35г. Заказ от 10шт", price: 120, category: "Брускетты и канапе", image_url: "" },
-            { id: 57, title: "Брускетта с ростбифом и печеным перцем", description: "Багет французский, крем-чиз, перец болгарский, ростбиф, каперсы. Вес:40г. Заказ от 10шт", price: 140, category: "Брускетты и канапе", image_url: "" },
-            { id: 58, title: "Канапе с грушей и хамоном", description: "Груша, хамон, сыр Бри. Вес:30г. Заказ от 10шт", price: 140, category: "Брускетты и канапе", image_url: "" },
-            { id: 59, title: "Брускетта с индейкой и вяленой клюквой", description: "Багет французский, индейка, клюква вяленая, соус устричный, соус медово-горчичный. Вес:40г. Заказ от 10шт", price: 135, category: "Брускетты и канапе", image_url: "" },
-            { id: 60, title: "Тост с красной икрой", description: "Харрис, крем-чиз, икра горбуши соленая, яйцо перепелиное. Вес:30г. Заказ от 10шт", price: 390, category: "Брускетты и канапе", image_url: "" },
-            { id: 61, title: "Полба с белыми грибами", description: "Крупа полба, сливки, лук репчатый, белые грибы. Вес:150г", price: 180, category: "Гарниры", image_url: "" },
-            { id: 62, title: "Картофель с копчёной грудинкой и сыром Чеддер", description: "Картофель беби, сливки, грудинка в/к, сыр Чеддер. Вес:140г", price: 155, category: "Гарниры", image_url: "" },
-            { id: 63, title: "Картофель беби жареный", description: "Картофель беби, чеснок, розмарин. Вес:150г", price: 150, category: "Гарниры", image_url: "" },
-            { id: 64, title: "Картофельное пюре с ароматными травами", description: "Картофельное пюре, петрушка, укроп, соус песто. Вес:150г", price: 150, category: "Гарниры", image_url: "" },
-            { id: 65, title: "Картофельное пюре со шпинатом", description: "Картофельное пюре, чеснок, шпинат. Вес:150г", price: 155, category: "Гарниры", image_url: "" },
-            { id: 66, title: "Картофельное пюре с печёным чесноком", description: "Картофельное пюре, чеснок печёный. Вес:150г", price: 150, category: "Гарниры", image_url: "" },
-            { id: 67, title: "Картофель по-деревенски с чесноком и розмарином", description: "Картофель, чеснок, тимьян, розмарин. Вес:120г", price: 140, category: "Гарниры", image_url: "" },
-            { id: 68, title: "Гречка с лесными грибами и луком фри", description: "Крупа греча, шампиньоны, вешенки, белые грибы, лук репчатый, лук фри. Вес:150г", price: 170, category: "Гарниры", image_url: "" },
-            { id: 69, title: "Кус-кус со сливочным маслом", description: "Кус-кус, масло сливочное. Вес:150г", price: 160, category: "Гарниры", image_url: "" },
-            { id: 70, title: "Полента", description: "Полента, масло сливочное, сыр Чеддер. Вес:150г", price: 160, category: "Гарниры", image_url: "" },
-            { id: 71, title: "Перлотто", description: "Крупа перловая, сливки, пармезан. Вес:150г", price: 155, category: "Гарниры", image_url: "" }
-        ];
-
-        const categories = [
-            { name: 'Брускетты и канапе', icon: '🥖' },
-            { name: 'Сэндвичи и блины', icon: '🥪' },
-            { name: 'Холодные закуски', icon: '❄️' },
-            { name: 'Салаты', icon: '🥗' },
-            { name: 'Горячие блюда', icon: '🔥' },
-            { name: 'Десерты', icon: '🍰' },
-            { name: 'Гарниры', icon: '🍚' }
-        ];
-
+        // Удалены supabase переменные, теперь только загрузка из JSON файла
+        
         let cart = [];
         let products = [];
         let filteredProducts = [];
@@ -930,68 +839,65 @@
         let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
         let viewHistory = JSON.parse(localStorage.getItem('viewHistory')) || [];
 
-        // ========== ГЛАВНОЕ ИСПРАВЛЕНИЕ ==========
-        // Функция получения изображения - поддерживает:
-        // 1. Локальные файлы из папки images/ (поле image)
-        // 2. Внешние ссылки (поле image_url)
-        // 3. Файлы из Supabase Storage (поле image_file)
+        // Функция получения изображения
         function getProductImage(product) {
             // Приоритет 1: Внешняя ссылка (image_url)
             if (product.image_url && product.image_url.startsWith('http')) {
                 return product.image_url;
             }
             
-            // Приоритет 2: Внешняя ссылка в поле image
-            if (product.image && product.image.startsWith('http')) {
-                return product.image;
+            // Приоритет 2: Base64 изображение
+            if (product.image_url && product.image_url.startsWith('data:image')) {
+                return product.image_url;
             }
             
-            // Приоритет 3: Файл в Supabase Storage (image_file)
-            if (product.image_file) {
-                return `${STORAGE_URL}/${product.image_file}`;
-            }
-            
-            // Приоритет 4: Локальный файл из папки images (поле image)
+            // Приоритет 3: Локальный файл из папки images (поле image)
             if (product.image && product.image.trim() !== '') {
                 return product.image;
             }
             
-            // Приоритет 5: Плейсхолдер
+            // Приоритет 4: Плейсхолдер
             return `https://placehold.co/400x300/f97316/white?text=${encodeURIComponent(product.title)}`;
         }
-        // ========================================
 
-        async function loadImagesFromStorage() {
-            for (const product of products) {
-                const imageUrl = getProductImage(product);
-                if (imageUrl && !imageUrl.includes('placehold')) {
-                    try {
-                        const response = await fetch(imageUrl, { method: 'HEAD' });
-                        if (!response.ok) { 
-                            product.image_url = null; 
-                            product.image_file = null;
-                            product.image = null;
-                        }
-                    } catch (error) { 
-                        product.image_url = null; 
-                        product.image_file = null;
-                        product.image = null;
-                    }
+        // Загрузка товаров из JSON файла
+        async function loadProducts() {
+            try {
+                const response = await fetch('products_rows.json');
+                if (!response.ok) {
+                    throw new Error('Ошибка загрузки файла');
                 }
+                const data = await response.json();
+                products = data;
+                filteredProducts = [...products];
+                renderCategoryFilters();
+                renderMenu();
+                renderViewHistory();
+            } catch (error) {
+                console.error('Ошибка загрузки меню:', error);
+                products = [];
+                filteredProducts = [];
+                renderMenu();
+                showToast('❌', 'Ошибка загрузки меню');
             }
         }
 
-        function loadProducts() {
-            products = [...localProducts];
-            filteredProducts = [...products];
-            renderCategoryFilters();
-            renderMenu();
-            renderViewHistory();
-            loadImagesFromStorage();
-        }
-
+        // ВСЕ ОСТАЛЬНЫЕ ФУНКЦИИ ОСТАЮТСЯ БЕЗ ИЗМЕНЕНИЙ
+        // (renderCategoryFilters, filterByCategory, renderMenu, openProductModal, 
+        //  closeModal, escapeHtml, showToast, toggleFavorite, addToViewHistory, 
+        //  renderViewHistory, addToCart, removeFromCart, updateCart и т.д.)
+        
         function renderCategoryFilters() {
             const filterContainer = document.getElementById('categoryFilters');
+            const categories = [
+                { name: 'Брускетты и канапе', icon: '🥖' },
+                { name: 'Сэндвичи и блины', icon: '🥪' },
+                { name: 'Холодные закуски', icon: '❄️' },
+                { name: 'Салаты', icon: '🥗' },
+                { name: 'Горячие блюда', icon: '🔥' },
+                { name: 'Десерты', icon: '🍰' },
+                { name: 'Гарниры', icon: '🍚' }
+            ];
             filterContainer.innerHTML = `
                 <button class="filter-btn active" data-category=""><span>✨</span> Все</button>
                 ${categories.map(cat => `<button class="filter-btn" data-category="${cat.name}"><span>${cat.icon}</span> ${cat.name}</button>`).join('')}
